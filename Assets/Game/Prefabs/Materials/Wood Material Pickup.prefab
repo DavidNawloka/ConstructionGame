@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 848116341845c7e48927e0bbc2b15546, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material: {fileID: 11400000, guid: 90af84c016779b64abdbae59aa56cd21, type: 2}
+  element: {fileID: 11400000, guid: 90af84c016779b64abdbae59aa56cd21, type: 2}
   amount: 1
 --- !u!135 &8485946570687198062
 SphereCollider:

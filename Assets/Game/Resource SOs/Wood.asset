@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 306c17a07d80ee143a9ea93f6bc4d98d, type: 3}
   m_Name: Wood
   m_EditorClassIdentifier: 
-  sprite: {fileID: 0}
+  sprite: {fileID: 21300000, guid: 1cafe3b92468c46cca28e6fdc360f8af, type: 3}
   pickupPrefab: {fileID: 8485946570687198051, guid: ba78828b13e61864ba2045cf9ec729d1, type: 3}
   minScale: 1
   maxScale: 2
