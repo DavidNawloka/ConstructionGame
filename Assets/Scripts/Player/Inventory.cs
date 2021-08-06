@@ -14,8 +14,18 @@ namespace CON.Elements
 
         private void Awake()
         {
-            inventory = new InventoryItem[inventorySlots];
+            BuildEmptyInventory();
         }
+
+        private void BuildEmptyInventory()
+        {
+            inventory = new InventoryItem[inventorySlots];
+            for (int index = 0; index < inventory.Length; index++)
+            {
+                inventory[index] = new InventoryItem(null, 0);
+            }
+        }
+
         private void Start()
         {
             OnInventoryChange(inventory);

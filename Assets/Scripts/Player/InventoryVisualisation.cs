@@ -23,7 +23,7 @@ namespace CON.Elements
         {
             for (int inventoryIndex = 0; inventoryIndex < updatedInventory.Length; inventoryIndex++)
             {
-                Element element = updatedInventory[inventoryIndex].element; // TODO: Check if null reference error still exists and if so fix it
+                Element element = updatedInventory[inventoryIndex].element;
 
 
                 if (element == null)
