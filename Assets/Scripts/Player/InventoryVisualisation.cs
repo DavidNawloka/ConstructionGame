@@ -17,7 +17,9 @@ namespace CON.Elements
         }
         private void OnDisable()
         {
-            GameObject.FindGameObjectWithTag("Player").GetComponent<Inventory>().OnInventoryChange -= UpdateInventory;
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player == null) return;
+            player.GetComponent<Inventory>().OnInventoryChange -= UpdateInventory;
         }
         private void UpdateInventory(InventoryItem[] updatedInventory)
         {
