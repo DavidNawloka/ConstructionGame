@@ -28,7 +28,7 @@ namespace CON.Player
 
         private bool MovementInteraction()
         {
-            if (!Input.GetMouseButton(0)) return false;
+            if (!Input.GetMouseButton(1)) return false;
 
             Ray cameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
             return playerMovement.MoveTo(cameraRay);

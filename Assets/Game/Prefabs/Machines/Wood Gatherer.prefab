@@ -9,6 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 927031865721193230}
+  - component: {fileID: 2024806470075881910}
+  - component: {fileID: 836555832513420655}
   m_Layer: 0
   m_Name: Wood Gatherer
   m_TagString: Untagged
@@ -31,6 +33,38 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2024806470075881910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 927031865721193231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 711d854d8074a7041aeec84c2d715502, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  takenGridPositions:
+  - {x: 0, y: 0}
+  - {x: 0, y: -1}
+  elementRequirement: {fileID: 11400000, guid: 90af84c016779b64abdbae59aa56cd21, type: 2}
+--- !u!208 &836555832513420655
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 927031865721193231}
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.785, y: 0.5, z: 1.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: -0.76}
+  m_TimeToStationary: 0.5
 --- !u!1 &5368106849902993155
 GameObject:
   m_ObjectHideFlags: 0
@@ -57,8 +91,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5368106849902993155}
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 29.825504, y: 5.961862, z: 1.7090391}
+  m_LocalPosition: {x: -0.05, y: 0, z: -0.675}
+  m_LocalScale: {x: 29.827732, y: 6.5193963, z: 1.7090391}
   m_Children: []
   m_Father: {fileID: 927031865721193230}
   m_RootOrder: 0

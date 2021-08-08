@@ -16,3 +16,4 @@ MonoBehaviour:
   pickupPrefab: {fileID: 8485946570687198051, guid: ba78828b13e61864ba2045cf9ec729d1, type: 3}
   minScale: 1
   maxScale: 2
+  colorRepresentation: {r: 0.41509432, g: 0.229849, b: 0, a: 1}

@@ -11,5 +11,6 @@ namespace CON.Elements
         public GameObject pickupPrefab;
         public float minScale;
         public float maxScale;
+        public Color colorRepresentation;
     }
 }

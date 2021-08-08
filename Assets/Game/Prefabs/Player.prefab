@@ -16,9 +16,10 @@ GameObject:
   - component: {fileID: 657844704}
   - component: {fileID: 4176458726744994890}
   - component: {fileID: 6000113424376474159}
+  - component: {fileID: 1060613599}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -97,6 +98,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3486bf6fbff47d047b371b6682631eac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inventorySlots: 4
+  inventory: []
 --- !u!95 &657844704
 Animator:
   serializedVersion: 3
@@ -146,6 +149,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1060613599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8732582570562143678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faf1e642b949824428c71c316764c774, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7858383287281837015
 PrefabInstance:
   m_ObjectHideFlags: 0
