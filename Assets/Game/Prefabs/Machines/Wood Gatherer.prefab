@@ -48,7 +48,12 @@ MonoBehaviour:
   takenGridPositions:
   - {x: 0, y: 0}
   - {x: 0, y: -1}
-  elementRequirement: {fileID: 11400000, guid: 90af84c016779b64abdbae59aa56cd21, type: 2}
+  elementPlacementRequirement: {fileID: 11400000, guid: 90af84c016779b64abdbae59aa56cd21, type: 2}
+  elementBuildingRequirements:
+  - element: {fileID: 11400000, guid: c2f82b61e121f29408d0cfa36fd30d2e, type: 2}
+    amount: 5
+  - element: {fileID: 11400000, guid: 90af84c016779b64abdbae59aa56cd21, type: 2}
+    amount: 3
 --- !u!208 &836555832513420655
 NavMeshObstacle:
   m_ObjectHideFlags: 0

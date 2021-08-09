@@ -1,3 +1,4 @@
+using CON.Elements;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,7 @@ namespace CON.Machines
     public class Conveyor : MonoBehaviour, IPlaceable
     {
         [SerializeField] Vector2Int[] takenGridPositions;
+        [SerializeField] InventoryItem[] elementBuildingRequirements;
 
         NavMeshObstacle navMeshObstacle;
 
@@ -16,7 +18,6 @@ namespace CON.Machines
             navMeshObstacle = GetComponent<NavMeshObstacle>();   
         }
 
-        // Update is called once per frame
         void Update()
         {
 
@@ -28,6 +29,11 @@ namespace CON.Machines
         public void FullyPlaced()
         {
             navMeshObstacle.enabled = true;
+        }
+
+        public InventoryItem[] GetNeededBuildingElements()
+        {
+            return elementBuildingRequirements;
         }
     }
 

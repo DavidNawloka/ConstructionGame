@@ -9,7 +9,8 @@ namespace CON.Machines
     public class Machine : MonoBehaviour, IPlaceable
     {
         [SerializeField] Vector2Int[] takenGridPositions;
-        [SerializeField] Element elementRequirement;
+        [SerializeField] Element elementPlacementRequirement;
+        [SerializeField] InventoryItem[] elementBuildingRequirements;
 
         NavMeshObstacle navMeshObstacle;
 
@@ -24,7 +25,7 @@ namespace CON.Machines
         }
         public Element GetElementRequirement()
         {
-            return elementRequirement;
+            return elementPlacementRequirement;
         }
         public Vector2Int[] GetTakenGridPositions()
         {
@@ -33,6 +34,11 @@ namespace CON.Machines
         public void FullyPlaced()
         {
             navMeshObstacle.enabled = true;
+        }
+
+        public InventoryItem[] GetNeededBuildingElements()
+        {
+            return elementBuildingRequirements;
         }
     }
 }
