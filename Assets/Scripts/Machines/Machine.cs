@@ -19,10 +19,6 @@ namespace CON.Machines
             navMeshObstacle = GetComponent<NavMeshObstacle>();
         }
 
-        void Update()
-        {
-
-        }
         public Element GetElementRequirement()
         {
             return elementPlacementRequirement;

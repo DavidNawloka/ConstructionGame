@@ -19,6 +19,7 @@ namespace CON.Machines
 
         GameObject currentMachine;
         IPlaceable currentPlaceable;
+        public Vector2Int[] takenGridPositions;
 
         Inventory inventory;
 
@@ -38,9 +39,23 @@ namespace CON.Machines
             }
             if (buildMode)
             {
+                HandleRotation();
                 BuildMode();
             }
         }
+
+        private void HandleRotation()
+        {
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                RotateLeft();
+            }
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                RotateRight();
+            }
+        }
+
         public void ActivateBuildMode(GameObject machine)
         {
             if (currentMachine != null) Destroy(currentMachine);
@@ -48,6 +63,7 @@ namespace CON.Machines
             buildMode = true;
             currentMachine = Instantiate(machine);
             currentPlaceable = currentMachine.GetComponent<IPlaceable>();
+            takenGridPositions = currentPlaceable.GetTakenGridPositions();
             currentMachine.transform.parent = buildObjectsParent;
         }
         private void BuildMode()
@@ -78,7 +94,7 @@ namespace CON.Machines
 
             RemoveElements(currentPlaceable);
 
-            foreach (Vector2Int takenGridPosition in currentPlaceable.GetTakenGridPositions())
+            foreach (Vector2Int takenGridPosition in takenGridPositions)
             {
                 grid.SetObstructed(x + takenGridPosition.x, y + takenGridPosition.y, true);
             }
@@ -102,14 +118,34 @@ namespace CON.Machines
         private bool IsObstructedAll(int x, int y)
         {
             bool isObstructed = false;
-            foreach (Vector2Int takenGridPosition in currentPlaceable.GetTakenGridPositions())
+            foreach (Vector2Int takenGridPosition in takenGridPositions)
             {
                 isObstructed = grid.IsObstructed(x + takenGridPosition.x, y + takenGridPosition.y);
                 if (isObstructed) return isObstructed;
             }
             return isObstructed;
         }
-        
+        // TODO: Refactor Rotation
+        private void RotateLeft()
+        {
+            for (int index = 0; index < takenGridPositions.Length; index++)
+            {
+                int x = takenGridPositions[index].x;
+                int y = takenGridPositions[index].y * -1;
+                takenGridPositions[index] = new Vector2Int(y, x);
+            }
+            currentMachine.transform.rotation = Quaternion.Euler(new Vector3(0, currentMachine.transform.eulerAngles.y - 90, 0));
+        }
+        private void RotateRight()
+        {
+            for (int index = 0; index < takenGridPositions.Length; index++)
+            {
+                int x = takenGridPositions[index].x * -1;
+                int y = takenGridPositions[index].y ;
+                takenGridPositions[index] = new Vector2Int(y, x);
+            }
+            currentMachine.transform.rotation = Quaternion.Euler(new Vector3(0, currentMachine.transform.eulerAngles.y + 90, 0));
+        }
         private bool AreEnoughElements()
         {
             bool enough = true;
