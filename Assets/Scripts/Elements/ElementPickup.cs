@@ -8,9 +8,10 @@ namespace CON.Elements
     public class ElementPickup : MonoBehaviour
     {
         [SerializeField] InventoryItem itemToEuqip;
-        private void OnTriggerEnter(Collider other) // Consider having to click on it
+        private void OnCollisionEnter(Collision collision) // Consider having to click on it
         {
-            other.transform.GetComponent<Inventory>().EquipItem(itemToEuqip);
+            if (collision.transform.tag != "Player") return;
+            collision.transform.GetComponent<Inventory>().EquipItem(itemToEuqip);
             Destroy(gameObject);
         }
     }

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6366741075993714625}
   - component: {fileID: 428853020241775288}
   - component: {fileID: -7524722170755935350}
+  - component: {fileID: 8032874728521976043}
   m_Layer: 0
   m_Name: Conveyor Belt
   m_TagString: Untagged
@@ -68,6 +69,19 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
+--- !u!65 &8032874728521976043
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6366741075993714630}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.5, y: 1, z: 1.51}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8301588880154538326
 GameObject:
   m_ObjectHideFlags: 0

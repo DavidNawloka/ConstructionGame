@@ -35,22 +35,22 @@ namespace CON.Machines
         {
             Collider[] hitColliders = Physics.OverlapBox(
                                     GetWorldPositionCenter(x, y),
-                                    new Vector3(cellSize / 2, cellSize / 2, cellSize / 2),
+                                    new Vector3(cellSize / 2, 20, cellSize / 2),
                                     Quaternion.identity, ~0, QueryTriggerInteraction.Collide);
 
             Color debugColor = Color.white;
             foreach (Collider collider in hitColliders)
             {
                 ElementIndicator elementIndicator = collider.transform.GetComponent<ElementIndicator>();
-                if (elementIndicator != null)
-                {
-                    gridArray[x, y] = new GridCell(false, elementIndicator.GetElement());
-                    debugColor = elementIndicator.GetElement().colorRepresentation;
-                }
-                else if (collider.transform.tag == "Mountain")
+                if (collider.transform.tag == "Mountain")
                 {
                     gridArray[x, y] = new GridCell(true, null);
                     debugColor = Color.red;
+                }
+                else if (elementIndicator != null)
+                {
+                    gridArray[x, y] = new GridCell(false, elementIndicator.GetElement());
+                    debugColor = elementIndicator.GetElement().colorRepresentation;
                 }
                 else
                 {
