@@ -171,7 +171,7 @@ MonoBehaviour:
   - element: {fileID: 11400000, guid: 90af84c016779b64abdbae59aa56cd21, type: 2}
     amount: 5
   elementToProduce: {fileID: 4825747043008671142, guid: 5ef1a58bf6660174b9800d200b634bec, type: 3}
-  productionIntervall: 1
+  productionIntervall: 4
   elementExitPoint: {fileID: 2967090024268532651}
 --- !u!208 &-6172064821641505707
 NavMeshObstacle:

@@ -10,6 +10,8 @@ namespace CON.Machines
     {
         [SerializeField] Vector2Int[] takenGridPositions;
         [SerializeField] InventoryItem[] elementBuildingRequirements;
+        [SerializeField] Vector3 boxCastHalfExtents;
+        [SerializeField] float forceToApply;
 
         NavMeshObstacle navMeshObstacle;
 
@@ -20,7 +22,12 @@ namespace CON.Machines
 
         void Update()
         {
-
+            //Collider[] hitColliders = Physics.OverlapBox(transform.position, boxCastHalfExtents, transform.rotation);
+            //foreach(Collider collider in hitColliders)
+            //{
+            //    print(collider.name);
+                
+            //}
         }
         public Vector2Int[] GetTakenGridPositions()
         {
@@ -34,6 +41,14 @@ namespace CON.Machines
         public InventoryItem[] GetNeededBuildingElements()
         {
             return elementBuildingRequirements;
+        }
+        private void OnCollisionStay(Collision collision)
+        {
+            ElementPickup elementPickup = collision.transform.GetComponentInParent<ElementPickup>();
+            if (elementPickup == null) return;
+
+            print("hello");
+            collision.transform.GetComponentInParent<Rigidbody>().AddForce(-transform.right.normalized * forceToApply, ForceMode.Impulse);
         }
     }
 
