@@ -1,4 +1,5 @@
 using CON.Elements;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,32 +11,19 @@ namespace CON.Machines
     {
         [SerializeField] Vector2Int[] takenGridPositions;
         [SerializeField] InventoryItem[] elementBuildingRequirements;
-        [SerializeField] Vector3 boxCastHalfExtents;
-        [SerializeField] float forceToApply;
+        [SerializeField] Transform[] pathOfElement;
+        [SerializeField] float forceToApplyForward;
+        [SerializeField] float forceToApplySide;
 
-        NavMeshObstacle navMeshObstacle;
 
-        void Awake()
-        {
-            navMeshObstacle = GetComponent<NavMeshObstacle>();   
-        }
-
-        void Update()
-        {
-            //Collider[] hitColliders = Physics.OverlapBox(transform.position, boxCastHalfExtents, transform.rotation);
-            //foreach(Collider collider in hitColliders)
-            //{
-            //    print(collider.name);
-                
-            //}
-        }
         public Vector2Int[] GetTakenGridPositions()
         {
             return takenGridPositions;
         }
         public void FullyPlaced()
         {
-            navMeshObstacle.enabled = true;
+            GetComponent<NavMeshObstacle>().enabled = true;
+            GetComponent<BoxCollider>().enabled = true;
         }
 
         public InventoryItem[] GetNeededBuildingElements()
@@ -47,8 +35,22 @@ namespace CON.Machines
             ElementPickup elementPickup = collision.transform.GetComponentInParent<ElementPickup>();
             if (elementPickup == null) return;
 
-            print("hello");
-            collision.transform.GetComponentInParent<Rigidbody>().AddForce(-transform.right.normalized * forceToApply, ForceMode.Impulse);
+            Rigidbody rigidbody = collision.transform.GetComponentInParent<Rigidbody>();
+
+            rigidbody.velocity = (pathOfElement[1].position -pathOfElement[0].position).normalized * forceToApplyForward;
+            rigidbody.AddForce(GetForceToKeepOnConveyor(rigidbody.transform)* forceToApplySide, ForceMode.Impulse);
+        }
+
+        private Vector3 GetForceToKeepOnConveyor(Transform element)
+        {
+            if(Mathf.Approximately(transform.rotation.eulerAngles.y,90) || Mathf.Approximately(transform.rotation.eulerAngles.y, 270))
+            {
+                return new Vector3(transform.position.x - element.position.x, 0, 0);
+            }
+            else
+            {
+                return new Vector3(0, 0, transform.position.z - element.position.z);
+            }
         }
     }
 

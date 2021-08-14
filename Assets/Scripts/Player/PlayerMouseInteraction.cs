@@ -19,6 +19,7 @@ namespace CON.Player
         private void Update()
         {
             if (UIInteraction()) return;
+            if (WorldInteraction()) return;
             if (MovementInteraction()) return;
         }
         private bool UIInteraction()
@@ -26,30 +27,25 @@ namespace CON.Player
             if (EventSystem.current.IsPointerOverGameObject()) return true;
             return false;
         }
-        //private bool WorldInteraction()
-        //{
-        //    bool status = false;
-        //    Ray cameraRay = GetCameraRay();
-        //    RaycastHit raycastHit;
-        //    if(Physics.Raycast(cameraRay,out raycastHit))
-        //    {
-        //        IMouseInteractable interactable = raycastHit.transform.GetComponent<IMouseInteractable>();
-        //        if (interactable == null) return status;
+        private bool WorldInteraction()
+        {
+            bool status = false;
+            Ray cameraRay = GetCameraRay();
+            RaycastHit raycastHit;
+            if (Physics.Raycast(cameraRay, out raycastHit))
+            {
+                IMouseClickable interactable = raycastHit.transform.GetComponent<IMouseClickable>();
+                if (interactable == null) return status;
 
-                
-        //        if (Input.GetMouseButtonDown(0))
-        //        {
-        //            interactable.HandleInteractionClick();
-        //        }
-        //        else
-        //        {
-        //            interactable.HandleInteractionHover();
-        //        }
-        //        status = interactable.HandleInteraction();
-        //    }
-        //    return status;
-        //}
-        
+
+                if (Input.GetMouseButtonDown(0))
+                {
+                    status = interactable.HandleInteractionClick(transform);
+                }
+            }
+            return status;
+        }
+
         private bool MovementInteraction()
         {
             if (!Input.GetMouseButton(1)) return false;

@@ -44,7 +44,7 @@ namespace CON.Machines
 
         private void ProduceElement()
         {
-            Instantiate(elementToProduce.gameObject, elementExitPoint.position, Quaternion.identity);
+            GameObject elementInstance = Instantiate(elementToProduce.gameObject, elementExitPoint.position, Quaternion.identity);
         }
 
         public Element GetElementRequirement()

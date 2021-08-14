@@ -1,3 +1,4 @@
+using CON.Core;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,13 +6,30 @@ using UnityEngine;
 namespace CON.Elements
 {
 
-    public class ElementPickup : MonoBehaviour
+    public class ElementPickup : MonoBehaviour,IMouseClickable
     {
         [SerializeField] InventoryItem itemToEuqip;
-        private void OnCollisionEnter(Collision collision) // Consider having to click on it
+        [SerializeField] float maxDistance = 2f;
+
+
+        private void OnCollisionEnter(Collision collision)
         {
             if (collision.transform.tag != "Player") return;
-            collision.transform.GetComponent<Inventory>().EquipItem(itemToEuqip);
+            EquipElement(collision.transform);
+        }
+
+        public bool HandleInteractionClick(Transform player)
+        {
+            if(Vector3.Distance(transform.position, player.position) <= maxDistance)
+            {
+                EquipElement(player);
+                return true;
+            }
+            return false;
+        }
+        private void EquipElement(Transform player)
+        {
+            player.GetComponent<Inventory>().EquipItem(itemToEuqip);
             Destroy(gameObject);
         }
     }
