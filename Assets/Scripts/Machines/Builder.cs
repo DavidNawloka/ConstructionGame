@@ -109,7 +109,7 @@ namespace CON.Machines
             print("enough resources");
 
             Machine machine = currentMachine.transform.GetComponent<Machine>();
-            if (machine != null && !grid.HasElement(x, y, machine.GetElementRequirement())) return false;
+            if (machine != null && !grid.HasElement(x, y, machine.GetElementPlacementRequirement())) return false;
             print("placement possible");
 
             return true;
@@ -151,7 +151,7 @@ namespace CON.Machines
             bool enough = true;
             foreach (InventoryItem inventoryItem in currentPlaceable.GetNeededBuildingElements())
             {
-                enough = inventory.CheckItem(inventoryItem);
+                enough = inventory.HasItem(inventoryItem);
                 if (!enough) return enough;
             }
             return enough;

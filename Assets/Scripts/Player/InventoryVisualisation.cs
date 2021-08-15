@@ -11,17 +11,7 @@ namespace CON.Elements
         [SerializeField] Image[] inventorySlotsSprites;
         [SerializeField] TextMeshProUGUI[] inventorySlotsAmounts;
 
-        private void OnEnable()
-        {
-            GameObject.FindGameObjectWithTag("Player").GetComponent<Inventory>().OnInventoryChange += UpdateInventory;
-        }
-        private void OnDisable()
-        {
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
-            if (player == null) return;
-            player.GetComponent<Inventory>().OnInventoryChange -= UpdateInventory;
-        }
-        private void UpdateInventory(InventoryItem[] updatedInventory)
+        public void UpdateInventory(InventoryItem[] updatedInventory)
         {
             for (int inventoryIndex = 0; inventoryIndex < updatedInventory.Length; inventoryIndex++)
             {

@@ -5,10 +5,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using System;
+using UnityEngine.Events;
 
 namespace CON.Machines 
 {
-    public class Machine : MonoBehaviour, IPlaceable
+    public class Machine : MonoBehaviour, IPlaceable, IMouseClickable
     {
         [Header("Placement")]
         [SerializeField] Vector2Int[] takenGridPositions;
@@ -18,20 +19,25 @@ namespace CON.Machines
         [SerializeField] ElementPickup elementToProduce;
         [SerializeField] float productionIntervall;
         [SerializeField] Transform elementExitPoint;
+        [SerializeField] InventoryItem energyRequirement;
+        [SerializeField] int elementPerEnergy = 1;
+        [Header("Unity Events")]
+        [SerializeField] UnityEvent OnMachineClicked;
 
-        NavMeshObstacle navMeshObstacle;
+        Inventory inventory;
         bool fullyPlaced = false;
 
         float productionTimer = 0f;
+        int elementsProduced = 0;
 
         void Awake()
         {
-            navMeshObstacle = GetComponent<NavMeshObstacle>();
+            inventory = GetComponent<Inventory>();
         }
 
         private void Update()
         {
-            if (!fullyPlaced) return;
+            if (!fullyPlaced || !inventory.HasItem(energyRequirement)) return;
 
             if(productionTimer >= productionIntervall)
             {
@@ -44,10 +50,38 @@ namespace CON.Machines
 
         private void ProduceElement()
         {
-            GameObject elementInstance = Instantiate(elementToProduce.gameObject, elementExitPoint.position, Quaternion.identity);
+            Instantiate(elementToProduce.gameObject, elementExitPoint.position, Quaternion.identity);
+            elementsProduced++;
+
+            if (elementsProduced >= elementPerEnergy)
+            {
+                inventory.RemoveItem(energyRequirement);
+                elementsProduced = 0;
+            }
+            
         }
 
-        public Element GetElementRequirement()
+        public void AddEnergyElement()
+        {
+            Inventory playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<Inventory>();
+            if (playerInventory.HasItem(energyRequirement))
+            {
+                playerInventory.RemoveItem(energyRequirement);
+                print(inventory.EquipItem(energyRequirement));
+            }
+        }
+
+        public float GetProductionFraction()
+        {
+            return productionTimer / productionIntervall;
+        }
+
+        public InventoryItem GetEnergyRequirement()
+        {
+            return energyRequirement;
+        }
+
+        public Element GetElementPlacementRequirement()
         {
             return elementPlacementRequirement;
         }
@@ -57,7 +91,7 @@ namespace CON.Machines
         }
         public void FullyPlaced()
         {
-            navMeshObstacle.enabled = true;
+            GetComponent<NavMeshObstacle>().enabled = true;
             fullyPlaced = true;
         }
 
@@ -66,9 +100,10 @@ namespace CON.Machines
             return elementBuildingRequirements;
         }
 
-        private void OnMouseOver()
+        public bool HandleInteractionClick(Transform player)
         {
-            print("mouse over " + name);
+            OnMachineClicked.Invoke();
+            return false;
         }
     }
 }

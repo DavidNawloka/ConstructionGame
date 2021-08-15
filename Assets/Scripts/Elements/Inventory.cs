@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace CON.Elements
 {
@@ -10,7 +11,7 @@ namespace CON.Elements
         [SerializeField] int inventorySlots;
 
         public InventoryItem[] inventory;
-        public event Action<InventoryItem[]> OnInventoryChange;
+        public UnityEvent<InventoryItem[]> OnInventoryChange;
 
         private void Awake()
         {
@@ -18,9 +19,9 @@ namespace CON.Elements
         }
         private void Start()
         {
-            OnInventoryChange(inventory);
+            OnInventoryChange.Invoke(inventory);
         }
-        public bool CheckItem(InventoryItem inventoryItemToCheck)
+        public bool HasItem(InventoryItem inventoryItemToCheck)
         {
             foreach (InventoryItem inventoryItem in inventory)
             {
@@ -57,12 +58,12 @@ namespace CON.Elements
                     inventory[index] = inventoryItem;
                 }
             }
-            OnInventoryChange(inventory);
+            OnInventoryChange.Invoke(inventory);
             return status;
         }
         public bool EquipItem(InventoryItem inventoryItemToEquip)
         {
-            if (GetUsedInventoryLength() >= inventorySlots) return false;
+            if (GetUsedInventoryLength() > inventorySlots) return false;
 
             int materialIndex = 0;
 
@@ -71,14 +72,14 @@ namespace CON.Elements
                 if(inventoryItem.element == inventoryItemToEquip.element)
                 {
                     inventoryItem.amount += inventoryItemToEquip.amount;
-                    OnInventoryChange(inventory);
+                    OnInventoryChange.Invoke(inventory);
                     return true;
                 }
                 if (inventoryItem.element != null) materialIndex++;
             }
 
             inventory[materialIndex] = new InventoryItem(inventoryItemToEquip.element, inventoryItemToEquip.amount);
-            OnInventoryChange(inventory);
+            OnInventoryChange.Invoke(inventory);
             return true;
         }
         private void BuildEmptyInventory()
@@ -94,7 +95,6 @@ namespace CON.Elements
             int length = 0;
             foreach (InventoryItem item in inventory)
             {
-                
                 if (item.element != null) length++;
             }
             return length;
