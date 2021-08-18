@@ -102,6 +102,8 @@ namespace CON.Machines
 
         public bool HandleInteractionClick(Transform player)
         {
+            if (!fullyPlaced) return false;
+
             OnMachineClicked.Invoke();
             return false;
         }

@@ -15,20 +15,27 @@ namespace CON.Machines
         [SerializeField] Transform buildObjectsParent;
 
         BuildingGrid grid;
+        BuildingGridMesh gridMesh;
         bool buildMode = false;
 
         GameObject currentMachine;
         IPlaceable currentPlaceable;
-        public Vector2Int[] takenGridPositions;
+        Vector2Int[] takenGridPositions;
 
         Inventory inventory;
 
         private void Awake()
         {
             inventory = GetComponent<Inventory>();
+            gridMesh = FindObjectOfType<BuildingGridMesh>();
             grid = new BuildingGrid(gridWidth, gridheight, cellSize, gridOrigin);
+            gridMesh.BuildPlane(gridWidth, gridheight, grid.GetBuildingGridTexture());
         }
 
+        public BuildingGrid GetGrid()
+        {
+            return grid;
+        }
         
         private void Update()
         {
@@ -60,6 +67,7 @@ namespace CON.Machines
         {
             if (currentMachine != null) Destroy(currentMachine);
 
+            gridMesh.VisualiseMesh();
             buildMode = true;
             currentMachine = Instantiate(machine);
             currentPlaceable = currentMachine.GetComponent<IPlaceable>();
@@ -166,6 +174,8 @@ namespace CON.Machines
 
         private void DeactivateBuildMode()
         {
+            gridMesh.UpdateTexture(grid.GetBuildingGridTexture());
+            gridMesh.HideMesh();
             buildMode = false;
             currentMachine = null;
             currentPlaceable = null;

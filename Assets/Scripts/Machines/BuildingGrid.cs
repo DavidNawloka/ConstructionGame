@@ -10,6 +10,7 @@ namespace CON.Machines
         float cellSize;
         Vector3 origin;
 
+        Texture2D gridTexture;
         GridCell[,] gridArray;
         public BuildingGrid(int width, int height, float cellSize, Vector3 origin)
         {
@@ -18,6 +19,8 @@ namespace CON.Machines
             this.cellSize = cellSize;
             this.origin = origin;
 
+            gridTexture = new Texture2D(width, height, TextureFormat.ARGB32, false);
+            gridTexture.filterMode = FilterMode.Point;
             gridArray = new GridCell[width, height];
 
             for (int x = 0; x < gridArray.GetLength(0); x++)
@@ -27,8 +30,6 @@ namespace CON.Machines
                     SetupGridCell(x, y);
                 }
             }
-            Debug.DrawLine(GetWorldPositionOrigin(0, height), GetWorldPositionOrigin(width, height), Color.white, 50f);
-            Debug.DrawLine(GetWorldPositionOrigin(width, 0), GetWorldPositionOrigin(width, height), Color.white, 50);
         }
 
         private void SetupGridCell(int x, int y)
@@ -38,29 +39,27 @@ namespace CON.Machines
                                     new Vector3(cellSize / 2, 20, cellSize / 2),
                                     Quaternion.identity, ~0, QueryTriggerInteraction.Collide);
 
-            Color debugColor = Color.white;
+            gridArray[x, y] = new GridCell(false, null);
             foreach (Collider collider in hitColliders)
             {
                 ElementIndicator elementIndicator = collider.transform.GetComponent<ElementIndicator>();
                 if (collider.transform.tag == "Mountain")
                 {
                     gridArray[x, y] = new GridCell(true, null);
-                    debugColor = Color.red;
+                    gridTexture.SetPixel(x,y,Color.red);
                 }
                 else if (elementIndicator != null)
                 {
                     gridArray[x, y] = new GridCell(false, elementIndicator.GetElement());
-                    debugColor = elementIndicator.GetElement().colorRepresentation;
+                    gridTexture.SetPixel(x, y, elementIndicator.GetElement().colorRepresentation);
                 }
-                else
-                {
-                    gridArray[x, y] = new GridCell(false, null);
-                }
-
-
             }
-            Debug.DrawLine(GetWorldPositionOrigin(x, y), GetWorldPositionOrigin(x, y + 1), debugColor, 50f);
-            Debug.DrawLine(GetWorldPositionOrigin(x, y), GetWorldPositionOrigin(x + 1, y), debugColor, 50f);
+            gridTexture.Apply();
+        }
+
+        public Texture2D GetBuildingGridTexture()
+        {
+            return gridTexture;
         }
 
         public Vector3 GetWorldPositionOrigin(int x, int y)
@@ -81,6 +80,8 @@ namespace CON.Machines
         {
             if (x >= 0 && y >= 0 && x < width && y < height)
             {
+                gridTexture.SetPixel(x, y, Color.red);
+                gridTexture.Apply();
                 gridArray[x, y].obstructed = obstructed;
             }
         }
