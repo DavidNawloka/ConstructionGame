@@ -15,6 +15,7 @@ namespace CON.Machines
         [SerializeField] Vector2Int[] takenGridPositions;
         [SerializeField] Element elementPlacementRequirement;
         [SerializeField] InventoryItem[] elementBuildingRequirements;
+        [SerializeField] GameObject MachineUIPrefab;
         [Header("Production")]
         [SerializeField] ElementPickup elementToProduce;
         [SerializeField] float productionIntervall;
@@ -22,7 +23,7 @@ namespace CON.Machines
         [SerializeField] InventoryItem energyRequirement;
         [SerializeField] int elementPerEnergy = 1;
         [Header("Unity Events")]
-        [SerializeField] UnityEvent OnMachineClicked;
+        public UnityEvent OnMachineClicked;
 
         Inventory inventory;
         bool fullyPlaced = false;
@@ -67,7 +68,7 @@ namespace CON.Machines
             if (playerInventory.HasItem(energyRequirement))
             {
                 playerInventory.RemoveItem(energyRequirement);
-                print(inventory.EquipItem(energyRequirement));
+                inventory.EquipItem(energyRequirement);
             }
         }
 
@@ -92,6 +93,9 @@ namespace CON.Machines
         public void FullyPlaced()
         {
             GetComponent<NavMeshObstacle>().enabled = true;
+            GameObject MachineUI = Instantiate(MachineUIPrefab, Camera.main.WorldToScreenPoint(transform.position), Quaternion.identity,GameObject.FindGameObjectWithTag("MainCanvas").transform);
+            MachineUI.GetComponent<MachineVisualisation>().SetMachine(this);
+            inventory.OnInventoryChange.AddListener(MachineUI.GetComponentInChildren<InventoryVisualisation>().UpdateInventory);
             fullyPlaced = true;
         }
 

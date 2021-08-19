@@ -35,8 +35,8 @@ namespace CON.Machines
         private void SetupGridCell(int x, int y)
         {
             Collider[] hitColliders = Physics.OverlapBox(
-                                    GetWorldPositionCenter(x, y),
-                                    new Vector3(cellSize / 2, 20, cellSize / 2),
+                                    GetWorldPositionCenter(x, y)+new Vector3(0,10f,0),
+                                    new Vector3(cellSize / 2, 10f, cellSize / 2),
                                     Quaternion.identity, ~0, QueryTriggerInteraction.Collide);
 
             gridArray[x, y] = new GridCell(false, null);

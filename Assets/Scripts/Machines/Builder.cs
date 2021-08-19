@@ -67,7 +67,6 @@ namespace CON.Machines
         {
             if (currentMachine != null) Destroy(currentMachine);
 
-            gridMesh.VisualiseMesh();
             buildMode = true;
             currentMachine = Instantiate(machine);
             currentPlaceable = currentMachine.GetComponent<IPlaceable>();
@@ -118,7 +117,6 @@ namespace CON.Machines
 
             Machine machine = currentMachine.transform.GetComponent<Machine>();
             if (machine != null && !grid.HasElement(x, y, machine.GetElementPlacementRequirement())) return false;
-            print("placement possible");
 
             return true;
         }
@@ -175,7 +173,6 @@ namespace CON.Machines
         private void DeactivateBuildMode()
         {
             gridMesh.UpdateTexture(grid.GetBuildingGridTexture());
-            gridMesh.HideMesh();
             buildMode = false;
             currentMachine = null;
             currentPlaceable = null;

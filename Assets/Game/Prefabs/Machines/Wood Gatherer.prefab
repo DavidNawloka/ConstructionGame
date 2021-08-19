@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 927031865721193230}
   - component: {fileID: 2024806470075881910}
+  - component: {fileID: 6125633466375142379}
   - component: {fileID: 836555832513420655}
   - component: {fileID: -2648175451328326446}
   m_Layer: 0
@@ -31,6 +32,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1264327285199149608}
+  - {fileID: 6374650766447903890}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -55,6 +57,34 @@ MonoBehaviour:
     amount: 5
   - element: {fileID: 11400000, guid: 90af84c016779b64abdbae59aa56cd21, type: 2}
     amount: 3
+  MachineUIPrefab: {fileID: 8359173853290970696, guid: 8a5639e87e1c7c9449726598525d61d8, type: 3}
+  elementToProduce: {fileID: 8485946570687198049, guid: ba78828b13e61864ba2045cf9ec729d1, type: 3}
+  productionIntervall: 5
+  elementExitPoint: {fileID: 6374650766447903890}
+  energyRequirement:
+    element: {fileID: 11400000, guid: 296a20792c61e7e4eb31c9133973c3b5, type: 2}
+    amount: 3
+  elementPerEnergy: 2
+  OnMachineClicked:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &6125633466375142379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 927031865721193231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3486bf6fbff47d047b371b6682631eac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventorySlots: 1
+  inventory: []
+  OnInventoryChange:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!208 &836555832513420655
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -170,3 +200,33 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &6265301095433421762
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6374650766447903890}
+  m_Layer: 0
+  m_Name: Element Exit Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 4162164826716764455, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6374650766447903890
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6265301095433421762}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.1, y: 0.9, z: -1.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 927031865721193230}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
