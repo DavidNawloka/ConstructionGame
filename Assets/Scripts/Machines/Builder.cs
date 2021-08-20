@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace CON.Machines
 {
@@ -53,11 +54,11 @@ namespace CON.Machines
 
         private void HandleRotation()
         {
-            if (Input.GetKeyDown(KeyCode.Q))
+            if (Input.GetKeyDown(KeyCode.Q) || Input.mouseScrollDelta.y >= 1f)
             {
                 RotateLeft();
             }
-            if (Input.GetKeyDown(KeyCode.E))
+            if (Input.GetKeyDown(KeyCode.E) || Input.mouseScrollDelta.y <= -1f)
             {
                 RotateRight();
             }
@@ -113,7 +114,6 @@ namespace CON.Machines
         private bool IsPlacementPossible(int x, int y)
         {
             if (!AreEnoughElements()) return false;
-            print("enough resources");
 
             Machine machine = currentMachine.transform.GetComponent<Machine>();
             if (machine != null && !grid.HasElement(x, y, machine.GetElementPlacementRequirement())) return false;

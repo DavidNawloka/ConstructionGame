@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 namespace CON.Machines
 {
@@ -14,8 +15,12 @@ namespace CON.Machines
         [SerializeField] Transform[] pathOfElement;
         [SerializeField] float forceToApplyForward;
         [SerializeField] float forceToApplySide;
+        [SerializeField] RawImage directionArrow;
 
-
+        private void OnEnable()
+        {
+            FindObjectOfType<BuilderVisualisation>().OnBuildModeChange.AddListener(OnBuildModeChange);
+        }
         public Vector2Int[] GetTakenGridPositions()
         {
             return takenGridPositions;
@@ -51,6 +56,11 @@ namespace CON.Machines
             {
                 return new Vector3(0, 0, transform.position.z - element.position.z);
             }
+        }
+
+        private void OnBuildModeChange(bool isActive)
+        {
+            directionArrow.enabled = isActive;
         }
     }
 

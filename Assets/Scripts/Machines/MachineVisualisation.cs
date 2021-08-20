@@ -5,17 +5,18 @@ using UnityEngine.UI;
 using TMPro;
 using CON.Elements;
 using UnityEngine.EventSystems;
+using System;
 
 namespace CON.Machines
 {
-    public class MachineVisualisation : MonoBehaviour, IPointerDownHandler,IPointerUpHandler
+    public class MachineVisualisation : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         [SerializeField] Image requirementSprite;
         [SerializeField] TextMeshProUGUI requirementTMPro;
         [SerializeField] RectTransform sliderForeground;
+        [SerializeField] RectTransform horizontalConnection;
+        [SerializeField] RectTransform verticalConnection;
 
-        RectTransform rectTransform;
-        Transform mainCamera;
         CanvasGroup canvasGroup;
         Machine machine;
 
@@ -27,13 +28,11 @@ namespace CON.Machines
 
         private void Awake()
         {
-            rectTransform = GetComponent<RectTransform>();
             canvasGroup = GetComponent<CanvasGroup>();
-            mainCamera = GameObject.FindGameObjectWithTag("FollowCamera").transform;
+            machine = GetComponentInParent<Machine>();
         }
         private void Start()
         {
-            machine.OnMachineClicked.AddListener(MachineClicked);
             SetCanvasGroup(false);
             UpdateRequirementUI();
         }
@@ -41,26 +40,47 @@ namespace CON.Machines
         private void Update()
         {
             if (isHidden) return;
+            UpdateOwnPosition();
+            UpdateConnectionPosition();
+            sliderForeground.localScale = new Vector3(machine.GetProductionFraction(), 1, 1);
+        }
 
+
+        private void UpdateOwnPosition()
+        {
             if (followMouse)
             {
-                transform.position = Input.mousePosition + initialMousePosition;
+                transform.position = new Vector3(
+                    Mathf.Clamp(Input.mousePosition.x + initialMousePosition.x, 0, Screen.currentResolution.width),
+                    Mathf.Clamp(Input.mousePosition.y + initialMousePosition.y, 0, Screen.currentResolution.height),
+                    0);
             }
+        }
 
-            sliderForeground.localScale = new Vector3(machine.GetProductionFraction(), 1, 1);
+
+        private void UpdateConnectionPosition()
+        {
+            Vector3 machineScreenSpacePosition = Camera.main.WorldToScreenPoint(machine.transform.position);
+            Vector3 posDifference = transform.position - machineScreenSpacePosition;
+
+            //horizontalConnection.position = Camera.main.WorldToScreenPoint(machine.transform.position);
+
+            horizontalConnection.sizeDelta = new Vector2(Mathf.Abs(posDifference.x)*1.2f, horizontalConnection.sizeDelta.y);
+            verticalConnection.sizeDelta = new Vector2(Mathf.Abs(posDifference.y) * 1.2f, verticalConnection.sizeDelta.y);
+
+            horizontalConnection.position = new Vector3((posDifference.x / 2) + machineScreenSpacePosition.x, transform.position.y);
+
+            verticalConnection.position = new Vector3(machineScreenSpacePosition.x, (posDifference.y / 2)+machineScreenSpacePosition.y);
         }
 
         public void AddEnergy()
         {
             machine.AddEnergyElement();
         }
-        public void SetMachine(Machine machine)
-        {
-            this.machine = machine;
-        }
 
         public void MachineClicked()
         {
+            transform.position = Camera.main.WorldToScreenPoint(machine.transform.position);
             if (isFirstClick) SetCanvasGroup(true);
             else SetCanvasGroup(false);
         }
@@ -75,6 +95,8 @@ namespace CON.Machines
         {
             canvasGroup.interactable = isActive;
             canvasGroup.blocksRaycasts = isActive;
+            horizontalConnection.gameObject.SetActive(isActive);
+            verticalConnection.gameObject.SetActive(isActive);
 
             isFirstClick = !isActive;
             isHidden = !isActive;
@@ -85,7 +107,6 @@ namespace CON.Machines
 
         public void OnPointerDown(PointerEventData eventData)
         {
-
             if (eventData.pointerCurrentRaycast.gameObject != null)
             {
                 followMouse = true;
