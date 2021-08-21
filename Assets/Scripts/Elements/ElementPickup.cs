@@ -17,6 +17,13 @@ namespace CON.Elements
             if (collision.transform.tag != "Player") return;
             EquipElement(collision.transform);
         }
+        private void EquipElement(Transform player)
+        {
+            player.GetComponent<Inventory>().EquipItem(itemToEuqip);
+            Destroy(gameObject);
+        }
+
+        // Interface implementations
 
         public bool HandleInteractionClick(Transform player)
         {
@@ -27,11 +34,7 @@ namespace CON.Elements
             }
             return false;
         }
-        private void EquipElement(Transform player)
-        {
-            player.GetComponent<Inventory>().EquipItem(itemToEuqip);
-            Destroy(gameObject);
-        }
+        
     }
 
 }

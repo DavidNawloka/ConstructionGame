@@ -15,9 +15,13 @@ namespace CON.Machines
         [SerializeField] Vector3 gridOrigin = new Vector3(-90, 0.4f, 0);
         [SerializeField] Transform buildObjectsParent;
 
+        public event Action<bool> onDemolishModeChange;
+
         BuildingGrid grid;
         BuildingGridMesh gridMesh;
         bool buildMode = false;
+
+        bool demolishMode = false;
 
         GameObject currentMachine;
         IPlaceable currentPlaceable;
@@ -33,34 +37,35 @@ namespace CON.Machines
             gridMesh.BuildPlane(gridWidth, gridheight, grid.GetBuildingGridTexture());
         }
 
-        public BuildingGrid GetGrid()
-        {
-            return grid;
-        }
         
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.X))
+            HandleInput();
+            HandleModes();
+        }
+
+        private void HandleInput()
+        {
+            if (Input.GetKeyDown(KeyCode.C))
             {
                 Destroy(currentMachine);
                 DeactivateBuildMode();
+            }
+            if (Input.GetKeyDown(KeyCode.X))
+            {
+                ToggleDemolishMode();
+            }
+        }
+        private void HandleModes()
+        {
+            if (demolishMode)
+            {
+                DemolishMode();
             }
             if (buildMode)
             {
                 HandleRotation();
                 BuildMode();
-            }
-        }
-
-        private void HandleRotation()
-        {
-            if (Input.GetKeyDown(KeyCode.Q) || Input.mouseScrollDelta.y >= 1f)
-            {
-                RotateLeft();
-            }
-            if (Input.GetKeyDown(KeyCode.E) || Input.mouseScrollDelta.y <= -1f)
-            {
-                RotateRight();
             }
         }
 
@@ -73,6 +78,62 @@ namespace CON.Machines
             currentPlaceable = currentMachine.GetComponent<IPlaceable>();
             takenGridPositions = currentPlaceable.GetTakenGridPositions();
             currentMachine.transform.parent = buildObjectsParent;
+        }
+        public void ToggleDemolishMode()
+        {
+            SetActiveDemolishMode(!demolishMode);
+        }
+        public void SetActiveDemolishMode(bool isDemolishMode)
+        {
+            demolishMode = isDemolishMode;
+            onDemolishModeChange(isDemolishMode);
+        }
+        public BuildingGridMesh GetGridMesh()
+        {
+            return gridMesh;
+        }
+        
+        private void DemolishMode()
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit raycastHit;
+            if (Physics.Raycast(ray, out raycastHit))
+            {
+                int x;
+                int y;
+                grid.GetGridPosition(raycastHit.point, out x, out y);
+
+                if (Input.GetMouseButtonDown(0) && grid.IsObstructed(x, y))
+                {
+                    IPlaceable placedMachine = raycastHit.collider.GetComponent<IPlaceable>();
+
+                    if (placedMachine == null) return;
+
+                    Destroy(raycastHit.transform.gameObject);
+
+                    foreach (Vector2Int takenGridPosition in placedMachine.GetTakenGridPositions())
+                    {
+                        grid.SetObstructed(placedMachine.GetOrigin().x + takenGridPosition.x, placedMachine.GetOrigin().y + takenGridPosition.y, false);
+                    }
+                    foreach (InventoryItem inventoryItem in placedMachine.GetNeededBuildingElements())
+                    {
+                        inventory.EquipItem(inventoryItem);
+                    }
+                    gridMesh.UpdateTexture(grid.GetBuildingGridTexture());
+
+                }
+            }
+        }
+        private void HandleRotation()
+        {
+            if (Input.GetKeyDown(KeyCode.Q) || Input.mouseScrollDelta.y >= 1f)
+            {
+                RotateLeft();
+            }
+            if (Input.GetKeyDown(KeyCode.E) || Input.mouseScrollDelta.y <= -1f)
+            {
+                RotateRight();
+            }
         }
         private void BuildMode()
         {
@@ -95,7 +156,16 @@ namespace CON.Machines
                 }
             }
         }
-
+        private bool IsObstructedAll(int x, int y)
+        {
+            bool isObstructed = false;
+            foreach (Vector2Int takenGridPosition in takenGridPositions)
+            {
+                isObstructed = grid.IsObstructed(x + takenGridPosition.x, y + takenGridPosition.y);
+                if (isObstructed) return isObstructed;
+            }
+            return isObstructed;
+        }
         private void Placement(int x, int y)
         {
             if (!IsPlacementPossible(x, y)) return;
@@ -107,6 +177,7 @@ namespace CON.Machines
                 grid.SetObstructed(x + takenGridPosition.x, y + takenGridPosition.y, true);
             }
 
+            currentPlaceable.SetOrigin(new Vector2Int(x, y));
             currentPlaceable.FullyPlaced();
             DeactivateBuildMode();
         }
@@ -120,17 +191,36 @@ namespace CON.Machines
 
             return true;
         }
-
-        private bool IsObstructedAll(int x, int y)
+        
+        private bool AreEnoughElements()
         {
-            bool isObstructed = false;
-            foreach (Vector2Int takenGridPosition in takenGridPositions)
+            bool enough = true;
+            foreach (InventoryItem inventoryItem in currentPlaceable.GetNeededBuildingElements())
             {
-                isObstructed = grid.IsObstructed(x + takenGridPosition.x, y + takenGridPosition.y);
-                if (isObstructed) return isObstructed;
+                enough = inventory.HasItem(inventoryItem);
+                if (!enough) return enough;
             }
-            return isObstructed;
+            return enough;
         }
+
+        private void RemoveElements(IPlaceable currentPlaceable)
+        {
+            foreach (InventoryItem inventoryItem in currentPlaceable.GetNeededBuildingElements())
+            {
+                inventory.RemoveItem(inventoryItem);
+            }
+        }
+
+        private void DeactivateBuildMode()
+        {
+            gridMesh.UpdateTexture(grid.GetBuildingGridTexture());
+            buildMode = false;
+            currentMachine = null;
+            currentPlaceable = null;
+        }
+
+
+
         // TODO: Refactor Rotation
         private void RotateLeft()
         {
@@ -152,33 +242,6 @@ namespace CON.Machines
             }
             currentMachine.transform.rotation = Quaternion.Euler(new Vector3(0, currentMachine.transform.eulerAngles.y + 90, 0));
         }
-        private bool AreEnoughElements()
-        {
-            bool enough = true;
-            foreach (InventoryItem inventoryItem in currentPlaceable.GetNeededBuildingElements())
-            {
-                enough = inventory.HasItem(inventoryItem);
-                if (!enough) return enough;
-            }
-            return enough;
-        }
-        private void RemoveElements(IPlaceable currentPlaceable)
-        {
-            foreach (InventoryItem inventoryItem in currentPlaceable.GetNeededBuildingElements())
-            {
-                inventory.RemoveItem(inventoryItem);
-            }
-        }
-
-        private void DeactivateBuildMode()
-        {
-            gridMesh.UpdateTexture(grid.GetBuildingGridTexture());
-            buildMode = false;
-            currentMachine = null;
-            currentPlaceable = null;
-        }
-
-        
     }
 
 }

@@ -80,8 +80,15 @@ namespace CON.Machines
         {
             if (x >= 0 && y >= 0 && x < width && y < height)
             {
-                gridTexture.SetPixel(x, y, Color.red);
-                gridTexture.Apply();
+                if (obstructed)
+                {
+                    gridTexture.SetPixel(x, y, Color.red);
+                    gridTexture.Apply();
+                }
+                else
+                {
+                    SetupGridCell(x, y);
+                }
                 gridArray[x, y].obstructed = obstructed;
             }
         }

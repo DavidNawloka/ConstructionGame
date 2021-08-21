@@ -7,6 +7,8 @@ namespace CON.Machines
     {
         public Vector2Int[] GetTakenGridPositions();
         public InventoryItem[] GetNeededBuildingElements();
+        public void SetOrigin(Vector2Int gridOrigin);
+        public Vector2Int GetOrigin();
         public void FullyPlaced();
     }
 }

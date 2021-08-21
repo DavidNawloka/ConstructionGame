@@ -5,12 +5,6 @@ using UnityEngine;
 
 public class Cheating : MonoBehaviour
 {
-    
-    void Start()
-    {
-        
-    }
-
     void Update()
     {
         if (Debug.isDebugBuild)

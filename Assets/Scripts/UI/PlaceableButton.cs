@@ -4,8 +4,9 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using CON.Elements;
+using CON.Machines;
 
-namespace CON.Machines
+namespace CON.UI
 {
     public class PlaceableButton : MonoBehaviour
     {
@@ -17,19 +18,23 @@ namespace CON.Machines
         Transform player;
         Inventory playerInventory;
         Button button;
+        BuilderVisualisation builderVisualisation;
 
         private void Awake()
         {
             player = GameObject.FindGameObjectWithTag("Player").transform;
             playerInventory = player.GetComponent<Inventory>();
             button = GetComponent<Button>();
+            builderVisualisation = GetComponentInParent<BuilderVisualisation>();
         }
-
+        private void OnEnable()
+        {
+            player.GetComponent<Inventory>().OnInventoryChange.AddListener(UpdateRequirements);
+            button.onClick.AddListener(OnClick);
+        }
         private void Start()
         {
             buttonHead.text = placeablePrefab.name;
-            player.GetComponent<Inventory>().OnInventoryChange.AddListener(UpdateRequirements);
-            button.onClick.AddListener(OnClick);
         }
         private void UpdateRequirements(InventoryItem[] inventory)
         {
@@ -65,9 +70,11 @@ namespace CON.Machines
             }
         }
 
+        // Button Event Function
         private void OnClick()
         {
             player.GetComponent<Builder>().ActivateBuildMode(placeablePrefab);
+            player.GetComponent<Builder>().SetActiveDemolishMode(false);
         }
     }
 

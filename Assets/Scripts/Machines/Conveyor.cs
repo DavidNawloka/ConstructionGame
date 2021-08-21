@@ -1,4 +1,5 @@
 using CON.Elements;
+using CON.UI; // TODO: Remove dependency
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,24 +18,13 @@ namespace CON.Machines
         [SerializeField] float forceToApplySide;
         [SerializeField] RawImage directionArrow;
 
+        Vector2Int gridOrigin;
+
         private void OnEnable()
         {
             FindObjectOfType<BuilderVisualisation>().OnBuildModeChange.AddListener(OnBuildModeChange);
         }
-        public Vector2Int[] GetTakenGridPositions()
-        {
-            return takenGridPositions;
-        }
-        public void FullyPlaced()
-        {
-            GetComponent<NavMeshObstacle>().enabled = true;
-            GetComponent<BoxCollider>().enabled = true;
-        }
-
-        public InventoryItem[] GetNeededBuildingElements()
-        {
-            return elementBuildingRequirements;
-        }
+        
         private void OnCollisionStay(Collision collision)
         {
             ElementPickup elementPickup = collision.transform.GetComponentInParent<ElementPickup>();
@@ -58,10 +48,36 @@ namespace CON.Machines
             }
         }
 
+        // Interface implementations
+
         private void OnBuildModeChange(bool isActive)
         {
             directionArrow.enabled = isActive;
         }
+        public Vector2Int[] GetTakenGridPositions()
+        {
+            return takenGridPositions;
+        }
+        public void FullyPlaced()
+        {
+            GetComponent<NavMeshObstacle>().enabled = true;
+            GetComponent<BoxCollider>().enabled = true;
+        }
+
+        public InventoryItem[] GetNeededBuildingElements()
+        {
+            return elementBuildingRequirements;
+        }
+        public void SetOrigin(Vector2Int gridOrigin)
+        {
+            this.gridOrigin = gridOrigin;
+        }
+
+        public Vector2Int GetOrigin()
+        {
+            return gridOrigin;
+        }
+
     }
 
 }

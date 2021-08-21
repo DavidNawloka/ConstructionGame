@@ -58,7 +58,6 @@ MonoBehaviour:
     amount: 5
   - element: {fileID: 11400000, guid: 90af84c016779b64abdbae59aa56cd21, type: 2}
     amount: 3
-  MachineUIPrefab: {fileID: 8359173853290970696, guid: 8a5639e87e1c7c9449726598525d61d8, type: 3}
   elementToProduce: {fileID: 8485946570687198049, guid: ba78828b13e61864ba2045cf9ec729d1, type: 3}
   productionIntervall: 5
   elementExitPoint: {fileID: 6374650766447903890}
@@ -68,7 +67,19 @@ MonoBehaviour:
   elementPerEnergy: 2
   OnMachineClicked:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4197135191630880974}
+        m_TargetAssemblyTypeName: CON.UI.MachineVisualisation, Assembly-CSharp
+        m_MethodName: MachineClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &6125633466375142379
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -341,3 +352,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1800884083911918707, guid: b1f40ce24e4af6d4f8432e613e2fe790, type: 3}
   m_PrefabInstance: {fileID: 302220262798779784}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4197135191630880974 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4471664872559002950, guid: b1f40ce24e4af6d4f8432e613e2fe790, type: 3}
+  m_PrefabInstance: {fileID: 302220262798779784}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a193967b2a315434a8a50d782f12df46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

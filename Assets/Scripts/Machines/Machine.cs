@@ -29,6 +29,7 @@ namespace CON.Machines
 
         float productionTimer = 0f;
         int elementsProduced = 0;
+        Vector2Int gridOrigin;
 
         void Awake()
         {
@@ -47,20 +48,6 @@ namespace CON.Machines
 
             productionTimer += Time.deltaTime;
         }
-
-        private void ProduceElement()
-        {
-            Instantiate(elementToProduce.gameObject, elementExitPoint.position, Quaternion.identity);
-            elementsProduced++;
-
-            if (elementsProduced >= elementPerEnergy)
-            {
-                inventory.RemoveItem(energyRequirement);
-                elementsProduced = 0;
-            }
-            
-        }
-
         public void AddEnergyElement()
         {
             Inventory playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<Inventory>();
@@ -75,6 +62,21 @@ namespace CON.Machines
         {
             return productionTimer / productionIntervall;
         }
+
+        private void ProduceElement()
+        {
+            Instantiate(elementToProduce.gameObject, elementExitPoint.position, Quaternion.identity);
+            elementsProduced++;
+
+            if (elementsProduced >= elementPerEnergy)
+            {
+                inventory.RemoveItem(energyRequirement);
+                elementsProduced = 0;
+            }
+            
+        }
+
+        // Interface implementations
 
         public InventoryItem GetEnergyRequirement()
         {
@@ -99,6 +101,15 @@ namespace CON.Machines
         {
             return elementBuildingRequirements;
         }
+        public void SetOrigin(Vector2Int gridOrigin)
+        {
+            this.gridOrigin = gridOrigin;
+        }
+
+        public Vector2Int GetOrigin()
+        {
+            return gridOrigin;
+        }
 
         public bool HandleInteractionClick(Transform player)
         {
@@ -107,5 +118,7 @@ namespace CON.Machines
             OnMachineClicked.Invoke();
             return false;
         }
+
+        
     }
 }

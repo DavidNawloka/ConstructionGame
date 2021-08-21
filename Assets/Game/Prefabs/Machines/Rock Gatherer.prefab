@@ -172,7 +172,6 @@ MonoBehaviour:
     amount: 3
   - element: {fileID: 11400000, guid: 90af84c016779b64abdbae59aa56cd21, type: 2}
     amount: 5
-  MachineUIPrefab: {fileID: 8359173853290970696, guid: 8a5639e87e1c7c9449726598525d61d8, type: 3}
   elementToProduce: {fileID: 4825747043008671142, guid: 5ef1a58bf6660174b9800d200b634bec, type: 3}
   productionIntervall: 4
   elementExitPoint: {fileID: 2967090024268532651}
@@ -251,7 +250,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.5, y: 1, z: 3}
+  m_Size: {x: 1.65, y: 1, z: 3.1}
   m_Center: {x: 0, y: 0, z: -0.76}
 --- !u!1001 &6819699774963256494
 PrefabInstance:
@@ -350,7 +349,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6017883457135555050, guid: b1f40ce24e4af6d4f8432e613e2fe790, type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
-      value: 0
+      value: 25
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1f40ce24e4af6d4f8432e613e2fe790, type: 3}

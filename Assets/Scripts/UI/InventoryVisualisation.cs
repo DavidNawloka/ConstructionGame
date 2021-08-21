@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using CON.Elements;
 
-namespace CON.Elements
+namespace CON.UI
 {
     public class InventoryVisualisation : MonoBehaviour
     {
