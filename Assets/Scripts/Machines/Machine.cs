@@ -38,16 +38,24 @@ namespace CON.Machines
 
         private void Update()
         {
-            if (!fullyPlaced || !inventory.HasItem(energyRequirement)) return;
+            if (!fullyPlaced || !inventory.HasItem(energyRequirement))
+            {
+                ToggleAnimations(false);
+                return;
+            }
 
-            if(productionTimer >= productionIntervall)
+            if (productionTimer >= productionIntervall)
             {
                 productionTimer = 0;
                 ProduceElement();
             }
 
+
+            ToggleAnimations(true);
             productionTimer += Time.deltaTime;
         }
+
+
         public void AddEnergyElement()
         {
             Inventory playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<Inventory>();
@@ -74,6 +82,17 @@ namespace CON.Machines
                 elementsProduced = 0;
             }
             
+        }
+
+
+        private void ToggleAnimations(bool isActive)
+        {
+            foreach(Animation animation in GetComponentsInChildren<Animation>())
+            {
+                animation.playAutomatically = false;
+                if (isActive) animation.Play();
+                else animation.Stop();
+            }
         }
 
         // Interface implementations

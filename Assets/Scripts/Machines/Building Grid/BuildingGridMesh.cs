@@ -53,6 +53,7 @@ namespace CON.Machines
         public void UpdateTexture(Texture2D updatedTexture)
         {
             meshRenderer.material.mainTexture = updatedTexture;
+            meshRenderer.UpdateGIMaterials();
         }
 
         public void ToggleMesh(bool isActive)
