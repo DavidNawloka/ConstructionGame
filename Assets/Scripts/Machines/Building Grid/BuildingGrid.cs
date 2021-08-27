@@ -35,25 +35,54 @@ namespace CON.Machines
         private void SetupGridCell(int x, int y)
         {
             Collider[] hitColliders = Physics.OverlapBox(
-                                    GetWorldPositionCenter(x, y)+new Vector3(0,10f,0),
-                                    new Vector3(cellSize / 2, 10f, cellSize / 2),
+                                    GetWorldPositionCenter(x, y),
+                                    new Vector3(cellSize / 2, cellSize/3, cellSize / 2),
                                     Quaternion.identity, ~0, QueryTriggerInteraction.Collide);
 
-            gridArray[x, y] = new GridCell(false, null);
+            bool foundElement = false;
+            bool foundGround = false;
+            bool foundMountain = false;
+            ElementIndicator elementIndicator = null;
             foreach (Collider collider in hitColliders)
             {
-                ElementIndicator elementIndicator = collider.transform.GetComponent<ElementIndicator>();
+                ElementIndicator temporaryElementIndicator = collider.transform.GetComponent<ElementIndicator>();
                 if (collider.transform.tag == "Mountain")
                 {
-                    gridArray[x, y] = new GridCell(true, null);
-                    gridTexture.SetPixel(x,y,Color.red);
+                    foundMountain = true;
                 }
-                else if (elementIndicator != null)
+                if (collider.transform.tag == "Ground")
+                {   
+                    foundGround = true;
+                }
+                if (temporaryElementIndicator != null)
                 {
-                    gridArray[x, y] = new GridCell(false, elementIndicator.GetElement());
-                    gridTexture.SetPixel(x, y, elementIndicator.GetElement().colorRepresentation);
+                    elementIndicator = temporaryElementIndicator;
+                    foundElement = true;
                 }
+                
             }
+            if (foundMountain)
+            {
+                gridArray[x, y] = new GridCell(true, null);
+                gridTexture.SetPixel(x, y, Color.red);
+            }
+            else if(foundGround && foundElement)
+            {
+                
+                gridArray[x, y] = new GridCell(false, elementIndicator.GetElement());
+                gridTexture.SetPixel(x, y, elementIndicator.GetElement().colorRepresentation);
+            }
+            else if (foundGround)
+            {
+                gridArray[x, y] = new GridCell(false, null);
+                gridTexture.SetPixel(x, y, Color.white);
+            }
+            else
+            {
+                gridArray[x, y] = new GridCell(true, null);
+                gridTexture.SetPixel(x, y, Color.red);
+            }
+
             gridTexture.Apply();
         }
 

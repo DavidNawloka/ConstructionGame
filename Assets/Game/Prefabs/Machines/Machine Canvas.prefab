@@ -209,6 +209,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a193967b2a315434a8a50d782f12df46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  head: {fileID: 2757025254589606818}
   requirementSprite: {fileID: 2757025254561912557}
   requirementTMPro: {fileID: 2757025255193409343}
   sliderForeground: {fileID: 3577943908516547851}

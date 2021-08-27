@@ -1262,6 +1262,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wood Element
       objectReference: {fileID: 0}
+    - target: {fileID: 7279957811553703107, guid: daabebfb854fce545aa24e03b3859606, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: daabebfb854fce545aa24e03b3859606, type: 3}
 --- !u!4 &7279957812129257340 stripped

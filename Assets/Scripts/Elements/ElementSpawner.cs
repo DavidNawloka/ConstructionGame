@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace CON.Elements
 {
-    public class ElementSpawner : MonoBehaviour
+    public class ElementSpawner  : MonoBehaviour
     {
         [SerializeField] Element[] resources;
         [SerializeField] int amountOfResources;
@@ -61,9 +61,9 @@ namespace CON.Elements
                             (minY + maxY) / 2,
                             (minZ + maxZ) / 2);
             Vector3 size = new Vector3(
-                            (Mathf.Abs(minX) + Mathf.Abs(maxX)),
-                            (Mathf.Abs(minY) + Mathf.Abs(maxY)),
-                            (Mathf.Abs(minZ) + Mathf.Abs(maxZ)));
+                            (Mathf.Abs(maxX) - Mathf.Abs(minX)),
+                            (Mathf.Abs(maxY) - Mathf.Abs(minY)),
+                            (Mathf.Abs(maxZ) - Mathf.Abs(minZ)));
             Gizmos.DrawWireCube(center,size);
         }
     }

@@ -516,6 +516,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Rock Element
       objectReference: {fileID: 0}
+    - target: {fileID: 5913674379934269612, guid: c20f5857e3539cb47af62edbb0666c6d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5913674379936210540, guid: c20f5857e3539cb47af62edbb0666c6d, type: 3}
       propertyPath: m_Enabled
       value: 1

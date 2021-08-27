@@ -603,11 +603,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targets:
   - name: 
-    obj: {fileID: 6366741075993714630, guid: bb6ca1340ae038249b5009f58c022cc3, type: 3}
+    obj: {fileID: 919132149155446097, guid: e26a81fb1e7eb08408efad92163c5637, type: 3}
   - name: 
-    obj: {fileID: 6661906681428096232, guid: e6db151c8c3d01e4983db74a31398014, type: 3}
-  - name: 
-    obj: {fileID: 927031865721193231, guid: d7820a8157b577945b006a633d59d393, type: 3}
+    obj: {fileID: 919132149155446097, guid: ce3624bceb6a69e42a727688526ee388, type: 3}
   overlays: []
   customFolder: Game/UI/Icons
   rawIcon: {fileID: 0}
