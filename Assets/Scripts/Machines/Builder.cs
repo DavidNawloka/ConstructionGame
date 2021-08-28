@@ -16,12 +16,14 @@ namespace CON.Machines
         [SerializeField] Transform buildObjectsParent;
 
         public event Action<bool> onDemolishModeChange;
+        public event Action<bool> onBuildModeChange;
 
         BuildingGrid grid;
         BuildingGridMesh gridMesh;
-        bool buildMode = false;
+        bool isPlacementMode = false;
 
-        bool demolishMode = false;
+        bool isDemolishMode = false;
+        bool isBuildMode = false;
 
         GameObject currentMachine;
         IPlaceable currentPlaceable;
@@ -36,16 +38,26 @@ namespace CON.Machines
             grid = new BuildingGrid(gridWidth, gridheight, cellSize, gridOrigin);
             gridMesh.BuildPlane(gridWidth, gridheight, grid.GetBuildingGridTexture());
         }
-
-        
+        private void Start()
+        {
+            onBuildModeChange(false);
+        }
         private void Update()
         {
             HandleInput();
             HandleModes();
         }
 
+
         private void HandleInput()
         {
+            if (Input.GetKeyDown(KeyCode.B))
+            {
+                ToggleBuildMode();
+            }
+
+            if (!isBuildMode) return;
+
             if (Input.GetKeyDown(KeyCode.C))
             {
                 Destroy(currentMachine);
@@ -58,14 +70,14 @@ namespace CON.Machines
         }
         private void HandleModes()
         {
-            if (demolishMode)
+            if (isDemolishMode)
             {
                 DemolishMode();
             }
-            if (buildMode)
+            if (isPlacementMode)
             {
                 HandleRotation();
-                BuildMode();
+                PlacementMode();
             }
         }
 
@@ -73,19 +85,31 @@ namespace CON.Machines
         {
             if (currentMachine != null) Destroy(currentMachine);
 
-            buildMode = true;
+            isPlacementMode = true;
             currentMachine = Instantiate(machine);
             currentPlaceable = currentMachine.GetComponent<IPlaceable>();
             takenGridPositions = currentPlaceable.GetTakenGridPositions();
             currentMachine.transform.parent = buildObjectsParent;
         }
+
+        public void ToggleBuildMode()
+        {
+            SetActiveBuildMode(!isBuildMode);
+        }
+        private void SetActiveBuildMode(bool isBuildMode)
+        {
+            this.isBuildMode = isBuildMode;
+            onBuildModeChange(isBuildMode);
+            if (isDemolishMode) SetActiveDemolishMode(isBuildMode);
+        }
         public void ToggleDemolishMode()
         {
-            SetActiveDemolishMode(!demolishMode);
+            if (!isBuildMode) return;
+            SetActiveDemolishMode(!isDemolishMode);
         }
         public void SetActiveDemolishMode(bool isDemolishMode)
         {
-            demolishMode = isDemolishMode;
+            this.isDemolishMode = isDemolishMode;
             onDemolishModeChange(isDemolishMode);
         }
         public BuildingGridMesh GetGridMesh()
@@ -135,7 +159,7 @@ namespace CON.Machines
                 RotateRight();
             }
         }
-        private void BuildMode()
+        private void PlacementMode()
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit raycastHit;
@@ -178,7 +202,7 @@ namespace CON.Machines
             }
 
             currentPlaceable.SetOrigin(new Vector2Int(x, y));
-            currentPlaceable.FullyPlaced();
+            currentPlaceable.FullyPlaced(this);
             DeactivateBuildMode();
         }
 
@@ -214,7 +238,7 @@ namespace CON.Machines
         private void DeactivateBuildMode()
         {
             gridMesh.UpdateTexture(grid.GetBuildingGridTexture());
-            buildMode = false;
+            isPlacementMode = false;
             currentMachine = null;
             currentPlaceable = null;
         }

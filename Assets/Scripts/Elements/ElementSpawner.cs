@@ -30,16 +30,20 @@ namespace CON.Elements
         {
             foreach(GameObject pickup in GameObject.FindGameObjectsWithTag("Pickup"))
             {
-                DestroyImmediate(pickup);
+                if (pickup.transform.IsChildOf(transform))
+                {
+                    DestroyImmediate(pickup);
+                }
+                
             }
         }
 
         private void SpawnResource(Element resource)
         {
             Vector3 worldPosition = new Vector3(
-                                UnityEngine.Random.Range(minX, maxX),
-                                UnityEngine.Random.Range(minY, maxY),
-                                UnityEngine.Random.Range(minZ, maxZ));
+                                UnityEngine.Random.Range(transform.position.x - minX, transform.position.x + maxX),
+                                UnityEngine.Random.Range(transform.position.y - minY, transform.position.y + maxY),
+                                UnityEngine.Random.Range(transform.position.z - minZ, transform.position.z + maxZ));
             Vector3 scale = new Vector3(
                 UnityEngine.Random.Range(resource.minScale, resource.maxScale),
                 UnityEngine.Random.Range(resource.minScale, resource.maxScale),
@@ -57,13 +61,13 @@ namespace CON.Elements
         {
 
             Vector3 center = new Vector3(
-                            (minX + maxX) / 2,
-                            (minY + maxY) / 2,
-                            (minZ + maxZ) / 2);
+                (transform.position.x + maxX + transform.position.x - minX) / 2,
+                (transform.position.y + maxY + transform.position.y - minY) / 2,
+                (transform.position.z + maxZ + transform.position.z - minZ) / 2);
             Vector3 size = new Vector3(
-                            (Mathf.Abs(maxX) - Mathf.Abs(minX)),
-                            (Mathf.Abs(maxY) - Mathf.Abs(minY)),
-                            (Mathf.Abs(maxZ) - Mathf.Abs(minZ)));
+                            maxX + minX,
+                            maxY + minY,
+                            maxZ + minZ);
             Gizmos.DrawWireCube(center,size);
         }
     }

@@ -9,6 +9,6 @@ namespace CON.Machines
         public InventoryItem[] GetNeededBuildingElements();
         public void SetOrigin(Vector2Int gridOrigin);
         public Vector2Int GetOrigin();
-        public void FullyPlaced();
+        public void FullyPlaced(Builder player);
     }
 }

@@ -10,8 +10,9 @@ namespace CON.Elements
     {
         [SerializeField] int inventorySlots;
 
-        public InventoryItem[] inventory;
-        public UnityEvent<InventoryItem[]> OnInventoryChange;
+        private InventoryItem[] inventory;
+
+        public UnityEvent<Inventory> OnInventoryChange;
 
         private void Awake()
         {
@@ -19,7 +20,11 @@ namespace CON.Elements
         }
         private void Start()
         {
-            OnInventoryChange.Invoke(inventory);
+            OnInventoryChange.Invoke(this);
+        }
+        public InventoryItem[] GetInventoryArray()
+        {
+            return inventory;
         }
         public bool HasItem(InventoryItem inventoryItemToCheck)
         {
@@ -31,6 +36,14 @@ namespace CON.Elements
                 }
             }
             return false;
+        }
+        public bool HasItem(InventoryItem[] inventoryItemsToCheck)
+        {
+            foreach(InventoryItem inventoryItem in inventoryItemsToCheck)
+            {
+                if (!HasItem(inventoryItem)) return false;
+            }
+            return true;
         }
         public bool RemoveItem(InventoryItem inventoryItemToRemove)
         {
@@ -58,7 +71,7 @@ namespace CON.Elements
                     inventory[index] = inventoryItem;
                 }
             }
-            OnInventoryChange.Invoke(inventory);
+            OnInventoryChange.Invoke(this);
             return status;
         }
         public bool EquipItem(InventoryItem inventoryItemToEquip)
@@ -72,14 +85,14 @@ namespace CON.Elements
                 if(inventoryItem.element == inventoryItemToEquip.element)
                 {
                     inventoryItem.amount += inventoryItemToEquip.amount;
-                    OnInventoryChange.Invoke(inventory);
+                    OnInventoryChange.Invoke(this);
                     return true;
                 }
                 if (inventoryItem.element != null) materialIndex++;
             }
 
             inventory[materialIndex] = new InventoryItem(inventoryItemToEquip.element, inventoryItemToEquip.amount);
-            OnInventoryChange.Invoke(inventory);
+            OnInventoryChange.Invoke(this);
             return true;
         }
         private void BuildEmptyInventory()

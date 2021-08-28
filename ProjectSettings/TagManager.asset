@@ -9,6 +9,7 @@ TagManager:
   - FollowCamera
   - MainCanvas
   - Ground
+  - Water
   layers:
   - Default
   - TransparentFX

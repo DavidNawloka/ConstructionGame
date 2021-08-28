@@ -4,24 +4,50 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Cinemachine;
 
 namespace CON.Player
 {
     public class PlayerMouseInteraction : MonoBehaviour
     {
+        [SerializeField] float maxCameraDistance = 25;
+        [SerializeField] float minCameraDistance = 5;
         PlayerMovement playerMovement;
+        CinemachineVirtualCamera followCamera;
 
         private void Awake()
         {
             playerMovement = GetComponent<PlayerMovement>();
+            followCamera = GameObject.FindGameObjectWithTag("FollowCamera").GetComponent<CinemachineVirtualCamera>();
         }
 
         private void Update()
         {
+            ManageCameraZoom();
             if (UIInteraction()) return;
             if (WorldInteraction()) return;
             if (MovementInteraction()) return;
         }
+
+        private void ManageCameraZoom()
+        {
+            int factor = 0;
+            if(Input.mouseScrollDelta.y > 0)
+            {
+                factor = -1;
+            }
+            if(Input.mouseScrollDelta.y < 0)
+            {
+                factor = 1;
+            }
+
+            CinemachineComponentBase componentBase = followCamera.GetCinemachineComponent(CinemachineCore.Stage.Body);
+            if (componentBase is CinemachineFramingTransposer)
+            {
+                (componentBase as CinemachineFramingTransposer).m_CameraDistance = Mathf.Clamp((componentBase as CinemachineFramingTransposer).m_CameraDistance + 2 * factor,minCameraDistance,maxCameraDistance);
+            }
+        }
+
         private bool UIInteraction()
         {
             if (EventSystem.current.IsPointerOverGameObject()) return true;

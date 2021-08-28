@@ -26,6 +26,7 @@ namespace CON.Machines
 
         Inventory inventory;
         bool fullyPlaced = false;
+        Inventory playerInventory;
 
         float productionTimer = 0f;
         int elementsProduced = 0;
@@ -56,16 +57,23 @@ namespace CON.Machines
         }
 
 
-        public void AddEnergyElement()
+        public void AddAllEnergyElements()
         {
-            Inventory playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<Inventory>();
             if (playerInventory.HasItem(energyRequirement))
             {
                 playerInventory.RemoveItem(energyRequirement);
                 inventory.EquipItem(energyRequirement);
             }
         }
+        public void AddEnergyElement(InventoryItem elementToAdd)
+        {
+            inventory.EquipItem(elementToAdd);
+        }
 
+        public InventoryItem GetEnergyRequirement()
+        {
+            return energyRequirement;
+        }
         public float GetProductionFraction()
         {
             return productionTimer / productionIntervall;
@@ -97,10 +105,6 @@ namespace CON.Machines
 
         // Interface implementations
 
-        public InventoryItem GetEnergyRequirement()
-        {
-            return energyRequirement;
-        }
 
         public Element GetElementPlacementRequirement()
         {
@@ -110,10 +114,11 @@ namespace CON.Machines
         {
             return takenGridPositions;
         }
-        public void FullyPlaced()
+        public void FullyPlaced(Builder player)
         {
             GetComponent<NavMeshObstacle>().enabled = true;
             fullyPlaced = true;
+            playerInventory = player.GetComponent<Inventory>();
         }
 
         public InventoryItem[] GetNeededBuildingElements()

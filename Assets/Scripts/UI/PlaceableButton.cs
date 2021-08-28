@@ -16,14 +16,12 @@ namespace CON.UI
         [SerializeField] GameObject placeablePrefab;
 
         Transform player;
-        Inventory playerInventory;
         Button button;
         BuilderVisualisation builderVisualisation;
 
         private void Awake()
         {
             player = GameObject.FindGameObjectWithTag("Player").transform;
-            playerInventory = player.GetComponent<Inventory>();
             button = GetComponent<Button>();
             builderVisualisation = GetComponentInParent<BuilderVisualisation>();
         }
@@ -36,7 +34,7 @@ namespace CON.UI
         {
             buttonHead.text = placeablePrefab.name;
         }
-        private void UpdateRequirements(InventoryItem[] inventory)
+        private void UpdateRequirements(Inventory playerInventory)
         {
             IPlaceable placeable = placeablePrefab.GetComponent<IPlaceable>();
             InventoryItem[] requirements = placeable.GetNeededBuildingElements();

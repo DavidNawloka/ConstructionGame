@@ -10,7 +10,6 @@ namespace CON.UI
     public class BuilderVisualisation : MonoBehaviour
     {
         [SerializeField] Image demolishModeOverlayImage;
-        public UnityEvent<bool> OnBuildModeChange;
 
         CanvasGroup canvasGroup;
         BuildingGridMesh buildingGridMesh;
@@ -24,26 +23,15 @@ namespace CON.UI
         private void OnEnable()
         {
             builder.onDemolishModeChange += OnDemolishModeChange;
+            builder.onBuildModeChange += SetCanvasGroup;
         }
-        private void Start()
+        public void ToggleBuildMode() // Button onClick event function
         {
-            SetCanvasGroup(false);
-        }
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.B))
-            {
-                ToggleBuildModeUI();
-            }
-        }
-        public void ToggleBuildModeUI() // Button onClick event function
-        {
-            SetCanvasGroup(!canvasGroup.interactable);
+            builder.ToggleBuildMode();
         }
         public void ToggleDemolishMode() // Button onClick event function
         {
             builder.ToggleDemolishMode();
-            
         }
         private void OnDemolishModeChange(bool isActive) // Builder class event function
         {
@@ -51,8 +39,6 @@ namespace CON.UI
         }
         private void SetCanvasGroup(bool isActive)
         {
-            OnBuildModeChange.Invoke(isActive);
-
             canvasGroup.interactable = isActive;
             canvasGroup.blocksRaycasts = isActive;
             buildingGridMesh.ToggleMesh(isActive);

@@ -14,6 +14,7 @@ namespace CON.UI
     {
         [SerializeField] Image requirementSprite;
         [SerializeField] TextMeshProUGUI requirementTMPro;
+        [SerializeField] TextMeshProUGUI inventorySlotTMPro;
         [SerializeField] RectTransform sliderForeground;
         [SerializeField] RectTransform horizontalConnection;
         [SerializeField] RectTransform verticalConnection;
@@ -45,9 +46,19 @@ namespace CON.UI
             UpdateConnectionPosition();
             sliderForeground.localScale = new Vector3(machine.GetProductionFraction(), 1, 1);
         }
+
+        public void UpdateInventorySlot(Inventory inventory)
+        {
+            if (inventory.HasItem(machine.GetEnergyRequirement()))
+            {
+                inventorySlotTMPro.color = Color.white;
+            }
+            else inventorySlotTMPro.color = Color.red;
+        }
+
         public void AddEnergy() // Button Function
         {
-            machine.AddEnergyElement();
+            machine.AddAllEnergyElements();
         }
 
         public void MachineClicked() // Event from Machine Class Function

@@ -12,8 +12,12 @@ namespace CON.UI
         [SerializeField] Image[] inventorySlotsSprites;
         [SerializeField] TextMeshProUGUI[] inventorySlotsAmounts;
 
-        public void UpdateInventory(InventoryItem[] updatedInventory)
+        
+
+        public void UpdateInventory(Inventory inventory)
         {
+            InventoryItem[] updatedInventory = inventory.GetInventoryArray();
+
             for (int inventoryIndex = 0; inventoryIndex < updatedInventory.Length; inventoryIndex++)
             {
                 Element element = updatedInventory[inventoryIndex].element;

@@ -19,12 +19,14 @@ namespace CON.Machines
         [SerializeField] RawImage directionArrow;
 
         Vector2Int gridOrigin;
+        Builder player;
 
-        private void OnEnable()
+        private void OnDisable()
         {
-            FindObjectOfType<BuilderVisualisation>().OnBuildModeChange.AddListener(OnBuildModeChange);
+            if (player == null) return;
+            player.onBuildModeChange -= OnBuildModeChange;
         }
-        
+
         private void OnCollisionStay(Collision collision)
         {
             ElementPickup elementPickup = collision.transform.GetComponentInParent<ElementPickup>();
@@ -58,10 +60,12 @@ namespace CON.Machines
         {
             return takenGridPositions;
         }
-        public void FullyPlaced()
+        public void FullyPlaced(Builder player)
         {
             GetComponent<NavMeshObstacle>().enabled = true;
             GetComponent<BoxCollider>().enabled = true;
+            this.player = player;
+            player.onBuildModeChange += OnBuildModeChange;
         }
 
         public InventoryItem[] GetNeededBuildingElements()

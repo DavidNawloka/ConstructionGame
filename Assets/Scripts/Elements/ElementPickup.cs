@@ -11,9 +11,14 @@ namespace CON.Elements
         [SerializeField] InventoryItem itemToEuqip;
         [SerializeField] float maxDistance = 2f;
 
+        public InventoryItem GetItemToEquip()
+        {
+            return itemToEuqip;
+        }
 
         private void OnCollisionEnter(Collision collision)
         {
+            if (collision.transform.tag == "Water") Destroy(gameObject);
             if (collision.transform.tag != "Player") return;
             EquipElement(collision.transform);
         }
