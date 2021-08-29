@@ -4,7 +4,9 @@ using UnityEngine;
 
 namespace CON.Elements
 {
+
     [CreateAssetMenu(fileName ="Resource",menuName ="Resources/Create New Element")]
+    [System.Serializable]
     public class Element : ScriptableObject
     {
         public Sprite sprite;

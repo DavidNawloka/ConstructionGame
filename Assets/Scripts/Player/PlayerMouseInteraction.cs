@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Cinemachine;
+using CON.Machines;
 
 namespace CON.Player
 {
@@ -15,18 +16,29 @@ namespace CON.Player
         PlayerMovement playerMovement;
         CinemachineVirtualCamera followCamera;
 
+
+        bool shouldZoom = true;
+
         private void Awake()
         {
             playerMovement = GetComponent<PlayerMovement>();
             followCamera = GameObject.FindGameObjectWithTag("FollowCamera").GetComponent<CinemachineVirtualCamera>();
         }
-
+        private void OnEnable()
+        {
+            GetComponent<Builder>().onBuildModeChange += buildModeChange;
+        }
         private void Update()
         {
-            ManageCameraZoom();
+            if(shouldZoom) ManageCameraZoom();
             if (UIInteraction()) return;
             if (WorldInteraction()) return;
             if (MovementInteraction()) return;
+        }
+
+        private void buildModeChange(bool isActive)
+        {
+            shouldZoom = !isActive;
         }
 
         private void ManageCameraZoom()

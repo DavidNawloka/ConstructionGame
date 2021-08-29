@@ -1,3 +1,4 @@
+using CON.BuildingGrid;
 using CON.Elements;
 using System;
 using System.Collections;
@@ -9,16 +10,12 @@ namespace CON.Machines
 {
     public class Builder : MonoBehaviour
     {
-        [SerializeField] int gridWidth = 200;
-        [SerializeField] int gridheight = 150;
-        [SerializeField] float cellSize = 1.5f;
-        [SerializeField] Vector3 gridOrigin = new Vector3(-90, 0.4f, 0);
         [SerializeField] Transform buildObjectsParent;
 
         public event Action<bool> onDemolishModeChange;
         public event Action<bool> onBuildModeChange;
 
-        BuildingGrid grid;
+        BuildingGridManager grid;
         BuildingGridMesh gridMesh;
         bool isPlacementMode = false;
 
@@ -35,8 +32,10 @@ namespace CON.Machines
         {
             inventory = GetComponent<Inventory>();
             gridMesh = FindObjectOfType<BuildingGridMesh>();
-            grid = new BuildingGrid(gridWidth, gridheight, cellSize, gridOrigin);
-            gridMesh.BuildPlane(gridWidth, gridheight, grid.GetBuildingGridTexture());
+            grid = new BuildingGridManager();
+
+
+            gridMesh.InitiatePlane(grid.GetBuildingGridTexture());
         }
         private void Start()
         {
