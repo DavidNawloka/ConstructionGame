@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace CON.BuildingGrid
 {
+    [ExecuteAlways]
     public class BuildingGridMesh : MonoBehaviour
     {
         [SerializeField] Material material;
@@ -12,10 +13,10 @@ namespace CON.BuildingGrid
 
         public void InitiatePlane(Texture2D texture)
         {
-            meshRenderer = gameObject.AddComponent<MeshRenderer>();
+            meshRenderer = GetComponent<MeshRenderer>();
             meshRenderer.material = material;
-            meshRenderer.material.mainTexture = texture;
-            MeshFilter meshFilter = gameObject.AddComponent<MeshFilter>();
+            meshRenderer.sharedMaterial.mainTexture = texture;
+            MeshFilter meshFilter = GetComponent<MeshFilter>();
             meshFilter.mesh = BuildingGridAssetManager.GetGridMesh();
 
             ToggleMesh(false);

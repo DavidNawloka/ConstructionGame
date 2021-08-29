@@ -90,6 +90,10 @@ namespace CON.BuildingGrid
             return buildingGrid.GetSettings();
         }
 #endif
+        public static string GetTextureName()
+        {
+            return TEXTURE_NAME;
+        }
         public static void GetGrid(out GridCell[,] gridArray, out int width, out int height, out float cellSize, out Vector3 origin)
         {
             BuildingGridSO buildingGrid = Resources.Load<BuildingGridSO>(SO_NAME);

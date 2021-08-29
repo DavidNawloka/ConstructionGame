@@ -36,6 +36,7 @@ namespace CON.Machines
 
 
             gridMesh.InitiatePlane(grid.GetBuildingGridTexture());
+            
         }
         private void Start()
         {

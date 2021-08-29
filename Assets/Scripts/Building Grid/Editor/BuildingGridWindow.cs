@@ -19,7 +19,10 @@ namespace CON.BuildingGrid
         {
             GetWindow<BuildingGridWindow>(false, "Building Grid", true);
         }
-
+        private void OnEnable()
+        {
+            LoadBuildingGridSettings();
+        }
         public void OnGUI()
         {
             GUILayout.Label("Building Grid Settings");
@@ -38,14 +41,19 @@ namespace CON.BuildingGrid
             }
             if (GUILayout.Button("Load Building Grid Settings"))
             {
-                BuildingGridSettings settings = BuildingGridAssetManager.LoadSettings();
-                if (settings == null) return;
-                width = settings.width;
-                height = settings.height;
-                cellSize = settings.cellSize;
-                origin = settings.origin;
+                LoadBuildingGridSettings();
             }
 
+        }
+
+        private void LoadBuildingGridSettings()
+        {
+            BuildingGridSettings settings = BuildingGridAssetManager.LoadSettings();
+            if (settings == null) return;
+            width = settings.width;
+            height = settings.height;
+            cellSize = settings.cellSize;
+            origin = settings.origin;
         }
 
 
