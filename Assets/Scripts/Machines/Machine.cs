@@ -9,7 +9,7 @@ using UnityEngine.Events;
 
 namespace CON.Machines 
 {
-    public class Machine : MonoBehaviour, IPlaceable, IMouseClickable
+    public class Machine : MonoBehaviour, IPlaceable
     {
         [Header("Placement")]
         [SerializeField] Vector2Int[] takenGridPositions;
@@ -135,13 +135,11 @@ namespace CON.Machines
         {
             return gridOrigin;
         }
-
-        public bool HandleInteractionClick(Transform player)
+        private void OnMouseDown()
         {
-            if (!fullyPlaced) return false;
+            if (!fullyPlaced) return ;
 
             OnMachineClicked.Invoke();
-            return false;
         }
 
         

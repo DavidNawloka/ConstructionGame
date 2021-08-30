@@ -75,6 +75,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a854051a3dcd7db498eb3016a1e8a238, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxCameraDistance: 25
+  minCameraDistance: 5
 --- !u!114 &9164258976479346002
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -100,7 +102,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventorySlots: 4
-  inventory: []
   OnInventoryChange:
     m_PersistentCalls:
       m_Calls:
@@ -177,12 +178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: faf1e642b949824428c71c316764c774, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridWidth: 200
-  gridheight: 150
-  cellSize: 1.5
-  gridOrigin: {x: -90, y: 0.4, z: 0}
   buildObjectsParent: {fileID: 0}
-  takenGridPositions: []
 --- !u!114 &7684909
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -287,7 +283,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4564723941671964, guid: 44512f038bb5e564395bb4a79fa9f54a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 17.12
+      value: 34.4
       objectReference: {fileID: 0}
     - target: {fileID: 4564723941671964, guid: 44512f038bb5e564395bb4a79fa9f54a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -319,6 +315,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4564723941671964, guid: 44512f038bb5e564395bb4a79fa9f54a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 23588460500017820, guid: 44512f038bb5e564395bb4a79fa9f54a, type: 3}
+      propertyPath: m_CastShadows
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

@@ -71,7 +71,7 @@ namespace CON.UI
         // Button Event Function
         private void OnClick()
         {
-            player.GetComponent<Builder>().ActivateBuildMode(placeablePrefab);
+            player.GetComponent<Builder>().ActivatePlacementMode(placeablePrefab);
             player.GetComponent<Builder>().SetActiveDemolishMode(false);
         }
     }

@@ -22,6 +22,7 @@ namespace CON.Machines
         bool isDemolishMode = false;
         bool isBuildMode = false;
 
+        GameObject currentMachinePrefab;
         GameObject currentMachine;
         IPlaceable currentPlaceable;
         Vector2Int[] takenGridPositions;
@@ -54,14 +55,17 @@ namespace CON.Machines
             if (Input.GetKeyDown(KeyCode.B))
             {
                 ToggleBuildMode();
+                if (isPlacementMode)
+                {
+                    DeactivePlacementModeDestruction();
+                }
             }
 
             if (!isBuildMode) return;
 
-            if (Input.GetKeyDown(KeyCode.C))
+            if (isPlacementMode && Input.GetKeyDown(KeyCode.C))
             {
-                Destroy(currentMachine);
-                DeactivateBuildMode();
+                DeactivePlacementModeDestruction();
             }
             if (Input.GetKeyDown(KeyCode.X))
             {
@@ -81,11 +85,12 @@ namespace CON.Machines
             }
         }
 
-        public void ActivateBuildMode(GameObject machine)
+        public void ActivatePlacementMode(GameObject machine)
         {
             if (currentMachine != null) Destroy(currentMachine);
 
             isPlacementMode = true;
+            currentMachinePrefab = machine;
             currentMachine = Instantiate(machine);
             currentPlaceable = currentMachine.GetComponent<IPlaceable>();
             takenGridPositions = currentPlaceable.GetTakenGridPositions();
@@ -203,7 +208,7 @@ namespace CON.Machines
 
             currentPlaceable.SetOrigin(new Vector2Int(x, y));
             currentPlaceable.FullyPlaced(this);
-            DeactivateBuildMode();
+            DeactivatePlacementMode();
         }
 
         private bool IsPlacementPossible(int x, int y)
@@ -234,13 +239,28 @@ namespace CON.Machines
                 inventory.RemoveItem(inventoryItem);
             }
         }
-
-        private void DeactivateBuildMode()
+        private void DeactivePlacementModeDestruction()
         {
-            gridMesh.UpdateTexture(grid.GetBuildingGridTexture());
+            Destroy(currentMachine);
             isPlacementMode = false;
             currentMachine = null;
             currentPlaceable = null;
+        }
+        private void DeactivatePlacementMode()
+        {
+            gridMesh.UpdateTexture(grid.GetBuildingGridTexture());
+            isPlacementMode = false;
+            int toRotate = (int)currentMachine.transform.localEulerAngles.y / 90;
+            currentMachine = null;
+            currentPlaceable = null;
+            if (Input.GetKey(KeyCode.LeftAlt))
+            {
+                ActivatePlacementMode(currentMachinePrefab);
+                for (int i = 0; i < toRotate; i++)
+                {
+                    RotateRight();
+                }
+            }
         }
 
 
@@ -254,7 +274,7 @@ namespace CON.Machines
                 int y = takenGridPositions[index].y * -1;
                 takenGridPositions[index] = new Vector2Int(y, x);
             }
-            currentMachine.transform.rotation = Quaternion.Euler(new Vector3(0, currentMachine.transform.eulerAngles.y - 90, 0));
+            currentMachine.transform.localRotation = Quaternion.Euler(new Vector3(0, currentMachine.transform.localEulerAngles.y - 90, 0));
         }
         private void RotateRight()
         {
@@ -264,7 +284,7 @@ namespace CON.Machines
                 int y = takenGridPositions[index].y ;
                 takenGridPositions[index] = new Vector2Int(y, x);
             }
-            currentMachine.transform.rotation = Quaternion.Euler(new Vector3(0, currentMachine.transform.eulerAngles.y + 90, 0));
+            currentMachine.transform.localRotation = Quaternion.Euler(new Vector3(0, currentMachine.transform.localEulerAngles.y + 90, 0));
         }
     }
 
