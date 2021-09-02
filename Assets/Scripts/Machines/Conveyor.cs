@@ -49,13 +49,12 @@ namespace CON.Machines
                 return new Vector3(0, 0, transform.position.z - element.position.z);
             }
         }
-
-        // Interface implementations
-
         private void OnBuildModeChange(bool isActive)
         {
             directionArrow.enabled = isActive;
         }
+
+        // Interface implementations
         public Vector2Int[] GetTakenGridPositions()
         {
             return takenGridPositions;

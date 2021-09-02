@@ -65,10 +65,11 @@ namespace CON.Machines
                 inventory.EquipItem(energyRequirement);
             }
         }
-        public void AddEnergyElement(InventoryItem elementToAdd) // Event for when Elements enter
+        public void AddEnergyElement(ElementPickup elementToAdd) // Event for when Elements enter
         {
-            if (elementToAdd.element != energyRequirement.element) return;
-            inventory.EquipItem(elementToAdd);
+            if (elementToAdd.GetItemToEquip().element != energyRequirement.element) return;
+            Destroy(elementToAdd.gameObject);
+            inventory.EquipItem(elementToAdd.GetItemToEquip());
         }
 
         public InventoryItem GetEnergyRequirement()

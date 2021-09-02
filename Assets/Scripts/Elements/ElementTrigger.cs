@@ -7,14 +7,22 @@ namespace CON.Elements
 {
     public class ElementTrigger : MonoBehaviour
     {
-        [SerializeField] UnityEvent<InventoryItem> onElementEnter;
+        [SerializeField] UnityEvent<ElementPickup> onElementEnter;
+        [SerializeField] UnityEvent<ElementPickup> onElementStay;
         private void OnTriggerEnter(Collider other)
         {
             ElementPickup elementPickup = other.GetComponentInParent<ElementPickup>();
             if (elementPickup != null)
             {
-                onElementEnter.Invoke(elementPickup.GetItemToEquip());
-                Destroy(elementPickup.gameObject);
+                onElementEnter.Invoke(elementPickup);
+            }
+        }
+        private void OnTriggerStay(Collider other)
+        {
+            ElementPickup elementPickup = other.GetComponentInParent<ElementPickup>();
+            if (elementPickup != null)
+            {
+                onElementStay.Invoke(elementPickup);
             }
         }
     }
