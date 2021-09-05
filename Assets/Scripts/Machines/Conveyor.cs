@@ -1,11 +1,8 @@
 using CON.Elements;
-using CON.UI; // TODO: Remove dependency
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
-using UnityEngine.UI;
 
 namespace CON.Machines
 {
@@ -16,7 +13,7 @@ namespace CON.Machines
         [SerializeField] Transform[] pathOfElement;
         [SerializeField] float forceToApplyForward;
         [SerializeField] float forceToApplySide;
-        [SerializeField] RawImage directionArrow;
+        [SerializeField] GameObject directionArrow;
 
         Vector2Int gridOrigin;
         Builder player;
@@ -51,7 +48,7 @@ namespace CON.Machines
         }
         private void OnBuildModeChange(bool isActive)
         {
-            directionArrow.enabled = isActive;
+            directionArrow.SetActive(isActive);
         }
 
         // Interface implementations

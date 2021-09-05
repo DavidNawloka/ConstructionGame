@@ -164,7 +164,7 @@ MonoBehaviour:
   - {fileID: 9222692872382220725}
   forceToApplyForward: 3
   forceToApplySide: 1
-  directionArrow: {fileID: 142023763120113979}
+  directionArrow: {fileID: 1790000050181896958}
 --- !u!208 &-7524722170755935350
 NavMeshObstacle:
   m_ObjectHideFlags: 0

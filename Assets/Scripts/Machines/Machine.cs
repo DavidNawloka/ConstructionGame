@@ -16,7 +16,7 @@ namespace CON.Machines
         [SerializeField] Element elementPlacementRequirement;
         [SerializeField] InventoryItem[] elementBuildingRequirements;
         [Header("Production")]
-        [SerializeField] Instruction instruction;
+        [SerializeField] Instruction[] possibleInstructions;
         [SerializeField] float productionIntervall;
         [SerializeField] Transform elementExitPoint;
         [Header("Unity Events")]
@@ -25,6 +25,7 @@ namespace CON.Machines
         Inventory inventory;
         bool fullyPlaced = false;
         Inventory playerInventory;
+        Instruction currentInstruction;
 
         float productionTimer = 0f;
         int elementsProduced = 0;
@@ -33,11 +34,12 @@ namespace CON.Machines
         void Awake()
         {
             inventory = GetComponent<Inventory>();
+            currentInstruction = possibleInstructions[0];
         }
 
         private void Update()
         {
-            if (!fullyPlaced || !inventory.HasItem(instruction.requirements))
+            if (!fullyPlaced || !inventory.HasItem(currentInstruction.requirements))
             {
                 ToggleAnimations(false);
                 return;
@@ -57,10 +59,10 @@ namespace CON.Machines
 
         public void AddAllEnergyElements()
         {
-            if (playerInventory.HasItem(instruction.requirements))
+            if (playerInventory.HasItem(currentInstruction.requirements))
             {
-                playerInventory.RemoveItem(instruction.requirements);
-                inventory.EquipItem(instruction.requirements);
+                playerInventory.RemoveItem(currentInstruction.requirements);
+                inventory.EquipItem(currentInstruction.requirements);
             }
         }
         public void AddEnergyElement(ElementPickup elementToAdd) // Event for when Elements enter
@@ -69,10 +71,17 @@ namespace CON.Machines
             Destroy(elementToAdd.gameObject);
             inventory.EquipItem(elementToAdd.GetItemToEquip());
         }
-
-        public Instruction GetInstruction()
+        public Instruction[] GetPossibleInstructions()
         {
-            return instruction;
+            return possibleInstructions;
+        }
+        public Instruction GetCurrentInstruction()
+        {
+            return currentInstruction;
+        }
+        public void SetCurrentInstruction(Instruction currentInstruction)
+        {
+            this.currentInstruction = currentInstruction;
         }
         public float GetProductionFraction()
         {
@@ -81,7 +90,7 @@ namespace CON.Machines
 
         private bool CheckIfElementIsNeeded(ElementPickup elementToAdd)
         {
-            foreach(InventoryItem inventoryItem in instruction.requirements)
+            foreach(InventoryItem inventoryItem in currentInstruction.requirements)
             {
                 if (elementToAdd.GetItemToEquip().element == inventoryItem.element) return true;
             }
@@ -90,12 +99,12 @@ namespace CON.Machines
 
         private void ProduceElement()
         {
-            Instantiate(instruction.outcome.element.pickupPrefab, elementExitPoint.position, Quaternion.identity);
+            Instantiate(currentInstruction.outcome.element.pickupPrefab, elementExitPoint.position, Quaternion.identity);
             elementsProduced++;
 
-            if (elementsProduced >= instruction.outcome.amount)
+            if (elementsProduced >= currentInstruction.outcome.amount)
             {
-                inventory.RemoveItem(instruction.requirements);
+                inventory.RemoveItem(currentInstruction.requirements);
                 elementsProduced = 0;
             }
             

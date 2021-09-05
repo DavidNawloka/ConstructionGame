@@ -400,8 +400,8 @@ MonoBehaviour:
   forceToApplyForward: 4.34
   forceToApplySide: 0
   directionArrows:
-  - {fileID: 1701352576572175074}
-  - {fileID: 1701352575074160365}
+  - {fileID: 1059367859118014759}
+  - {fileID: 1059367860700740904}
   isRightToLeft: 1
   hook: {fileID: 7659515882232695705}
   hookAnimation: {fileID: 3019501361082360775}

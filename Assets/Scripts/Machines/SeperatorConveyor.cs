@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UI;
 
 namespace CON.Machines
 {
@@ -14,7 +13,7 @@ namespace CON.Machines
         [SerializeField] Transform[] pathOfElement;
         [SerializeField] float forceToApplyForward;
         [SerializeField] float forceToApplySide;
-        [SerializeField] RawImage[] directionArrows;
+        [SerializeField] GameObject[] directionArrows;
         [SerializeField] bool isRightToLeft = true;
         [SerializeField] Transform hook;
         [SerializeField] Animation hookAnimation;
@@ -50,9 +49,9 @@ namespace CON.Machines
         }
         private void OnBuildModeChange(bool isActive)
         {
-            foreach(RawImage arrow in directionArrows)
+            foreach(GameObject arrow in directionArrows)
             {
-                arrow.enabled = isActive;
+                arrow.SetActive(isActive);
             }
         }
         public void OnElementRightEnter(ElementPickup elementPickup)

@@ -20,6 +20,7 @@ namespace CON.UI
         [SerializeField] RectTransform verticalConnection;
         [SerializeField] Image[] requirementImages;
         [SerializeField] Image outcomeImage;
+        [SerializeField] TMP_Dropdown instructionDropdown;
 
         CanvasGroup canvasGroup;
         Machine machine;
@@ -37,10 +38,16 @@ namespace CON.UI
         }
         private void Start()
         {
-            SetCanvasGroup(false);
-            UpdateRequirementUI();
+            SetActiveCanvas(false);
+            UpdateRequirementUIMultiple();
+            UpdateRequirementUIOnce();
         }
-
+        private void OnDisable()
+        {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player == null) return;
+            player.GetComponent<Builder>().onBuildModeChange -= SetActiveElementIndicators;
+        }
         private void Update()
         {
             if (isHidden) return;
@@ -49,9 +56,15 @@ namespace CON.UI
             sliderForeground.localScale = new Vector3(machine.GetProductionFraction(), 1, 1);
         }
 
-        public void UpdateInventorySlot(Inventory inventory)
+        public void UpdateCurrentInstruction(int instructionIndex)
         {
-            if (inventory.HasItem(machine.GetInstruction().requirements))
+            machine.SetCurrentInstruction(machine.GetPossibleInstructions()[instructionIndex]);
+            UpdateRequirementUIMultiple();
+        }
+
+        public void UpdateInventorySlot(Inventory inventory) // Event from Inventory Class function from Machine
+        {
+            if (inventory.HasItem(machine.GetCurrentInstruction().requirements))
             {
                 inventorySlotTMPro.color = Color.white;
             }
@@ -63,14 +76,14 @@ namespace CON.UI
             machine.AddAllEnergyElements();
         }
 
-        public void MachineClicked() // Event from Machine Class Function
+        public void MachineClicked() // Event from Machine Class function
         {
             transform.position = Camera.main.WorldToScreenPoint(machine.transform.position);
-            if (isFirstClick) SetCanvasGroup(true);
-            else SetCanvasGroup(false);
+            if (isFirstClick) SetActiveCanvas(true);
+            else SetActiveCanvas(false);
         }
 
-        public void SetCanvasGroup(bool isActive) // Button Function
+        public void SetActiveCanvas(bool isActive) // Button function
         {
             canvasGroup.interactable = isActive;
             canvasGroup.blocksRaycasts = isActive;
@@ -83,6 +96,16 @@ namespace CON.UI
             if (isActive) canvasGroup.alpha = 1;
             else canvasGroup.alpha = 0;
         }
+
+        private void SetActiveElementIndicators(bool isActive)
+        {
+            foreach (Image requirementImage in requirementImages)
+            {
+                requirementImage.enabled = isActive;
+            }
+            outcomeImage.enabled = isActive;
+        }
+
         private void UpdateOwnPosition()
         {
             if (followMouse)
@@ -105,16 +128,30 @@ namespace CON.UI
 
             verticalConnection.position = new Vector3(machineScreenSpacePosition.x, (posDifference.y / 2)+machineScreenSpacePosition.y);
         }
-        private void UpdateRequirementUI()
+        private void UpdateRequirementUIMultiple()
         {
-            Instruction machineInstruction = machine.GetInstruction();
+            Instruction machineInstruction = machine.GetCurrentInstruction();
             requirementSprite.sprite = machineInstruction.requirements[0].element.sprite;
             requirementTMPro.text = machineInstruction.requirements[0].amount.ToString();
+
             for (int requirementIndex = 0; requirementIndex < machineInstruction.requirements.Length; requirementIndex++)
             {
                 requirementImages[requirementIndex].sprite = machineInstruction.requirements[requirementIndex].element.sprite;
             }
             outcomeImage.sprite = machineInstruction.outcome.element.sprite;
+
+        }
+
+        private void UpdateRequirementUIOnce()
+        {
+            instructionDropdown.options.Clear();
+
+            foreach (Instruction instruction in machine.GetPossibleInstructions())
+            {
+                instructionDropdown.options.Add(new TMP_Dropdown.OptionData() { text = instruction.outcome.element.name, image = instruction.outcome.element.sprite });
+            }
+
+            GameObject.FindGameObjectWithTag("Player").GetComponent<Builder>().onBuildModeChange += SetActiveElementIndicators;
         }
 
         // Interface Implementations
