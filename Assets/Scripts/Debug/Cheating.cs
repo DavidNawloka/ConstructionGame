@@ -15,7 +15,7 @@ public class Cheating : MonoBehaviour
                 Element rock = (Element)Resources.Load("Rock");
                 Element water = (Element)Resources.Load("Water");
                 Element crystal = (Element)Resources.Load("Crystal");
-                print(GetComponent<Inventory>().EquipItem(new InventoryItem(wood, 100)));
+                GetComponent<Inventory>().EquipItem(new InventoryItem(wood, 100));
                 GetComponent<Inventory>().EquipItem(new InventoryItem(rock, 100));
                 GetComponent<Inventory>().EquipItem(new InventoryItem(water, 100));
                 GetComponent<Inventory>().EquipItem(new InventoryItem(crystal, 100));

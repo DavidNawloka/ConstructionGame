@@ -70,9 +70,9 @@ namespace CON.Machines
             inventory.EquipItem(elementToAdd.GetItemToEquip());
         }
 
-        public InventoryItem[] GetEnergyRequirement()
+        public Instruction GetInstruction()
         {
-            return instruction.requirements;
+            return instruction;
         }
         public float GetProductionFraction()
         {

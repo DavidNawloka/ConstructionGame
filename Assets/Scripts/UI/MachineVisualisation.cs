@@ -18,6 +18,8 @@ namespace CON.UI
         [SerializeField] RectTransform sliderForeground;
         [SerializeField] RectTransform horizontalConnection;
         [SerializeField] RectTransform verticalConnection;
+        [SerializeField] Image[] requirementImages;
+        [SerializeField] Image outcomeImage;
 
         CanvasGroup canvasGroup;
         Machine machine;
@@ -49,7 +51,7 @@ namespace CON.UI
 
         public void UpdateInventorySlot(Inventory inventory)
         {
-            if (inventory.HasItem(machine.GetEnergyRequirement()))
+            if (inventory.HasItem(machine.GetInstruction().requirements))
             {
                 inventorySlotTMPro.color = Color.white;
             }
@@ -105,9 +107,14 @@ namespace CON.UI
         }
         private void UpdateRequirementUI()
         {
-            InventoryItem energyRequirement = machine.GetEnergyRequirement()[0];
-            requirementSprite.sprite = energyRequirement.element.sprite;
-            requirementTMPro.text = energyRequirement.amount.ToString();
+            Instruction machineInstruction = machine.GetInstruction();
+            requirementSprite.sprite = machineInstruction.requirements[0].element.sprite;
+            requirementTMPro.text = machineInstruction.requirements[0].amount.ToString();
+            for (int requirementIndex = 0; requirementIndex < machineInstruction.requirements.Length; requirementIndex++)
+            {
+                requirementImages[requirementIndex].sprite = machineInstruction.requirements[requirementIndex].element.sprite;
+            }
+            outcomeImage.sprite = machineInstruction.outcome.element.sprite;
         }
 
         // Interface Implementations
