@@ -143,6 +143,9 @@ namespace CON.Machines
             OnMachineClicked.Invoke();
         }
 
-        
+        public void ChangeVersion()
+        {
+            
+        }
     }
 }

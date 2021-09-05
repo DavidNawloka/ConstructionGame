@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 namespace CON.Machines
 {
@@ -66,6 +67,10 @@ namespace CON.Machines
             if (isPlacementMode && Input.GetKeyDown(KeyCode.C))
             {
                 DeactivePlacementModeDestruction();
+            }
+            if(isPlacementMode && Input.GetKeyDown(KeyCode.V))
+            {
+                currentPlaceable.ChangeVersion();
             }
             if (Input.GetKeyDown(KeyCode.X))
             {
@@ -179,8 +184,9 @@ namespace CON.Machines
 
                 currentMachine.transform.position = grid.GetWorldPositionCenter(x, y);
 
-                if (Input.GetMouseButtonDown(0))
+                if (Input.GetMouseButton(0))
                 {
+                    print("hello");
                     Placement(x, y);
                 }
             }
@@ -253,13 +259,10 @@ namespace CON.Machines
             int toRotate = (int)currentMachine.transform.localEulerAngles.y / 90;
             currentMachine = null;
             currentPlaceable = null;
-            if (Input.GetKey(KeyCode.LeftAlt))
+            ActivatePlacementMode(currentMachinePrefab);
+            for (int i = 0; i < toRotate; i++)
             {
-                ActivatePlacementMode(currentMachinePrefab);
-                for (int i = 0; i < toRotate; i++)
-                {
-                    RotateRight();
-                }
+                RotateRight();
             }
         }
 

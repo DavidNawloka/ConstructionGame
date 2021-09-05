@@ -27,6 +27,11 @@ namespace CON.Machines
         {
             UpdateHookPosition();
         }
+        private void ToggleHookPosition()
+        {
+            isRightToLeft = !isRightToLeft;
+            UpdateHookPosition();
+        }
         private void UpdateHookPosition()
         {
             if (!isRightToLeft)
@@ -131,6 +136,10 @@ namespace CON.Machines
         public void SetOrigin(Vector2Int gridOrigin)
         {
             this.gridOrigin = gridOrigin;
+        }
+        public void ChangeVersion()
+        {
+            ToggleHookPosition();
         }
     }
 

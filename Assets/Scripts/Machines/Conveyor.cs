@@ -80,7 +80,10 @@ namespace CON.Machines
         {
             return gridOrigin;
         }
-
+        public void ChangeVersion()
+        {
+            
+        }
     }
 
 }

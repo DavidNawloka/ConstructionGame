@@ -10,5 +10,6 @@ namespace CON.Machines
         public void SetOrigin(Vector2Int gridOrigin);
         public Vector2Int GetOrigin();
         public void FullyPlaced(Builder player);
+        public void ChangeVersion();
     }
 }
