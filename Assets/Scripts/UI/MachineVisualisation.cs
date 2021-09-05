@@ -105,7 +105,7 @@ namespace CON.UI
         }
         private void UpdateRequirementUI()
         {
-            InventoryItem energyRequirement = machine.GetEnergyRequirement();
+            InventoryItem energyRequirement = machine.GetEnergyRequirement()[0];
             requirementSprite.sprite = energyRequirement.element.sprite;
             requirementTMPro.text = energyRequirement.amount.ToString();
         }

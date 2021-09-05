@@ -121,13 +121,9 @@ MonoBehaviour:
     amount: 5
   - element: {fileID: 11400000, guid: 90af84c016779b64abdbae59aa56cd21, type: 2}
     amount: 3
-  elementToProduce: {fileID: 8485946570687198049, guid: ba78828b13e61864ba2045cf9ec729d1, type: 3}
+  instruction: {fileID: 11400000, guid: 19f9978be4acddf44a0702e6cb6dfb49, type: 2}
   productionIntervall: 5
   elementExitPoint: {fileID: 6374650766447903890}
-  energyRequirement:
-    element: {fileID: 11400000, guid: 296a20792c61e7e4eb31c9133973c3b5, type: 2}
-    amount: 3
-  elementPerEnergy: 2
   OnMachineClicked:
     m_PersistentCalls:
       m_Calls:
@@ -156,6 +152,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventorySlots: 1
+  inventory: []
   OnInventoryChange:
     m_PersistentCalls:
       m_Calls:

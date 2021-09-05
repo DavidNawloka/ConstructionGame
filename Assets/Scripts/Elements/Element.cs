@@ -5,7 +5,7 @@ using UnityEngine;
 namespace CON.Elements
 {
 
-    [CreateAssetMenu(fileName ="Resource",menuName ="Resources/Create New Element")]
+    [CreateAssetMenu(fileName ="Element",menuName ="Elements/Create New Element")]
     [System.Serializable]
     public class Element : ScriptableObject
     {

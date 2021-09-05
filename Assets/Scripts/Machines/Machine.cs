@@ -16,11 +16,9 @@ namespace CON.Machines
         [SerializeField] Element elementPlacementRequirement;
         [SerializeField] InventoryItem[] elementBuildingRequirements;
         [Header("Production")]
-        [SerializeField] ElementPickup elementToProduce;
+        [SerializeField] Instruction instruction;
         [SerializeField] float productionIntervall;
         [SerializeField] Transform elementExitPoint;
-        [SerializeField] InventoryItem energyRequirement;
-        [SerializeField] int elementPerEnergy = 1;
         [Header("Unity Events")]
         [SerializeField] UnityEvent OnMachineClicked;
 
@@ -39,7 +37,7 @@ namespace CON.Machines
 
         private void Update()
         {
-            if (!fullyPlaced || !inventory.HasItem(energyRequirement))
+            if (!fullyPlaced || !inventory.HasItem(instruction.requirements))
             {
                 ToggleAnimations(false);
                 return;
@@ -59,36 +57,45 @@ namespace CON.Machines
 
         public void AddAllEnergyElements()
         {
-            if (playerInventory.HasItem(energyRequirement))
+            if (playerInventory.HasItem(instruction.requirements))
             {
-                playerInventory.RemoveItem(energyRequirement);
-                inventory.EquipItem(energyRequirement);
+                playerInventory.RemoveItem(instruction.requirements);
+                inventory.EquipItem(instruction.requirements);
             }
         }
         public void AddEnergyElement(ElementPickup elementToAdd) // Event for when Elements enter
         {
-            if (elementToAdd.GetItemToEquip().element != energyRequirement.element) return;
+            if (!CheckIfElementIsNeeded(elementToAdd)) return;
             Destroy(elementToAdd.gameObject);
             inventory.EquipItem(elementToAdd.GetItemToEquip());
         }
 
-        public InventoryItem GetEnergyRequirement()
+        public InventoryItem[] GetEnergyRequirement()
         {
-            return energyRequirement;
+            return instruction.requirements;
         }
         public float GetProductionFraction()
         {
             return productionTimer / productionIntervall;
         }
 
+        private bool CheckIfElementIsNeeded(ElementPickup elementToAdd)
+        {
+            foreach(InventoryItem inventoryItem in instruction.requirements)
+            {
+                if (elementToAdd.GetItemToEquip().element == inventoryItem.element) return true;
+            }
+            return false;
+        }
+
         private void ProduceElement()
         {
-            Instantiate(elementToProduce.gameObject, elementExitPoint.position, Quaternion.identity);
+            Instantiate(instruction.outcome.element.pickupPrefab, elementExitPoint.position, Quaternion.identity);
             elementsProduced++;
 
-            if (elementsProduced >= elementPerEnergy)
+            if (elementsProduced >= instruction.outcome.amount)
             {
-                inventory.RemoveItem(energyRequirement);
+                inventory.RemoveItem(instruction.requirements);
                 elementsProduced = 0;
             }
             

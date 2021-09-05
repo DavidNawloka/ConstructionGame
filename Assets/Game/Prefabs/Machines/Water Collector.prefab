@@ -293,13 +293,9 @@ MonoBehaviour:
     amount: 3
   - element: {fileID: 11400000, guid: 90af84c016779b64abdbae59aa56cd21, type: 2}
     amount: 3
-  elementToProduce: {fileID: -323236517551520292, guid: 4dda65963130544419acf18583d16b39, type: 3}
+  instruction: {fileID: 11400000, guid: ec1dae88d0d357443be03890c0545795, type: 2}
   productionIntervall: 3
   elementExitPoint: {fileID: 4053394888601152238}
-  energyRequirement:
-    element: {fileID: 11400000, guid: 07c6d23cc05dd23458135c08435071a3, type: 2}
-    amount: 1
-  elementPerEnergy: 3
   OnMachineClicked:
     m_PersistentCalls:
       m_Calls:
@@ -328,6 +324,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventorySlots: 1
+  inventory: []
   OnInventoryChange:
     m_PersistentCalls:
       m_Calls:
@@ -1016,14 +1013,6 @@ PrefabInstance:
     - target: {fileID: 1800884083911918707, guid: b1f40ce24e4af6d4f8432e613e2fe790, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2757025254589606818, guid: b1f40ce24e4af6d4f8432e613e2fe790, type: 3}
-      propertyPath: m_text
-      value: Water Collector
-      objectReference: {fileID: 0}
-    - target: {fileID: 2757025254589606819, guid: b1f40ce24e4af6d4f8432e613e2fe790, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 294.27
       objectReference: {fileID: 0}
     - target: {fileID: 3589644881796846696, guid: b1f40ce24e4af6d4f8432e613e2fe790, type: 3}
       propertyPath: m_Name

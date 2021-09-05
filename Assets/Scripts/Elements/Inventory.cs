@@ -10,7 +10,7 @@ namespace CON.Elements
     {
         [SerializeField] int inventorySlots;
 
-        private InventoryItem[] inventory;
+        public InventoryItem[] inventory;
 
         public UnityEvent<Inventory> OnInventoryChange;
 
@@ -74,25 +74,44 @@ namespace CON.Elements
             OnInventoryChange.Invoke(this);
             return status;
         }
+        public bool RemoveItem(InventoryItem[] inventoryItemsToRemove)
+        {
+            foreach (InventoryItem inventoryItem in inventoryItemsToRemove)
+            {
+                RemoveItem(inventoryItem);
+            }
+            return true;
+        }
         public bool EquipItem(InventoryItem inventoryItemToEquip)
         {
             if (GetUsedInventoryLength() > inventorySlots) return false;
 
             int materialIndex = 0;
 
-            foreach(InventoryItem inventoryItem in inventory)
+            for (int inventoryIndex = 0; inventoryIndex < inventory.Length; inventoryIndex++)
             {
-                if(inventoryItem.element == inventoryItemToEquip.element)
+                if (inventory[inventoryIndex].element == inventoryItemToEquip.element)
                 {
-                    inventoryItem.amount += inventoryItemToEquip.amount;
+                    inventory[inventoryIndex].amount += inventoryItemToEquip.amount;
                     OnInventoryChange.Invoke(this);
                     return true;
                 }
-                if (inventoryItem.element != null) materialIndex++;
+                if(inventory[inventoryIndex].element == null && materialIndex == 0)
+                {
+                    materialIndex = inventoryIndex;
+                }
             }
 
             inventory[materialIndex] = new InventoryItem(inventoryItemToEquip.element, inventoryItemToEquip.amount);
             OnInventoryChange.Invoke(this);
+            return true;
+        }
+        public bool EquipItem(InventoryItem[] inventoryItemsToEquip)
+        {
+            foreach (InventoryItem inventoryItem in inventoryItemsToEquip)
+            {
+                EquipItem(inventoryItem);
+            }
             return true;
         }
         private void BuildEmptyInventory()

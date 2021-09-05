@@ -186,7 +186,6 @@ namespace CON.Machines
 
                 if (Input.GetMouseButton(0))
                 {
-                    print("hello");
                     Placement(x, y);
                 }
             }

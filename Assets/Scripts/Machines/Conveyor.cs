@@ -61,7 +61,7 @@ namespace CON.Machines
         }
         public void FullyPlaced(Builder player)
         {
-            GetComponent<NavMeshObstacle>().enabled = true;
+            //GetComponent<NavMeshObstacle>().enabled = true; TODO: Check if other possibility for more walkability
             GetComponent<BoxCollider>().enabled = true;
             this.player = player;
             player.onBuildModeChange += OnBuildModeChange;
