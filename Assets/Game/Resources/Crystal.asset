@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 306c17a07d80ee143a9ea93f6bc4d98d, type: 3}
   m_Name: Crystal
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: b25f87142874845d5bf539d5f4238565, type: 3}
+  sprite: {fileID: 21300000, guid: af43187fe78bf4124b5b3d89ceae73e6, type: 3}
   pickupPrefab: {fileID: 1913324936896187568, guid: 527ef780c620a864abf100c8d47d1d95, type: 3}
   minScale: 1
   maxScale: 1.6

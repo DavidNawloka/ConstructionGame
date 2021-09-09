@@ -15,17 +15,18 @@ namespace CON.Elements
         {
             return itemToEuqip;
         }
-
-        private void OnCollisionEnter(Collision collision)
+        private void OnTriggerEnter(Collider other)
         {
-            if (collision.transform.tag == "Water") Destroy(gameObject);
-            if (collision.transform.tag != "Player") return;
-            EquipElement(collision.transform);
+            if (other.transform.tag == "Water") Destroy(gameObject);
+            if (other.transform.tag != "Player") return;
+            EquipElement(other.transform);
         }
         private void EquipElement(Transform player)
         {
-            player.GetComponent<Inventory>().EquipItem(itemToEuqip);
-            Destroy(gameObject);
+            if (player.GetComponent<Inventory>().EquipItem(itemToEuqip))
+            {
+                Destroy(gameObject);
+            }
         }
 
         // Interface implementations

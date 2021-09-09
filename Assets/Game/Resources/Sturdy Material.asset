@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 306c17a07d80ee143a9ea93f6bc4d98d, type: 3}
-  m_Name: Water
+  m_Name: Sturdy Material
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: 2c2d2336318a141e4b50860d2f5f6089, type: 3}
-  pickupPrefab: {fileID: 203295002677003439, guid: 4dda65963130544419acf18583d16b39, type: 3}
+  sprite: {fileID: 21300000, guid: bf42915795c7941c3a9dc79218497b0c, type: 3}
+  pickupPrefab: {fileID: 2037239196363113438, guid: 9d765533524c2be42adb0b53f4668e66, type: 3}
   minScale: 1
-  maxScale: 2
-  colorRepresentation: {r: 0, g: 0.30317068, b: 1, a: 1}
+  maxScale: 1.5
+  colorRepresentation: {r: 0.6886792, g: 0.50889325, b: 0.3995639, a: 1}

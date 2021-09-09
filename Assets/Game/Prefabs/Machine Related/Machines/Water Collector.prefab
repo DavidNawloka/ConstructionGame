@@ -325,7 +325,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3486bf6fbff47d047b371b6682631eac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventorySlots: 1
+  inventorySlots: 2
   inventory: []
   OnInventoryChange:
     m_PersistentCalls:

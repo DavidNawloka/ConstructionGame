@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 306c17a07d80ee143a9ea93f6bc4d98d, type: 3}
-  m_Name: Water
+  m_Name: Sand
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: 2c2d2336318a141e4b50860d2f5f6089, type: 3}
-  pickupPrefab: {fileID: 203295002677003439, guid: 4dda65963130544419acf18583d16b39, type: 3}
+  sprite: {fileID: 21300000, guid: 2b2a034aa25ce4f7a818bb0df99f6ccc, type: 3}
+  pickupPrefab: {fileID: 350138184574564182, guid: 8839d3830ccc574468f114ed7545acb9, type: 3}
   minScale: 1
-  maxScale: 2
-  colorRepresentation: {r: 0, g: 0.30317068, b: 1, a: 1}
+  maxScale: 1.5
+  colorRepresentation: {r: 0.8113208, g: 0.7211429, b: 0.2028302, a: 1}

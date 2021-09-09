@@ -12,8 +12,8 @@ namespace CON.UI
 {
     public class MachineVisualisation : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
-        [SerializeField] Image requirementSprite;
-        [SerializeField] TextMeshProUGUI requirementTMPro;
+        [SerializeField] Image[] requirementSprite;
+        [SerializeField] TextMeshProUGUI[] requirementTMPro;
         [SerializeField] TextMeshProUGUI inventorySlotTMPro;
         [SerializeField] RectTransform sliderForeground;
         [SerializeField] RectTransform horizontalConnection;
@@ -121,8 +121,8 @@ namespace CON.UI
             Vector3 machineScreenSpacePosition = Camera.main.WorldToScreenPoint(machine.transform.position);
             Vector3 posDifference = transform.position - machineScreenSpacePosition;
 
-            horizontalConnection.sizeDelta = new Vector2(Mathf.Abs(posDifference.x)*1.2f, horizontalConnection.sizeDelta.y);
-            verticalConnection.sizeDelta = new Vector2(Mathf.Abs(posDifference.y) * 1.2f, verticalConnection.sizeDelta.y);
+            horizontalConnection.sizeDelta = new Vector2(Mathf.Abs(posDifference.x)*1.4f, horizontalConnection.sizeDelta.y);
+            verticalConnection.sizeDelta = new Vector2(Mathf.Abs(posDifference.y) * 1.4f, verticalConnection.sizeDelta.y);
 
             horizontalConnection.position = new Vector3((posDifference.x / 2) + machineScreenSpacePosition.x, transform.position.y);
 
@@ -131,10 +131,18 @@ namespace CON.UI
         private void UpdateRequirementUIMultiple()
         {
             Instruction machineInstruction = machine.GetCurrentInstruction();
-            requirementSprite.sprite = machineInstruction.requirements[0].element.sprite;
-            requirementTMPro.text = machineInstruction.requirements[0].amount.ToString();
 
-            for (int requirementIndex = 0; requirementIndex < machineInstruction.requirements.Length; requirementIndex++)
+
+            bool isNeeded = machineInstruction.requirements.Length == 2;
+            requirementTMPro[1].enabled = isNeeded;
+            requirementSprite[1].enabled = isNeeded;
+
+            for (int inventoryIndex = 0; inventoryIndex < machineInstruction.requirements.Length; inventoryIndex++)
+            {
+                requirementSprite[inventoryIndex].sprite = machineInstruction.requirements[inventoryIndex].element.sprite;
+                requirementTMPro[inventoryIndex].text = machineInstruction.requirements[inventoryIndex].amount.ToString();
+            }
+            for (int requirementIndex = 0; requirementIndex < requirementImages.Length; requirementIndex++)
             {
                 requirementImages[requirementIndex].sprite = machineInstruction.requirements[requirementIndex].element.sprite;
             }

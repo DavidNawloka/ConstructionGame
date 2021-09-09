@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using System;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 namespace CON.Machines 
 {
@@ -154,7 +155,7 @@ namespace CON.Machines
         }
         private void OnMouseDown()
         {
-            if (!fullyPlaced) return ;
+            if (!fullyPlaced || EventSystem.current.IsPointerOverGameObject()) return ;
 
             OnMachineClicked.Invoke();
         }
