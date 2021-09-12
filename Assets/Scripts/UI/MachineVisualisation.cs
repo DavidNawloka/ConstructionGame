@@ -42,8 +42,13 @@ namespace CON.UI
             UpdateRequirementUIMultiple();
             UpdateRequirementUIOnce();
         }
+        private void OnEnable()
+        {
+            machine.OnMachineClicked += MachineClicked;
+        }
         private void OnDisable()
         {
+            machine.OnMachineClicked -= MachineClicked;
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             if (player == null) return;
             player.GetComponent<Builder>().onBuildModeChange -= SetActiveElementIndicators;
@@ -58,7 +63,7 @@ namespace CON.UI
 
         public void UpdateCurrentInstruction(int instructionIndex)
         {
-            machine.SetCurrentInstruction(machine.GetPossibleInstructions()[instructionIndex]);
+            machine.SetCurrentInstruction(instructionIndex);
             UpdateRequirementUIMultiple();
         }
 
@@ -133,16 +138,20 @@ namespace CON.UI
             Instruction machineInstruction = machine.GetCurrentInstruction();
 
 
-            bool isNeeded = machineInstruction.requirements.Length == 2;
+            bool isNeeded = machineInstruction.requirements.Length >= 2;
             requirementTMPro[1].enabled = isNeeded;
             requirementSprite[1].enabled = isNeeded;
+
+            isNeeded = machineInstruction.requirements.Length >= 3;
+            requirementTMPro[2].enabled = isNeeded;
+            requirementSprite[2].enabled = isNeeded;
 
             for (int inventoryIndex = 0; inventoryIndex < machineInstruction.requirements.Length; inventoryIndex++)
             {
                 requirementSprite[inventoryIndex].sprite = machineInstruction.requirements[inventoryIndex].element.sprite;
                 requirementTMPro[inventoryIndex].text = machineInstruction.requirements[inventoryIndex].amount.ToString();
             }
-            for (int requirementIndex = 0; requirementIndex < requirementImages.Length; requirementIndex++)
+            for (int requirementIndex = 0; requirementIndex < machineInstruction.requirements.Length; requirementIndex++)
             {
                 requirementImages[requirementIndex].sprite = machineInstruction.requirements[requirementIndex].element.sprite;
             }

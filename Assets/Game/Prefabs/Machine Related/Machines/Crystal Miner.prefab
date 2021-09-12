@@ -94,6 +94,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a4a22dfc92cddea43937d799746385d0, type: 2}
   productionIntervall: 3
   elementExitPoint: {fileID: 2825724675846747879}
+  elementTriggers:
+  - {fileID: 251773449274113161}
   OnMachineClicked:
     m_PersistentCalls:
       m_Calls:
@@ -1180,3 +1182,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3063155565684930911, guid: 193526cddca811248969c03d69f4298c, type: 3}
   m_PrefabInstance: {fileID: 8436972980380532250}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &251773449274113161 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8532171369553445523, guid: 193526cddca811248969c03d69f4298c, type: 3}
+  m_PrefabInstance: {fileID: 8436972980380532250}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb24418efb1181b41a0d8d537a3af118, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

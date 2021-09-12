@@ -114,6 +114,23 @@ namespace CON.Elements
             }
             return true;
         }
+        public bool EquipItemAt(InventoryItem inventoryItemToEquip, int inventorySlotIndex)
+        {
+            if (inventory[inventorySlotIndex].element == inventoryItemToEquip.element)
+            {
+                inventory[inventorySlotIndex].amount += inventoryItemToEquip.amount;
+                OnInventoryChange.Invoke(this);
+                return true;
+            }
+            if (inventory[inventorySlotIndex].element == null)
+            {
+                inventory[inventorySlotIndex] = new InventoryItem(inventoryItemToEquip.element, inventoryItemToEquip.amount);
+                OnInventoryChange.Invoke(this);
+                return true;
+            }
+            else return false;
+            
+        }
         private void BuildEmptyInventory()
         {
             inventory = new InventoryItem[inventorySlots];

@@ -20,8 +20,10 @@ namespace CON.Machines
         [SerializeField] Instruction[] possibleInstructions;
         [SerializeField] float productionIntervall;
         [SerializeField] Transform elementExitPoint;
-        [Header("Unity Events")]
-        [SerializeField] UnityEvent OnMachineClicked;
+        [SerializeField] ElementTrigger[] elementTriggers;
+
+
+        [HideInInspector] public event Action OnMachineClicked;
 
         Inventory inventory;
         bool fullyPlaced = false;
@@ -37,7 +39,10 @@ namespace CON.Machines
             inventory = GetComponent<Inventory>();
             currentInstruction = possibleInstructions[0];
         }
-
+        private void Start()
+        {
+            UpdateElementTriggers();
+        }
         private void Update()
         {
             if (!fullyPlaced || !inventory.HasItem(currentInstruction.requirements))
@@ -70,8 +75,10 @@ namespace CON.Machines
         {
             if (!CheckIfElementIsNeeded(elementToAdd)) return;
             Destroy(elementToAdd.gameObject);
-            inventory.EquipItem(elementToAdd.GetItemToEquip());
+
+            inventory.EquipItemAt(elementToAdd.GetItemToEquip(), GetElementInstructionIndex(elementToAdd.GetItemToEquip().element));
         }
+
         public Instruction[] GetPossibleInstructions()
         {
             return possibleInstructions;
@@ -80,15 +87,31 @@ namespace CON.Machines
         {
             return currentInstruction;
         }
-        public void SetCurrentInstruction(Instruction currentInstruction)
+        public void SetCurrentInstruction(int instructionIndex)
         {
-            this.currentInstruction = currentInstruction;
+            currentInstruction = possibleInstructions[instructionIndex];
+            UpdateElementTriggers();
         }
         public float GetProductionFraction()
         {
             return productionTimer / productionIntervall;
         }
 
+        private int GetElementInstructionIndex(Element element)
+        {
+            for (int index = 0; index < currentInstruction.requirements.Length; index++)
+            {
+                if (currentInstruction.requirements[index].element == element) return index;
+            }
+            return -1;
+        }
+        private void UpdateElementTriggers()
+        {
+            for (int requirementIndex = 0; requirementIndex < currentInstruction.requirements.Length; requirementIndex++)
+            {
+                elementTriggers[requirementIndex].UpdateFilter(currentInstruction.requirements[requirementIndex].element);
+            }
+        }
         private bool CheckIfElementIsNeeded(ElementPickup elementToAdd)
         {
             foreach(InventoryItem inventoryItem in currentInstruction.requirements)
@@ -157,7 +180,7 @@ namespace CON.Machines
         {
             if (!fullyPlaced || EventSystem.current.IsPointerOverGameObject()) return ;
 
-            OnMachineClicked.Invoke();
+            OnMachineClicked();
         }
 
         public void ChangeVersion()

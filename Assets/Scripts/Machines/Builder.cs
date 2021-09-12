@@ -221,7 +221,7 @@ namespace CON.Machines
             if (!AreEnoughElements()) return false;
 
             Machine machine = currentMachine.transform.GetComponent<Machine>();
-            if (machine != null && !grid.HasElement(x, y, machine.GetElementPlacementRequirement())) return false;
+            if (machine != null && machine.GetElementPlacementRequirement() != null &&!grid.HasElement(x, y, machine.GetElementPlacementRequirement())) return false;
 
             return true;
         }

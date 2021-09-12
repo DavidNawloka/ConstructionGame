@@ -375,6 +375,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 61520b4e0e1e2db40a69a3d73c8d8991, type: 2}
   productionIntervall: 4
   elementExitPoint: {fileID: 2967090024268532651}
+  elementTriggers:
+  - {fileID: 2391391374680844171}
   OnMachineClicked:
     m_PersistentCalls:
       m_Calls:
@@ -1052,6 +1054,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3063155565684930911, guid: 193526cddca811248969c03d69f4298c, type: 3}
   m_PrefabInstance: {fileID: 6289190496056452376}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2391391374680844171 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8532171369553445523, guid: 193526cddca811248969c03d69f4298c, type: 3}
+  m_PrefabInstance: {fileID: 6289190496056452376}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb24418efb1181b41a0d8d537a3af118, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &6819699774963256494
 PrefabInstance:
   m_ObjectHideFlags: 0
