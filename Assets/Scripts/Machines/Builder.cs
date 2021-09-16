@@ -1,3 +1,4 @@
+using Astutos.Saving;
 using CON.BuildingGrid;
 using CON.Elements;
 using System;
@@ -9,9 +10,10 @@ using UnityEngine.EventSystems;
 
 namespace CON.Machines
 {
-    public class Builder : MonoBehaviour
+    public class Builder : MonoBehaviour, ISaveable
     {
         [SerializeField] Transform buildObjectsParent;
+        [SerializeField] GameObject[] placeableObjectsPrefabs;
 
         public event Action<bool> onDemolishModeChange;
         public event Action<bool> onBuildModeChange;
@@ -23,10 +25,12 @@ namespace CON.Machines
         bool isDemolishMode = false;
         bool isBuildMode = false;
 
+
         GameObject currentMachinePrefab;
         GameObject currentMachine;
         IPlaceable currentPlaceable;
         Vector2Int[] takenGridPositions;
+        Dictionary<SerializableVector3,SavedPlaceable> builtObjects = new Dictionary<SerializableVector3, SavedPlaceable>();
 
         Inventory inventory;
 
@@ -34,16 +38,20 @@ namespace CON.Machines
         {
             inventory = GetComponent<Inventory>();
             gridMesh = FindObjectOfType<BuildingGridMesh>();
-            grid = new BuildingGridManager();
-
-
-            gridMesh.InitiatePlane(grid.GetBuildingGridTexture());
-            
         }
+
         private void Start()
         {
+            if (grid == null)
+            {
+                Texture2D texture = GetDefault2DTexture();
+                grid = new BuildingGridManager(BuildingGridAssetManager.GetGrid(), texture);
+                gridMesh.InitiatePlane(texture);
+            }
             onBuildModeChange(false);
         }
+
+
         private void Update()
         {
             HandleInput();
@@ -119,6 +127,7 @@ namespace CON.Machines
         }
         public void SetActiveDemolishMode(bool isDemolishMode)
         {
+            if(isDemolishMode) DeactivePlacementModeDestruction();
             this.isDemolishMode = isDemolishMode;
             onDemolishModeChange(isDemolishMode);
         }
@@ -155,6 +164,12 @@ namespace CON.Machines
                     }
                     gridMesh.UpdateTexture(grid.GetBuildingGridTexture());
 
+                    // TODO: Remove does not actually remove the once built object from the dictionary (float comparison issue), id could be identificator instead of position maybe
+
+                    print(builtObjects.Count);
+                    builtObjects.Remove(new SerializableVector3(raycastHit.collider.transform.position));
+
+                    print(builtObjects.Count);
                 }
             }
         }
@@ -213,9 +228,9 @@ namespace CON.Machines
 
             currentPlaceable.SetOrigin(new Vector2Int(x, y));
             currentPlaceable.FullyPlaced(this);
+            builtObjects.Add(new SerializableVector3(currentMachine.transform.position),new SavedPlaceable(GetPlaceableObjectsID(currentMachinePrefab), currentMachine.transform.eulerAngles, new Vector2Int(x,y)));
             DeactivatePlacementMode();
         }
-
         private bool IsPlacementPossible(int x, int y)
         {
             if (!AreEnoughElements()) return false;
@@ -253,7 +268,7 @@ namespace CON.Machines
         }
         private void DeactivatePlacementMode()
         {
-            gridMesh.UpdateTexture(grid.GetBuildingGridTexture());
+            
             isPlacementMode = false;
             int toRotate = (int)currentMachine.transform.localEulerAngles.y / 90;
             currentMachine = null;
@@ -265,7 +280,24 @@ namespace CON.Machines
             }
         }
 
+        private int GetPlaceableObjectsID(GameObject placeablePrefab)
+        {
+            for (int id = 0; id < placeableObjectsPrefabs.Length; id++)
+            {
+                if (placeableObjectsPrefabs[id] == placeablePrefab) return id;
+            }
+            return -1;
+        }
 
+        private Texture2D GetDefault2DTexture()
+        {
+            BuildingGridSettings gridSettings = BuildingGridAssetManager.LoadSettings();
+            Texture2D texture = new Texture2D(gridSettings.width, gridSettings.height, TextureFormat.ARGB32, false);
+            texture.filterMode = FilterMode.Point;
+
+            Graphics.CopyTexture(BuildingGridAssetManager.GetGridTexture(), texture);
+            return texture;
+        }
 
         // TODO: Refactor Rotation
         private void RotateLeft()
@@ -287,6 +319,92 @@ namespace CON.Machines
                 takenGridPositions[index] = new Vector2Int(y, x);
             }
             currentMachine.transform.localRotation = Quaternion.Euler(new Vector3(0, currentMachine.transform.localEulerAngles.y + 90, 0));
+        }
+
+        // Interface Implementations
+
+        public object CaptureState()
+        {
+            BuildingGridSettings gridSettings = BuildingGridAssetManager.LoadSettings();
+            bool[,] obstructedList = new bool[gridSettings.width, gridSettings.height];
+
+            for (int x = 0; x < gridSettings.width; x++)
+            {
+                for (int y = 0; y < gridSettings.height; y++)
+                {
+                    obstructedList[x, y] = grid.gridArray[x, y].obstructed;
+                }
+            }
+            return new SaveData(obstructedList, builtObjects);
+        }
+
+        public void RestoreState(object state)
+        {
+            SaveData saveData = (SaveData)state;
+
+            BuildingGridSettings gridSettings = BuildingGridAssetManager.LoadSettings();
+            GridCell[,] gridArray = BuildingGridAssetManager.GetGrid();
+
+            Texture2D gridTexture = GetDefault2DTexture();
+
+            bool[,] obstructedList = saveData.obstructedList;
+
+            for (int x = 0; x < gridSettings.width; x++)
+            {
+                for (int y = 0; y < gridSettings.height; y++)
+                {
+                    gridArray[x, y].obstructed = obstructedList[x, y];
+                    if (obstructedList[x, y]) gridTexture.SetPixel(x, y, Color.red);
+                }
+            }
+            gridTexture.Apply();
+
+            gridMesh = FindObjectOfType<BuildingGridMesh>();
+            gridMesh.InitiatePlane(gridTexture);
+            grid = new BuildingGridManager(gridArray,gridTexture);
+
+            // TODO: Rotation does not work because the TakenGridPositions are reset on instantiation, possible solution would be saving the taken grid positions and applying and setting them after instantiating
+
+            foreach (KeyValuePair<SerializableVector3,SavedPlaceable> keyValuePair in saveData.builtPlaceables)
+            {
+                builtObjects.Add(keyValuePair.Key,keyValuePair.Value.Copy());
+                IPlaceable placeable = Instantiate(placeableObjectsPrefabs[keyValuePair.Value.id], keyValuePair.Key.ToVector(), Quaternion.Euler(keyValuePair.Value.eulerRotation.ToVector()), buildObjectsParent).GetComponent<IPlaceable>();
+                placeable.FullyPlaced(this);
+                placeable.SetOrigin(keyValuePair.Value.origin.ToVector());
+            }
+
+        }
+
+        [System.Serializable]
+        private class SaveData
+        {
+            public bool[,] obstructedList;
+            public Dictionary<SerializableVector3, SavedPlaceable> builtPlaceables;
+            public SaveData(bool[,] obstructedList, Dictionary<SerializableVector3, SavedPlaceable> builtPlaceables)
+            {
+                this.obstructedList = obstructedList;
+                this.builtPlaceables = builtPlaceables;
+            }
+        }
+
+        [System.Serializable]
+        private class SavedPlaceable
+        {
+            public int id;
+            public SerializableVector3 eulerRotation;
+            public SerializableVector2Int origin;
+
+            public SavedPlaceable(int id, Vector3 eulerRotation, Vector2Int origin)
+            {
+                this.id = id;
+                this.eulerRotation = new SerializableVector3(eulerRotation);
+                this.origin = new SerializableVector2Int(origin);
+            }
+            
+            public SavedPlaceable Copy()
+            {
+                return new SavedPlaceable(id, eulerRotation.ToVector(), origin.ToVector());
+            }
         }
     }
 

@@ -13,12 +13,13 @@ namespace CON.BuildingGrid
         Texture2D gridTexture;
         public GridCell[,] gridArray;
 
-        public BuildingGridManager()
+        public BuildingGridManager(GridCell[,] gridArray, Texture2D gridTexture)
         {
-            BuildingGridAssetManager.GetGrid(out gridArray,out width,out height,out cellSize,out origin);
-            gridTexture = BuildingGridAssetManager.GetGridTexture();
+            this.gridArray = gridArray;
+            BuildingGridAssetManager.LoadSettings(out width, out height, out cellSize, out origin);
+            this.gridTexture = gridTexture;
         }
-
+        
         public Texture2D GetBuildingGridTexture()
         {
             return gridTexture;

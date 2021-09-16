@@ -15,9 +15,10 @@ namespace CON.BuildingGrid
         {
             meshRenderer = GetComponent<MeshRenderer>();
             meshRenderer.material = material;
-            meshRenderer.sharedMaterial.mainTexture = texture;
+            
             MeshFilter meshFilter = GetComponent<MeshFilter>();
             meshFilter.mesh = BuildingGridAssetManager.GetGridMesh();
+            UpdateTexture(texture);
 
             ToggleMesh(false);
         }

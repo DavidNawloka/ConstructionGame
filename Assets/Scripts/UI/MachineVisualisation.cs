@@ -14,7 +14,7 @@ namespace CON.UI
     {
         [SerializeField] Image[] requirementSprite;
         [SerializeField] TextMeshProUGUI[] requirementTMPro;
-        [SerializeField] TextMeshProUGUI inventorySlotTMPro;
+        [SerializeField] TextMeshProUGUI[] inventorySlotTMPro;
         [SerializeField] RectTransform sliderForeground;
         [SerializeField] RectTransform horizontalConnection;
         [SerializeField] RectTransform verticalConnection;
@@ -69,11 +69,14 @@ namespace CON.UI
 
         public void UpdateInventorySlot(Inventory inventory) // Event from Inventory Class function from Machine
         {
-            if (inventory.HasItem(machine.GetCurrentInstruction().requirements))
+            for (int requirementIndex = 0; requirementIndex < machine.GetCurrentInstruction().requirements.Length; requirementIndex++)
             {
-                inventorySlotTMPro.color = Color.white;
+                if (inventory.HasItem(machine.GetCurrentInstruction().requirements[requirementIndex]))
+                {
+                    inventorySlotTMPro[requirementIndex].color = Color.white;
+                }
+                else inventorySlotTMPro[requirementIndex].color = Color.red;
             }
-            else inventorySlotTMPro.color = Color.red;
         }
 
         public void AddEnergy() // Button Function

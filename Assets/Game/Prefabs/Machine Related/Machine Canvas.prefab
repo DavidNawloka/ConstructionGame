@@ -365,7 +365,10 @@ MonoBehaviour:
   - {fileID: 2757025255193409343}
   - {fileID: 4832243099125452925}
   - {fileID: 3287791360802828246}
-  inventorySlotTMPro: {fileID: 2757025254987512097}
+  inventorySlotTMPro:
+  - {fileID: 2757025254987512097}
+  - {fileID: 4521975834942031705}
+  - {fileID: 3373729378321394947}
   sliderForeground: {fileID: 3577943908516547851}
   horizontalConnection: {fileID: 1851652505}
   verticalConnection: {fileID: 1361637262}

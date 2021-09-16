@@ -81,20 +81,35 @@ namespace CON.BuildingGrid
             AssetDatabase.DeleteAsset(PATH + TEXTURE_NAME + EXTENSION);
             AssetDatabase.DeleteAsset(PATH + MESH_NAME + EXTENSION);
         }
+#endif
 
         public static BuildingGridSettings LoadSettings()
         {
-            BuildingGridSO buildingGrid = AssetDatabase.LoadAssetAtPath<BuildingGridSO>(PATH + SO_NAME + EXTENSION);
+            BuildingGridSO buildingGrid = Resources.Load<BuildingGridSO>(SO_NAME);
             if (buildingGrid == null) return null;
 
             return buildingGrid.GetSettings();
         }
-#endif
+        public static void LoadSettings(out int width, out int height, out float cellSize, out Vector3 origin)
+        {
+            BuildingGridSO buildingGrid = Resources.Load<BuildingGridSO>(SO_NAME);
+
+            width = buildingGrid.GetSettings().width;
+            height = buildingGrid.GetSettings().height;
+            cellSize = buildingGrid.GetSettings().cellSize;
+            origin = buildingGrid.GetSettings().origin;
+        }
+
         public static string GetTextureName()
         {
             return TEXTURE_NAME;
         }
-        public static void GetGrid(out GridCell[,] gridArray, out int width, out int height, out float cellSize, out Vector3 origin)
+        public static GridCell[,] GetGrid()
+        {
+            BuildingGridSO buildingGrid = Resources.Load<BuildingGridSO>(SO_NAME);
+            return buildingGrid.LoadGrid();
+        }
+        public static void GetGridAndSettings(out GridCell[,] gridArray, out int width, out int height, out float cellSize, out Vector3 origin)
         {
             BuildingGridSO buildingGrid = Resources.Load<BuildingGridSO>(SO_NAME);
             gridArray = buildingGrid.LoadGrid();

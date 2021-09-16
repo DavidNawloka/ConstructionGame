@@ -8,7 +8,6 @@ namespace CON.Elements
     public class ElementTrigger : MonoBehaviour
     {
         [Tooltip("Can be null if no filter needed")][SerializeField] Element filter;
-        [SerializeField] bool shouldUpdateFilterPerInstruction = true;
         [SerializeField] UnityEvent<ElementPickup> onElementEnter;
         [SerializeField] UnityEvent<ElementPickup> onElementStay;
 
