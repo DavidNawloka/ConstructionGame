@@ -1,3 +1,4 @@
+using Astutos.Saving;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,20 +7,18 @@ using UnityEngine.Events;
 
 namespace CON.Elements
 {
-    public class Inventory : MonoBehaviour
+    public class Inventory : MonoBehaviour, ISaveable
     {
         [SerializeField] int inventorySlots;
+        [SerializeField] bool shouldBeSaved = false;
 
         public InventoryItem[] inventory;
 
         public UnityEvent<Inventory> OnInventoryChange;
 
-        private void Awake()
-        {
-            BuildEmptyInventory();
-        }
         private void Start()
         {
+            if (inventory.Length == 0) BuildEmptyInventory();
             OnInventoryChange.Invoke(this);
         }
         public InventoryItem[] GetInventoryArray()
@@ -149,7 +148,57 @@ namespace CON.Elements
             return length;
         }
 
-        
+        public object CaptureState()
+        {
+            if (!shouldBeSaved) return null;
+
+            SerializeableInventoryItem[] savedInventory = new SerializeableInventoryItem[inventory.Length];
+            for (int index = 0; index < inventory.Length; index++)
+            {
+                InventoryItem currentInventoryItem = inventory[index];
+
+                if (currentInventoryItem.element == null) savedInventory[index] = null;
+                else
+                {
+                    savedInventory[index] = new SerializeableInventoryItem(currentInventoryItem.element.name, currentInventoryItem.amount);
+                }
+            }
+            return savedInventory;
+        }
+
+        public void RestoreState(object state)
+        {
+            if (!shouldBeSaved) return;
+
+            SerializeableInventoryItem[] savedInventory = (SerializeableInventoryItem[])state;
+
+            print(state);
+
+            inventory = new InventoryItem[savedInventory.Length];
+            for (int index = 0; index < inventory.Length; index++)
+            {
+                SerializeableInventoryItem currentInventoryItem = savedInventory[index];
+
+                if (currentInventoryItem == null) inventory[index] = new InventoryItem(null, 0);
+                else
+                {
+                    inventory[index] = new InventoryItem((Element)Resources.Load(currentInventoryItem.elementName), currentInventoryItem.amount);
+                }
+            }
+        }
+
+        [System.Serializable]
+        private class SerializeableInventoryItem
+        {
+            public string elementName;
+            public int amount;
+
+            public SerializeableInventoryItem(string elementName, int amount)
+            {
+                this.elementName = elementName;
+                this.amount = amount;
+            }
+        }
     }
     [System.Serializable]
     public class InventoryItem

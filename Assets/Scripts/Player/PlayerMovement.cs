@@ -1,3 +1,4 @@
+using Astutos.Saving;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using UnityEngine.AI;
 
 namespace CON.Player
 {
-    public class PlayerMovement : MonoBehaviour
+    public class PlayerMovement : MonoBehaviour, ISaveable
     {
         NavMeshAgent navMeshAgent;
         Animator animator;
@@ -41,6 +42,16 @@ namespace CON.Player
 
             print("Path Invalid!");
             return false;
+        }
+
+        public object CaptureState()
+        {
+            return new SerializableVector3(transform.position);
+        }
+
+        public void RestoreState(object state)
+        {
+            navMeshAgent.Warp(((SerializableVector3)state).ToVector());
         }
     }
 }

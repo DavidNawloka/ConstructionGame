@@ -164,12 +164,15 @@ namespace CON.Machines
                     }
                     gridMesh.UpdateTexture(grid.GetBuildingGridTexture());
 
-                    // TODO: Remove does not actually remove the once built object from the dictionary (float comparison issue), id could be identificator instead of position maybe
-
-                    print(builtObjects.Count);
-                    builtObjects.Remove(new SerializableVector3(raycastHit.collider.transform.position));
-
-                    print(builtObjects.Count);
+                    //TODO: Optimization when there are a lot of keyvaluepairs to go through
+                    foreach(KeyValuePair<SerializableVector3,SavedPlaceable> keyValuePair in builtObjects)
+                    {
+                        if (Vector3.Distance(keyValuePair.Key.ToVector(), raycastHit.collider.transform.position) < 1f)
+                        {
+                            print(builtObjects.Remove(keyValuePair.Key));
+                            break;
+                        }
+                    }
                 }
             }
         }
@@ -228,7 +231,7 @@ namespace CON.Machines
 
             currentPlaceable.SetOrigin(new Vector2Int(x, y));
             currentPlaceable.FullyPlaced(this);
-            builtObjects.Add(new SerializableVector3(currentMachine.transform.position),new SavedPlaceable(GetPlaceableObjectsID(currentMachinePrefab), currentMachine.transform.eulerAngles, new Vector2Int(x,y)));
+            builtObjects.Add(new SerializableVector3(currentMachine.transform.position),new SavedPlaceable(GetPlaceableObjectsID(currentMachinePrefab), currentMachine.transform.eulerAngles, new Vector2Int(x,y),takenGridPositions));
             DeactivatePlacementMode();
         }
         private bool IsPlacementPossible(int x, int y)
@@ -363,14 +366,13 @@ namespace CON.Machines
             gridMesh.InitiatePlane(gridTexture);
             grid = new BuildingGridManager(gridArray,gridTexture);
 
-            // TODO: Rotation does not work because the TakenGridPositions are reset on instantiation, possible solution would be saving the taken grid positions and applying and setting them after instantiating
-
             foreach (KeyValuePair<SerializableVector3,SavedPlaceable> keyValuePair in saveData.builtPlaceables)
             {
                 builtObjects.Add(keyValuePair.Key,keyValuePair.Value.Copy());
                 IPlaceable placeable = Instantiate(placeableObjectsPrefabs[keyValuePair.Value.id], keyValuePair.Key.ToVector(), Quaternion.Euler(keyValuePair.Value.eulerRotation.ToVector()), buildObjectsParent).GetComponent<IPlaceable>();
                 placeable.FullyPlaced(this);
                 placeable.SetOrigin(keyValuePair.Value.origin.ToVector());
+                placeable.SetTakenGridPositions(keyValuePair.Value.GetTakenGridPositions());
             }
 
         }
@@ -393,17 +395,34 @@ namespace CON.Machines
             public int id;
             public SerializableVector3 eulerRotation;
             public SerializableVector2Int origin;
+            public SerializableVector2Int[] takenGridPositions;
 
-            public SavedPlaceable(int id, Vector3 eulerRotation, Vector2Int origin)
+            public SavedPlaceable(int id, Vector3 eulerRotation, Vector2Int origin, Vector2Int[] takenGridPositions)
             {
                 this.id = id;
                 this.eulerRotation = new SerializableVector3(eulerRotation);
                 this.origin = new SerializableVector2Int(origin);
+
+                this.takenGridPositions = new SerializableVector2Int[takenGridPositions.Length];
+                for (int index = 0; index < takenGridPositions.Length; index++)
+                {
+                    this.takenGridPositions[index] = new SerializableVector2Int(takenGridPositions[index]);
+                }
             }
             
+            public Vector2Int[] GetTakenGridPositions()
+            {
+                Vector2Int[] takenGridPositionsNew = new Vector2Int[takenGridPositions.Length];
+                for (int index = 0; index < takenGridPositions.Length; index++)
+                {
+                    takenGridPositionsNew[index] = takenGridPositions[index].ToVector();
+                }
+                return takenGridPositionsNew;
+            }
+
             public SavedPlaceable Copy()
             {
-                return new SavedPlaceable(id, eulerRotation.ToVector(), origin.ToVector());
+                return new SavedPlaceable(id, eulerRotation.ToVector(), origin.ToVector(), GetTakenGridPositions());
             }
         }
     }

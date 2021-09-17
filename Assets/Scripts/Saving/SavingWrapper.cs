@@ -5,28 +5,38 @@ using Astutos.Saving;
 
 namespace CON.Core
 {
-    public class SavingWrapper : MonoBehaviour
+    public class SavingWrapper : MonoBehaviour, ISaveable
     {
-        string saveFile = "testSaveFile";
-
+        string saveFileName = "testSaveFile";
         SavingSystemEncrypted savingSystemEncrypted;
+
+        
 
         private void Awake()
         {
             savingSystemEncrypted = GetComponent<SavingSystemEncrypted>();
-            savingSystemEncrypted.Load(saveFile);
+            savingSystemEncrypted.Load(saveFileName);
         }
 
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.S))
             {
-                savingSystemEncrypted.Save(saveFile);
+                savingSystemEncrypted.Save(saveFileName);
             }
             if (Input.GetKeyDown(KeyCode.L))
             {
-                savingSystemEncrypted.Load(saveFile);
+                savingSystemEncrypted.Load(saveFileName);
             }
+        }
+
+        public object CaptureState()
+        {
+            return 2;
+        }
+
+        public void RestoreState(object state)
+        {
         }
     }
 }

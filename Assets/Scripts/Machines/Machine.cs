@@ -156,6 +156,10 @@ namespace CON.Machines
         {
             return takenGridPositions;
         }
+        public void SetTakenGridPositions(Vector2Int[] takenGridPositions)
+        {
+            this.takenGridPositions = takenGridPositions;
+        }
         public void FullyPlaced(Builder player)
         {
             GetComponent<NavMeshObstacle>().enabled = true;
@@ -187,5 +191,7 @@ namespace CON.Machines
         {
             
         }
+
+        
     }
 }
