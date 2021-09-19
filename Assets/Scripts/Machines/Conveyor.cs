@@ -85,6 +85,16 @@ namespace CON.Machines
         {
             
         }
+
+        public object GetInformationToSave()
+        {
+            return null;
+        }
+
+        public void LoadSavedInformation(object savedInformation)
+        {
+
+        }
     }
 
 }

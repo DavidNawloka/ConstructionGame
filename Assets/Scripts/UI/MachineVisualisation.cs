@@ -140,7 +140,6 @@ namespace CON.UI
         {
             Instruction machineInstruction = machine.GetCurrentInstruction();
 
-
             bool isNeeded = machineInstruction.requirements.Length >= 2;
             requirementTMPro[1].enabled = isNeeded;
             requirementSprite[1].enabled = isNeeded;
@@ -171,6 +170,9 @@ namespace CON.UI
                 instructionDropdown.options.Add(new TMP_Dropdown.OptionData() { text = instruction.outcome.element.name, image = instruction.outcome.element.sprite });
             }
 
+            instructionDropdown.value = machine.GetCurrentInstructionIndex();
+
+            SetActiveElementIndicators(false);
             GameObject.FindGameObjectWithTag("Player").GetComponent<Builder>().onBuildModeChange += SetActiveElementIndicators;
         }
 

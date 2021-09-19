@@ -231,7 +231,7 @@ namespace CON.Machines
 
             currentPlaceable.SetOrigin(new Vector2Int(x, y));
             currentPlaceable.FullyPlaced(this);
-            builtObjects.Add(new SerializableVector3(currentMachine.transform.position),new SavedPlaceable(GetPlaceableObjectsID(currentMachinePrefab), currentMachine.transform.eulerAngles, new Vector2Int(x,y),takenGridPositions));
+            builtObjects.Add(new SerializableVector3(currentMachine.transform.position),new SavedPlaceable(GetPlaceableObjectsID(currentMachinePrefab), currentMachine.transform.eulerAngles, new Vector2Int(x,y),takenGridPositions, currentPlaceable));
             DeactivatePlacementMode();
         }
         private bool IsPlacementPossible(int x, int y)
@@ -326,6 +326,8 @@ namespace CON.Machines
 
         // Interface Implementations
 
+
+        // TODO: Save spawned elements by scanning whole scene for them and saving the necessary information
         public object CaptureState()
         {
             BuildingGridSettings gridSettings = BuildingGridAssetManager.LoadSettings();
@@ -338,7 +340,15 @@ namespace CON.Machines
                     obstructedList[x, y] = grid.gridArray[x, y].obstructed;
                 }
             }
-            return new SaveData(obstructedList, builtObjects);
+
+            Dictionary<SerializableVector3, SavedPlaceable> newBuiltObjects = new Dictionary<SerializableVector3, SavedPlaceable>();
+
+            foreach(KeyValuePair<SerializableVector3,SavedPlaceable> keyValuePair in builtObjects)
+            {
+                newBuiltObjects.Add(keyValuePair.Key, new SavedPlaceable(keyValuePair.Value.id, keyValuePair.Value.eulerRotation.ToVector(), keyValuePair.Value.origin.ToVector(), keyValuePair.Value.GetTakenGridPositions(), ((IPlaceable)keyValuePair.Value.variableInformation).GetInformationToSave()));
+            }
+
+            return new SaveData(obstructedList, newBuiltObjects);
         }
 
         public void RestoreState(object state)
@@ -368,11 +378,14 @@ namespace CON.Machines
 
             foreach (KeyValuePair<SerializableVector3,SavedPlaceable> keyValuePair in saveData.builtPlaceables)
             {
-                builtObjects.Add(keyValuePair.Key,keyValuePair.Value.Copy());
+                
                 IPlaceable placeable = Instantiate(placeableObjectsPrefabs[keyValuePair.Value.id], keyValuePair.Key.ToVector(), Quaternion.Euler(keyValuePair.Value.eulerRotation.ToVector()), buildObjectsParent).GetComponent<IPlaceable>();
                 placeable.FullyPlaced(this);
                 placeable.SetOrigin(keyValuePair.Value.origin.ToVector());
                 placeable.SetTakenGridPositions(keyValuePair.Value.GetTakenGridPositions());
+                placeable.LoadSavedInformation(keyValuePair.Value.variableInformation);
+
+                builtObjects.Add(keyValuePair.Key, new SavedPlaceable(keyValuePair.Value.id,keyValuePair.Value.eulerRotation.ToVector(),keyValuePair.Value.origin.ToVector(),keyValuePair.Value.GetTakenGridPositions(), placeable));
             }
 
         }
@@ -396,12 +409,14 @@ namespace CON.Machines
             public SerializableVector3 eulerRotation;
             public SerializableVector2Int origin;
             public SerializableVector2Int[] takenGridPositions;
+            public object variableInformation;
 
-            public SavedPlaceable(int id, Vector3 eulerRotation, Vector2Int origin, Vector2Int[] takenGridPositions)
+            public SavedPlaceable(int id, Vector3 eulerRotation, Vector2Int origin, Vector2Int[] takenGridPositions, object variableInformation)
             {
                 this.id = id;
                 this.eulerRotation = new SerializableVector3(eulerRotation);
                 this.origin = new SerializableVector2Int(origin);
+                this.variableInformation = variableInformation;
 
                 this.takenGridPositions = new SerializableVector2Int[takenGridPositions.Length];
                 for (int index = 0; index < takenGridPositions.Length; index++)
@@ -422,7 +437,7 @@ namespace CON.Machines
 
             public SavedPlaceable Copy()
             {
-                return new SavedPlaceable(id, eulerRotation.ToVector(), origin.ToVector(), GetTakenGridPositions());
+                return new SavedPlaceable(id, eulerRotation.ToVector(), origin.ToVector(), GetTakenGridPositions(),variableInformation);
             }
         }
     }

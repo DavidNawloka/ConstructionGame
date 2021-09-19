@@ -10,7 +10,6 @@ namespace CON.Elements
     public class Inventory : MonoBehaviour, ISaveable
     {
         [SerializeField] int inventorySlots;
-        [SerializeField] bool shouldBeSaved = false;
 
         public InventoryItem[] inventory;
 
@@ -150,7 +149,6 @@ namespace CON.Elements
 
         public object CaptureState()
         {
-            if (!shouldBeSaved) return null;
 
             SerializeableInventoryItem[] savedInventory = new SerializeableInventoryItem[inventory.Length];
             for (int index = 0; index < inventory.Length; index++)
@@ -160,7 +158,7 @@ namespace CON.Elements
                 if (currentInventoryItem.element == null) savedInventory[index] = null;
                 else
                 {
-                    savedInventory[index] = new SerializeableInventoryItem(currentInventoryItem.element.name, currentInventoryItem.amount);
+                    savedInventory[index] = currentInventoryItem.Serialize();
                 }
             }
             return savedInventory;
@@ -168,11 +166,9 @@ namespace CON.Elements
 
         public void RestoreState(object state)
         {
-            if (!shouldBeSaved) return;
+            if (state == null) return;
 
             SerializeableInventoryItem[] savedInventory = (SerializeableInventoryItem[])state;
-
-            print(state);
 
             inventory = new InventoryItem[savedInventory.Length];
             for (int index = 0; index < inventory.Length; index++)
@@ -185,19 +181,26 @@ namespace CON.Elements
                     inventory[index] = new InventoryItem((Element)Resources.Load(currentInventoryItem.elementName), currentInventoryItem.amount);
                 }
             }
+            OnInventoryChange.Invoke(this);
         }
 
-        [System.Serializable]
-        private class SerializeableInventoryItem
-        {
-            public string elementName;
-            public int amount;
+        
+    }
+    [System.Serializable]
+    public class SerializeableInventoryItem
+    {
+        public string elementName;
+        public int amount;
 
-            public SerializeableInventoryItem(string elementName, int amount)
-            {
-                this.elementName = elementName;
-                this.amount = amount;
-            }
+        public SerializeableInventoryItem(string elementName, int amount)
+        {
+            this.elementName = elementName;
+            this.amount = amount;
+        }
+
+        public InventoryItem DeSerialize()
+        {
+            return new InventoryItem((Element)Resources.Load(elementName),amount);
         }
     }
     [System.Serializable]
@@ -210,6 +213,11 @@ namespace CON.Elements
         {
             this.element = element;
             this.amount = amount;
+        }
+
+        public SerializeableInventoryItem Serialize()
+        {
+            return new SerializeableInventoryItem(element.name, amount);
         }
     }
 

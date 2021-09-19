@@ -144,6 +144,33 @@ namespace CON.Machines
         {
             ToggleHookPosition();
         }
+        public object GetInformationToSave()
+        {
+            return new SavedSeperatorConveyor(isRightToLeft,elementCounter);
+        }
+
+        public void LoadSavedInformation(object savedInformation)
+        {
+            SavedSeperatorConveyor savedSeperatorConveyor = (SavedSeperatorConveyor)savedInformation;
+
+            isRightToLeft = savedSeperatorConveyor.isRightToLeft;
+            elementCounter = savedSeperatorConveyor.elementCounter;
+
+            UpdateHookPosition();
+        }
+
+        [System.Serializable]
+        private class SavedSeperatorConveyor
+        {
+            public bool isRightToLeft;
+            public int elementCounter;
+
+            public SavedSeperatorConveyor(bool isRightToLeft, int elementCounter)
+            {
+                this.isRightToLeft = isRightToLeft;
+                this.elementCounter = elementCounter;
+            }
+        }
     }
 
 }

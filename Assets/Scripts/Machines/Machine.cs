@@ -87,9 +87,25 @@ namespace CON.Machines
         {
             return currentInstruction;
         }
+        public int GetCurrentInstructionIndex()
+        {
+            for (int index = 0; index < possibleInstructions.Length; index++)
+            {
+                if(currentInstruction == possibleInstructions[index])
+                {
+                    return index;
+                }
+            }
+            return 0;
+        }
         public void SetCurrentInstruction(int instructionIndex)
         {
             currentInstruction = possibleInstructions[instructionIndex];
+            UpdateElementTriggers();
+        }
+        public void SetCurrentInstruction(Instruction instruction)
+        {
+            currentInstruction = instruction;
             UpdateElementTriggers();
         }
         public float GetProductionFraction()
@@ -192,6 +208,38 @@ namespace CON.Machines
             
         }
 
+        public object GetInformationToSave()
+        {
+            return new SavedMachine(productionTimer,elementsProduced,currentInstruction,inventory.CaptureState());
+        }
+
+        public void LoadSavedInformation(object savedInformation)
+        {
+            SavedMachine savedMachine = (SavedMachine)savedInformation;
+
+            productionTimer = savedMachine.productionTimer;
+            elementsProduced = savedMachine.elementsProduced;
+            SetCurrentInstruction(savedMachine.machineInstruction.DeSerialize());
+            inventory.RestoreState(savedMachine.inventoryState);
+        }
+
+
+        [System.Serializable]
+        private class SavedMachine
+        {
+            public float productionTimer;
+            public int elementsProduced;
+            public SerializedInstruction machineInstruction;
+            public object inventoryState;
+            public SavedMachine(float productionTimer, int elementsProduced, Instruction currentInstruction, object inventoryState)
+            {
+                this.productionTimer = productionTimer;
+                this.elementsProduced = elementsProduced;
+                this.machineInstruction = currentInstruction.Serialize();
+                this.inventoryState = inventoryState;
+            }
+        }
         
+
     }
 }
