@@ -18,12 +18,13 @@ namespace Astutos.Saving
             Dictionary<string, object> state = LoadFile(saveFile);
 
             int lastSceneIndex = SceneManager.GetActiveScene().buildIndex;
-
+            print(lastSceneIndex);
             if (state.ContainsKey(buildIndexKey))
             {
                 lastSceneIndex = (int)state[buildIndexKey];
+                
             }
-            yield return SceneManager.LoadSceneAsync(lastSceneIndex); // All Awake Methods of the new scene have been called after continueing this code block
+            yield return SceneManager.LoadSceneAsync(0); // All Awake Methods of the new scene have been called after continueing this code block
             RestoreState(state);
         }
 
@@ -50,7 +51,6 @@ namespace Astutos.Saving
             string path = GetPathFromSaveFile(saveFile);
             print("Saving to " + path);
             AesCryptoServiceProvider aes = new AesCryptoServiceProvider();
-
 
             using (FileStream stream = File.Open(path, FileMode.Create))
             {

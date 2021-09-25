@@ -17,13 +17,11 @@ namespace CON.UI
 
         Transform player;
         Button button;
-        BuilderVisualisation builderVisualisation;
 
         private void Awake()
         {
             player = GameObject.FindGameObjectWithTag("Player").transform;
             button = GetComponent<Button>();
-            builderVisualisation = GetComponentInParent<BuilderVisualisation>();
         }
         private void OnEnable()
         {
@@ -72,8 +70,8 @@ namespace CON.UI
         private void OnClick()
         {
             player.GetComponent<Builder>().ActivatePlacementMode(placeablePrefab);
-            player.GetComponent<Builder>().SetActiveDemolishMode(false);
         }
+
     }
 
 }

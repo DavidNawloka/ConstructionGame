@@ -5,7 +5,7 @@ using Astutos.Saving;
 
 namespace CON.Elements
 {
-    public class ElementSaving : MonoBehaviour, ISaveable
+    public class ElementPickupSaving : MonoBehaviour, ISaveable
     {
         [SerializeField] Transform elementPickupParent;
         public object CaptureState()

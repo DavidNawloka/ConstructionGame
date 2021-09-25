@@ -20,7 +20,7 @@ namespace CON.BuildingGrid
                 if (gridTexture == null) return;
 
                 buildingGridMesh.InitiatePlane(gridTexture);
-                buildingGridMesh.ToggleMesh(!isShown);
+                buildingGridMesh.SetActiveMesh(!isShown);
                 isShown = !isShown;
             }
         }

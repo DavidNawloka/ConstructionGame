@@ -65,7 +65,7 @@ namespace CON.Machines
                 ToggleBuildMode();
                 if (isPlacementMode)
                 {
-                    DeactivePlacementModeDestruction();
+                    DeactivatePlacementModeDestruction();
                 }
             }
 
@@ -73,7 +73,7 @@ namespace CON.Machines
 
             if (isPlacementMode && Input.GetKeyDown(KeyCode.C))
             {
-                DeactivePlacementModeDestruction();
+                DeactivatePlacementModeDestruction();
             }
             if(isPlacementMode && Input.GetKeyDown(KeyCode.V))
             {
@@ -100,6 +100,7 @@ namespace CON.Machines
         public void ActivatePlacementMode(GameObject machine)
         {
             if (currentMachine != null) Destroy(currentMachine);
+            if (isDemolishMode) SetActiveDemolishMode(false);
 
             isPlacementMode = true;
             currentMachinePrefab = machine;
@@ -111,24 +112,23 @@ namespace CON.Machines
 
         public void ToggleBuildMode()
         {
-            SetActiveBuildMode(!isBuildMode);
+            isBuildMode = !isBuildMode;
+            SetActiveBuildMode();
         }
-        private void SetActiveBuildMode(bool isBuildMode)
+        private void SetActiveBuildMode()
         {
-            this.isBuildMode = isBuildMode;
             onBuildModeChange(isBuildMode);
             if (isDemolishMode) SetActiveDemolishMode(isBuildMode);
         }
         public void ToggleDemolishMode()
         {
-            if (!isBuildMode) return;
             SetActiveDemolishMode(!isDemolishMode);
         }
-        public void SetActiveDemolishMode(bool isDemolishMode)
+        public void SetActiveDemolishMode(bool isActive)
         {
-            if(isDemolishMode) DeactivePlacementModeDestruction();
-            this.isDemolishMode = isDemolishMode;
-            onDemolishModeChange(isDemolishMode);
+            if (isActive) DeactivatePlacementModeDestruction();
+            isDemolishMode = isActive;
+            onDemolishModeChange(isActive);
         }
         public BuildingGridMesh GetGridMesh()
         {
@@ -151,7 +151,6 @@ namespace CON.Machines
 
                     if (placedMachine == null) return;
 
-                    Destroy(raycastHit.transform.gameObject);
 
                     foreach (Vector2Int takenGridPosition in placedMachine.GetTakenGridPositions())
                     {
@@ -168,10 +167,12 @@ namespace CON.Machines
                     {
                         if (Vector3.Distance(keyValuePair.Key.ToVector(), raycastHit.collider.transform.position) < 1f)
                         {
-                            print(builtObjects.Remove(keyValuePair.Key));
+                            builtObjects.Remove(keyValuePair.Key);
                             break;
                         }
                     }
+
+                    Destroy(raycastHit.transform.gameObject);
                 }
             }
         }
@@ -231,7 +232,7 @@ namespace CON.Machines
             currentPlaceable.SetOrigin(new Vector2Int(x, y));
             currentPlaceable.FullyPlaced(this);
             builtObjects.Add(new SerializableVector3(currentMachine.transform.position),new SavedPlaceable(GetPlaceableObjectsID(currentMachinePrefab), currentMachine.transform.eulerAngles, new Vector2Int(x,y),takenGridPositions, currentPlaceable));
-            DeactivatePlacementMode();
+            ReenablePlacementMode();
         }
         private bool IsPlacementPossible(int x, int y)
         {
@@ -261,14 +262,14 @@ namespace CON.Machines
                 inventory.RemoveItem(inventoryItem);
             }
         }
-        private void DeactivePlacementModeDestruction()
+        private void DeactivatePlacementModeDestruction()
         {
             Destroy(currentMachine);
             isPlacementMode = false;
             currentMachine = null;
             currentPlaceable = null;
         }
-        private void DeactivatePlacementMode()
+        private void ReenablePlacementMode()
         {
             
             isPlacementMode = false;
@@ -326,7 +327,6 @@ namespace CON.Machines
         // Interface Implementations
 
 
-        // TODO: Save spawned elements by scanning whole scene for them and saving the necessary information
         public object CaptureState()
         {
             BuildingGridSettings gridSettings = BuildingGridAssetManager.LoadSettings();

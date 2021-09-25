@@ -12,8 +12,9 @@ namespace Astutos.Saving
             string path = GetPathFromSaveFile(saveFile);
             string jsonState = JsonUtility.ToJson(state);
             File.WriteAllText(path, jsonState);
+
         }
-        public JsonSaveData Load(string saveFile)
+        public JsonSavedStatisticData Load(string saveFile)
         {
             string path = GetPathFromSaveFile(saveFile);
 
@@ -21,7 +22,7 @@ namespace Astutos.Saving
 
             string jsonState = File.ReadAllText(path);
 
-            return JsonUtility.FromJson<JsonSaveData>(jsonState);
+            return JsonUtility.FromJson<JsonSavedStatisticData>(jsonState);
         }
         private string GetPathFromSaveFile(string saveFile)
         {

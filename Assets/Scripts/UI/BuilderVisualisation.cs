@@ -28,6 +28,7 @@ namespace CON.UI
         }
         public void ToggleBuildMode() // Button onClick event function
         {
+            print(builder);
             builder.ToggleBuildMode();
         }
         public void ToggleDemolishMode() // Button onClick event function
@@ -42,7 +43,7 @@ namespace CON.UI
         {
             canvasGroup.interactable = isActive;
             canvasGroup.blocksRaycasts = isActive;
-            buildingGridMesh.ToggleMesh(isActive);
+            buildingGridMesh.SetActiveMesh(isActive);
 
             if (isActive) canvasGroup.alpha = 1;
             else canvasGroup.alpha = 0;

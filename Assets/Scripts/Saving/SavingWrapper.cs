@@ -1,63 +1,106 @@
+using CON.Core;
 using CON.Machines;
 using System.Collections;
-using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Astutos.Saving
 {
     public class SavingWrapper : MonoBehaviour
     {
-        string saveFileName = "testSaveFile";
+        public UnityEvent OnSave;
+
+        const string MAIN_SAVE_FILE_NAME = "mainSaveFile";
+        const string STATISTIC_SAVE_FILE_NAME = "statisticsSaveFile";
+        const string SCREENSHOT_SAVE_FILE_NAME = "screenshot";
+
+        string defaultSaveFolderName = "saveFile";
+
         SavingSystemEncrypted savingSystemEncrypted;
         SavingSystemJson savingSystemJson;
+        ScreenCaptureSaving screenCapture;
 
         int timePlayedInSeconds;
+        int saveFileNum = 0;
 
         private void Awake()
         {
             savingSystemEncrypted = GetComponent<SavingSystemEncrypted>();
             savingSystemJson = GetComponent<SavingSystemJson>();
-            Load();
+            screenCapture = FindObjectOfType<ScreenCaptureSaving>();
+
+            saveFileNum = Directory.GetDirectories(Application.persistentDataPath).Length - 1;
+            Load(defaultSaveFolderName + (saveFileNum).ToString());
+            saveFileNum++;
         }
         
-        public void Save() // Button OnClick Event
+        public void StartSave()// Button OnClick Event
         {
-            savingSystemEncrypted.Save(saveFileName);
-            savingSystemJson.Save(saveFileName, GetGameStatistics());
+            StartCoroutine(Save());
         }
 
-        public void Load() // Button OnClick Event
+        public IEnumerator Save() 
         {
-            savingSystemEncrypted.Load(saveFileName);
-            JsonSaveData savedData = savingSystemJson.Load(saveFileName);
+            string saveFolderName = defaultSaveFolderName + saveFileNum++;
+            Directory.CreateDirectory(Path.Combine(Application.persistentDataPath, saveFolderName));
+
+            savingSystemEncrypted.Save(GetPathWithFolder(saveFolderName,MAIN_SAVE_FILE_NAME));
+            savingSystemJson.Save(GetPathWithFolder(saveFolderName,STATISTIC_SAVE_FILE_NAME), GetGameStatistics());
+            yield return screenCapture.CaptureAndSaveScreenshot(GetPathWithFolder(saveFolderName,SCREENSHOT_SAVE_FILE_NAME));
+
+            OnSave.Invoke();
+        }
+
+        public void Load(string saveFolderName) // Button OnClick Event
+        {
+            savingSystemEncrypted.Load(GetPathWithFolder(saveFolderName, MAIN_SAVE_FILE_NAME));
+            JsonSavedStatisticData savedData = savingSystemJson.Load(GetPathWithFolder(saveFolderName, STATISTIC_SAVE_FILE_NAME));
 
             if (savedData == null) return;
-            timePlayedInSeconds = savedData.seconds;
-
-            print(string.Format("Time played: {0} | Machines Built: {1} | Coneyors Built: {2}",savedData.seconds,savedData.machinesBuilt,savedData.conveyorsBuilt));
+            timePlayedInSeconds = savedData.timePlayedInSeconds;
         }
 
-        private JsonSaveData GetGameStatistics()
+        public JsonSavedStatisticData LoadStatistics(string folderPath)
+        {
+            JsonSavedStatisticData savedData = savingSystemJson.Load(Path.Combine(folderPath, STATISTIC_SAVE_FILE_NAME));
+
+            if (savedData == null) return null;
+            return savedData;
+        }
+        public Texture2D LoadScreenshot(string folderPath)
+        {
+            return screenCapture.LoadScreenshot(GetPathWithFolder(folderPath, SCREENSHOT_SAVE_FILE_NAME));
+        }
+
+        private JsonSavedStatisticData GetGameStatistics()
         {
             int timePlayedAll = ((int)Time.time) + timePlayedInSeconds;
             int machinesBuilt = FindObjectsOfType<Machine>().Length;
             int conveyorsBuilt = FindObjectsOfType<Conveyor>().Length + FindObjectsOfType<SeperatorConveyor>().Length;
-            return new JsonSaveData(timePlayedAll, machinesBuilt, conveyorsBuilt);
+            return new JsonSavedStatisticData(timePlayedAll, machinesBuilt, conveyorsBuilt, saveFileNum + 1);
+        }
+
+        private string GetPathWithFolder(string folderName, string saveFileName)
+        {
+            return Path.Combine(folderName, saveFileName);
         }
 
     }
     [System.Serializable]
-    public class JsonSaveData
+    public class JsonSavedStatisticData
     {
-        public int seconds;
+        public int timePlayedInSeconds;
         public int machinesBuilt;
         public int conveyorsBuilt;
+        public int saveFileNum;
 
-        public JsonSaveData(int seconds, int machinesBuilt, int conveyorsBuilt)
+        public JsonSavedStatisticData(int timePlayedInSeconds, int machinesBuilt, int conveyorsBuilt, int saveFileNum)
         {
-            this.seconds = seconds;
+            this.timePlayedInSeconds = timePlayedInSeconds;
             this.machinesBuilt = machinesBuilt;
             this.conveyorsBuilt = conveyorsBuilt;
+            this.saveFileNum = saveFileNum;
         }
     }
 }

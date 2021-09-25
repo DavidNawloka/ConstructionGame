@@ -20,7 +20,7 @@ namespace CON.BuildingGrid
             meshFilter.mesh = BuildingGridAssetManager.GetGridMesh();
             UpdateTexture(texture);
 
-            ToggleMesh(false);
+            SetActiveMesh(false);
         }
 
         public void UpdateTexture(Texture2D updatedTexture)
@@ -29,9 +29,13 @@ namespace CON.BuildingGrid
             meshRenderer.UpdateGIMaterials();
         }
 
-        public void ToggleMesh(bool isActive)
+        public void SetActiveMesh(bool isActive)
         {
             meshRenderer.enabled = isActive;
+        }
+        public bool IsActive()
+        {
+            return meshRenderer.enabled;
         }
     }
 
