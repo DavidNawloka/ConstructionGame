@@ -165,6 +165,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildObjectsParent: {fileID: 0}
+  placeableObjectsPrefabs:
+  - {fileID: 6366741075993714630, guid: bb6ca1340ae038249b5009f58c022cc3, type: 3}
+  - {fileID: 1613690524034605397, guid: 55925bf9d387089499b28dc2d5d8c612, type: 3}
+  - {fileID: 1203245733232507348, guid: 0c30793bdf28329408dc608a0782a8ce, type: 3}
+  - {fileID: 2825724676428736791, guid: ecb77413fc6c1d14e882269504b00e70, type: 3}
+  - {fileID: 6661906681428096232, guid: e6db151c8c3d01e4983db74a31398014, type: 3}
+  - {fileID: 8095774179287151682, guid: 304d2fdd939737b42b19b11edc61fffe, type: 3}
+  - {fileID: 4053394887740499496, guid: 4f51d495af72aec49839a18a741c86d3, type: 3}
+  - {fileID: 927031865721193231, guid: d7820a8157b577945b006a633d59d393, type: 3}
 --- !u!114 &7684909
 MonoBehaviour:
   m_ObjectHideFlags: 0

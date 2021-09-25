@@ -172,7 +172,8 @@ namespace CON.UI
 
             instructionDropdown.value = machine.GetCurrentInstructionIndex();
 
-            SetActiveElementIndicators(false);
+            if (!machine.GetFullyPlacedStatus()) SetActiveElementIndicators(true);
+
             GameObject.FindGameObjectWithTag("Player").GetComponent<Builder>().onBuildModeChange += SetActiveElementIndicators;
         }
 

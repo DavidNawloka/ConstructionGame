@@ -79,6 +79,11 @@ namespace CON.Machines
             inventory.EquipItemAt(elementToAdd.GetItemToEquip(), GetElementInstructionIndex(elementToAdd.GetItemToEquip().element));
         }
 
+
+        public bool GetFullyPlacedStatus()
+        {
+            return fullyPlaced;
+        }
         public Instruction[] GetPossibleInstructions()
         {
             return possibleInstructions;

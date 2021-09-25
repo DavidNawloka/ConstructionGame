@@ -5,8 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.EventSystems;
+using System.Linq;
 
 namespace CON.Machines
 {
@@ -353,6 +352,12 @@ namespace CON.Machines
 
         public void RestoreState(object state)
         {
+            foreach(Transform placeable in buildObjectsParent)
+            {
+                Destroy(placeable.gameObject);
+            }
+
+
             SaveData saveData = (SaveData)state;
 
             BuildingGridSettings gridSettings = BuildingGridAssetManager.LoadSettings();
