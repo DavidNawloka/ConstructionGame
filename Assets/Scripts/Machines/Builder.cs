@@ -21,6 +21,7 @@ namespace CON.Machines
         BuildingGridMesh gridMesh;
         bool isPlacementMode = false;
 
+        bool isPaused;
         bool isDemolishMode = false;
         bool isBuildMode = false;
 
@@ -53,6 +54,7 @@ namespace CON.Machines
 
         private void Update()
         {
+            if (isPaused) return;
             HandleInput();
             HandleModes();
         }
@@ -108,6 +110,11 @@ namespace CON.Machines
             currentPlaceable = currentMachine.GetComponent<IPlaceable>();
             takenGridPositions = currentPlaceable.GetTakenGridPositions();
             currentMachine.transform.parent = buildObjectsParent;
+        }
+
+        public void OnPauseChange(bool isPaused)
+        {
+            this.isPaused = isPaused;
         }
 
         public void ToggleBuildMode()

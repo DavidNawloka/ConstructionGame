@@ -18,6 +18,7 @@ namespace CON.Player
 
 
         bool shouldZoom = true;
+        bool isPaused = false;
 
         private void Awake()
         {
@@ -30,12 +31,16 @@ namespace CON.Player
         }
         private void Update()
         {
-            if(shouldZoom) ManageCameraZoom();
+            if(shouldZoom && !isPaused) ManageCameraZoom();
             if (UIInteraction()) return;
             if (WorldInteraction()) return;
             if (MovementInteraction()) return;
         }
 
+        public void OnPauseChange(bool isPaused)
+        {
+            this.isPaused = isPaused;
+        }
         private void buildModeChange(bool isActive)
         {
             shouldZoom = !isActive;
