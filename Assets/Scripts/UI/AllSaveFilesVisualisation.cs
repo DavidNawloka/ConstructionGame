@@ -9,18 +9,44 @@ namespace CON.UI
     {
         [SerializeField] SaveFileVisualisation saveFileVisualisationPrefab;
         [SerializeField] RectTransform scrollRectContent;
+        [SerializeField] int defaultShownSaves = 5;
+        [SerializeField] int shownSavesChangePerClick = 5;
 
         SavingWrapper savingWrapper;
+
+        int shownSaves;
+
         private void Awake()
         {
             savingWrapper = FindObjectOfType<SavingWrapper>();
-            savingWrapper.OnSave.AddListener(UpdateSaveFilesVisualisations);
-            UpdateSaveFilesVisualisations();
+            shownSaves = defaultShownSaves;
+            UpdateSaveFilesVisualisation();
+            savingWrapper.OnSaveFileChange.AddListener(UpdateSaveFilesVisualisation);
+            
         }
 
-        private void UpdateSaveFilesVisualisations()
+        private void OnEnable()
         {
-            // TODO: Optimize large amount of save files by only showing the first 10 for example and having a button to show more, or have a limit on how many savefiles there can be
+            shownSaves = defaultShownSaves;
+            UpdateSaveFilesVisualisation();
+        }
+
+
+        public void IncreaseShownSaves() // Button OnClick event function
+        {
+            shownSaves += shownSavesChangePerClick;
+            UpdateSaveFilesVisualisation();
+        }
+
+        public void DecreaseShownSaves() // Button OnClick event function
+        {
+            shownSaves -= shownSavesChangePerClick;
+            UpdateSaveFilesVisualisation();
+        }
+
+        private void UpdateSaveFilesVisualisation()
+        {
+            // TODO: Optimize large amount of save files
 
             foreach(Transform oldSaveFile in scrollRectContent)
             {
@@ -30,8 +56,10 @@ namespace CON.UI
 
             string[] saveFileDirectories = savingWrapper.GetAllSaveFolders();
 
-            scrollRectContent.sizeDelta = new Vector2(scrollRectContent.rect.width,(250 * saveFileDirectories.Length) +170);
-            for (int saveFileIndex = 0; saveFileIndex < saveFileDirectories.Length; saveFileIndex++)
+            shownSaves = Mathf.Clamp(shownSaves, Mathf.Min(defaultShownSaves,saveFileDirectories.Length), saveFileDirectories.Length);
+
+            scrollRectContent.sizeDelta = new Vector2(scrollRectContent.rect.width,(250 * shownSaves) +300);
+            for (int saveFileIndex = 0; saveFileIndex < shownSaves; saveFileIndex++)
             {
                 SaveFileVisualisation saveFile = Instantiate(saveFileVisualisationPrefab, Vector3.zero,Quaternion.identity,scrollRectContent);
                 saveFile.transform.localPosition = new Vector3(0, -270 + (-250 * saveFileIndex));

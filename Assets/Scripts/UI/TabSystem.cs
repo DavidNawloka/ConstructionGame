@@ -7,7 +7,12 @@ namespace CON.UI
     public class TabSystem : MonoBehaviour
     {
         GameObject oldTab;
-        
+
+        private void Awake()
+        {
+            CloseAllTabs();
+        }
+
         public void CloseTab()
         {
             if (oldTab != null) oldTab.SetActive(false);
@@ -21,6 +26,13 @@ namespace CON.UI
             oldTab = newTab;
             newTab.SetActive(true);
         }
-    }
 
+        private void CloseAllTabs()
+        {
+            foreach(Transform child in transform) 
+            {
+                child.gameObject.SetActive(false);
+            }
+        }
+    }
 }

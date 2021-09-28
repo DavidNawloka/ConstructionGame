@@ -25,7 +25,6 @@ namespace CON.UI
             int numOfSameName = 0;
             foreach (string save in saves)
             {
-                print(save);
                 if (save == saveName || (save.Length > saveName.Length && save.Substring(0,saveName.Length) == saveName)) numOfSameName++;
             }
 

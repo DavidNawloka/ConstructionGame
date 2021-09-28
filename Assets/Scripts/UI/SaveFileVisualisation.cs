@@ -24,6 +24,11 @@ namespace CON.UI
             savingWrapper = FindObjectOfType<SavingWrapper>();
         }
 
+        public void DeleteSaveFile()
+        {
+            savingWrapper.Delete(saveFolderName);
+        }
+
         public void SetSaveFileVisualisation(Texture2D screenshot, int timePlayed, int machinesBuilt, int conveyorsBuilt,string mainSaveFileName)
         {
             screenshotImage.texture = screenshot;

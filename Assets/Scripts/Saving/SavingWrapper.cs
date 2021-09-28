@@ -10,7 +10,7 @@ namespace Astutos.Saving
 {
     public class SavingWrapper : MonoBehaviour
     {
-        public UnityEvent OnSave;
+        public UnityEvent OnSaveFileChange;
 
         const string MAIN_SAVE_FILE_NAME = "mainSaveFile";
         const string STATISTIC_SAVE_FILE_NAME = "statisticsSaveFile";
@@ -59,7 +59,7 @@ namespace Astutos.Saving
             savingSystemJson.Save(GetPathWithFolder(saveFolderName,STATISTIC_SAVE_FILE_NAME), GetGameStatistics());
             yield return screenCapture.CaptureAndSaveScreenshot(GetPathWithFolder(saveFolderName,SCREENSHOT_SAVE_FILE_NAME));
 
-            OnSave.Invoke();
+            OnSaveFileChange.Invoke();
         }
 
         public void Load(string saveFolderName) // Button OnClick Event
@@ -71,14 +71,18 @@ namespace Astutos.Saving
             timePlayedInSeconds = savedData.timePlayedInSeconds;
         }
 
+        public void Delete(string saveFolderName)
+        {
+            Directory.Delete(Path.Combine(Application.persistentDataPath, saveFolderName),true);
+            OnSaveFileChange.Invoke();
+        }
+
         public string GetDefaultSaveName()
         {
             return defaultSaveFolderName;
         }
         public string[] GetAllSaveFolders()
         {
-            // TODO: Sort saves after date it was created.
-
             string[] savesWithPath = Directory.GetDirectories(Application.persistentDataPath);
             FileInfo[] savesFileInfo = new FileInfo[savesWithPath.Length];
 
