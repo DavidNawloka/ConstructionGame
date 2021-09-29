@@ -39,8 +39,6 @@ namespace CON.Player
                     return true;
                 }
             }
-
-            print("Path Invalid!");
             return false;
         }
 

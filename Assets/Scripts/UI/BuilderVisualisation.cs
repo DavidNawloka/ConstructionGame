@@ -28,7 +28,6 @@ namespace CON.UI
         }
         public void ToggleBuildMode() // Button onClick event function
         {
-            print(builder);
             builder.ToggleBuildMode();
         }
         public void ToggleDemolishMode() // Button onClick event function

@@ -6,13 +6,12 @@ using UnityEngine;
 
 namespace CON.Machines
 {
-    public class Conveyor : MonoBehaviour, IPlaceable
+    public class TunnelConveyor : MonoBehaviour, IPlaceable
     {
         [SerializeField] Vector2Int[] takenGridPositions;
         [SerializeField] InventoryItem[] elementBuildingRequirements;
-        [SerializeField] Transform[] pathOfElement;
-        [SerializeField] float forceToApplyForward;
-        [SerializeField] float forceToApplySide;
+        [SerializeField] Transform elementExitPoint;
+        [SerializeField] float elementExitForce = 2;
         [SerializeField] GameObject directionArrow;
 
         Vector2Int gridOrigin;
@@ -29,20 +28,21 @@ namespace CON.Machines
             player.onBuildModeChange -= OnBuildModeChange;
         }
 
-        private void OnCollisionStay(Collision collision)
+        private void OnCollisionEnter(Collision collision)
         {
             ElementPickup elementPickup = collision.transform.GetComponentInParent<ElementPickup>();
             if (elementPickup == null) return;
 
             Rigidbody rigidbody = collision.transform.GetComponentInParent<Rigidbody>();
+            rigidbody.isKinematic = true;
+            elementPickup.transform.position = elementExitPoint.position;
+            rigidbody.isKinematic = false;
+            rigidbody.AddForce(GetForceToKeepOnConveyor(rigidbody.transform) * elementExitForce, ForceMode.Impulse);
 
-            rigidbody.velocity = (pathOfElement[1].position -pathOfElement[0].position).normalized * forceToApplyForward;
-            rigidbody.AddForce(GetForceToKeepOnConveyor(rigidbody.transform)* forceToApplySide, ForceMode.Impulse);
         }
-
         private Vector3 GetForceToKeepOnConveyor(Transform element)
         {
-            if(Mathf.Approximately(transform.rotation.eulerAngles.y,90) || Mathf.Approximately(transform.rotation.eulerAngles.y, 270))
+            if (Mathf.Approximately(transform.rotation.eulerAngles.y, 90) || Mathf.Approximately(transform.rotation.eulerAngles.y, 270))
             {
                 return new Vector3(transform.position.x - element.position.x, 0, 0);
             }
@@ -88,7 +88,7 @@ namespace CON.Machines
         }
         public void ChangeVersion()
         {
-            
+
         }
 
         public object GetInformationToSave()

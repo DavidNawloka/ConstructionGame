@@ -25,6 +25,7 @@ namespace CON.Machines
         private void Start()
         {
             UpdateHookPosition();
+            if (player != null) OnBuildModeChange(false);
         }
         private void ToggleHookPosition()
         {
