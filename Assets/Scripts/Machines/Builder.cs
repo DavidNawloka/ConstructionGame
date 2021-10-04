@@ -13,17 +13,21 @@ namespace CON.Machines
     {
         [SerializeField] Transform buildObjectsParent;
         [SerializeField] GameObject[] placeableObjectsPrefabs;
+        [SerializeField] float rotationTime = .2f;
+        [SerializeField] float maxSmoothMove = 2f;
 
         public event Action<bool> onDemolishModeChange;
         public event Action<bool> onBuildModeChange;
 
         BuildingGridManager grid;
         BuildingGridMesh gridMesh;
-        bool isPlacementMode = false;
+        
 
         bool isPaused;
         bool isDemolishMode = false;
         bool isBuildMode = false;
+        bool isPlacementMode = false;
+        bool isRotating;
 
 
         GameObject currentMachinePrefab;
@@ -65,10 +69,6 @@ namespace CON.Machines
             if (Input.GetKeyDown(KeyCode.B))
             {
                 ToggleBuildMode();
-                if (isPlacementMode)
-                {
-                    DeactivatePlacementModeDestruction();
-                }
             }
 
             if (!isBuildMode) return;
@@ -126,6 +126,7 @@ namespace CON.Machines
         {
             onBuildModeChange(isBuildMode);
             if (isDemolishMode) SetActiveDemolishMode(isBuildMode);
+            if (isPlacementMode) DeactivatePlacementModeDestruction();
         }
         public void ToggleDemolishMode()
         {
@@ -154,10 +155,10 @@ namespace CON.Machines
 
                 if (Input.GetMouseButtonDown(0) && grid.IsObstructed(x, y))
                 {
-                    IPlaceable placedMachine = raycastHit.collider.GetComponent<IPlaceable>();
+                   
+                    IPlaceable placedMachine = raycastHit.collider.GetComponentInParent<IPlaceable>();
 
                     if (placedMachine == null) return;
-
 
                     foreach (Vector2Int takenGridPosition in placedMachine.GetTakenGridPositions())
                     {
@@ -179,19 +180,19 @@ namespace CON.Machines
                         }
                     }
 
-                    Destroy(raycastHit.transform.gameObject);
+                    Destroy(placedMachine.GetGameObject());
                 }
             }
         }
         private void HandleRotation()
         {
-            if (Input.GetKeyDown(KeyCode.Q) || Input.mouseScrollDelta.y >= 1f)
+            if ((Input.GetKeyDown(KeyCode.Q) || Input.mouseScrollDelta.y >= 1f) && !isRotating)
             {
                 RotateLeft();
             }
-            if (Input.GetKeyDown(KeyCode.E) || Input.mouseScrollDelta.y <= -1f)
+            if ((Input.GetKeyDown(KeyCode.E) || Input.mouseScrollDelta.y <= -1f) && !isRotating)
             {
-                RotateRight();
+                RotateRight(true);
             }
         }
         private void PlacementMode()
@@ -208,7 +209,7 @@ namespace CON.Machines
                 if (IsObstructedAll(x, y)) return;
 
                 currentMachine.transform.position = grid.GetWorldPositionCenter(x, y);
-
+                //currentMachine.transform.position = Vector3.MoveTowards(currentMachine.transform.position, grid.GetWorldPositionCenter(x, y), maxSmoothMove);
                 if (Input.GetMouseButton(0))
                 {
                     Placement(x, y);
@@ -286,7 +287,7 @@ namespace CON.Machines
             ActivatePlacementMode(currentMachinePrefab);
             for (int i = 0; i < toRotate; i++)
             {
-                RotateRight();
+                RotateRight(false);
             }
         }
 
@@ -318,9 +319,9 @@ namespace CON.Machines
                 int y = takenGridPositions[index].y * -1;
                 takenGridPositions[index] = new Vector2Int(y, x);
             }
-            currentMachine.transform.localRotation = Quaternion.Euler(new Vector3(0, currentMachine.transform.localEulerAngles.y - 90, 0));
+            StartCoroutine(StartRotation(Quaternion.Euler(new Vector3(0, currentMachine.transform.localEulerAngles.y - 90, 0))));
         }
-        private void RotateRight()
+        private void RotateRight(bool isSmoothed)
         {
             for (int index = 0; index < takenGridPositions.Length; index++)
             {
@@ -328,9 +329,23 @@ namespace CON.Machines
                 int y = takenGridPositions[index].y ;
                 takenGridPositions[index] = new Vector2Int(y, x);
             }
-            currentMachine.transform.localRotation = Quaternion.Euler(new Vector3(0, currentMachine.transform.localEulerAngles.y + 90, 0));
+            if(isSmoothed) StartCoroutine(StartRotation(Quaternion.Euler(new Vector3(0, currentMachine.transform.localEulerAngles.y + 90, 0))));
+            else currentMachine.transform.localRotation = Quaternion.Euler(new Vector3(0, currentMachine.transform.localEulerAngles.y + 90, 0));
         }
-
+        IEnumerator StartRotation(Quaternion goal)
+        {
+            isRotating = true;
+            Quaternion initialRotation = currentMachine.transform.localRotation;
+            float amount = 0;
+            while(amount < rotationTime)
+            {
+                currentMachine.transform.localRotation = Quaternion.Slerp(initialRotation, goal,amount/rotationTime);
+                amount += Time.deltaTime;
+                yield return null;
+            }
+            currentMachine.transform.localRotation = goal;
+            isRotating = false;
+        }
         // Interface Implementations
 
 

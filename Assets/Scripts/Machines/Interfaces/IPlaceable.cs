@@ -12,6 +12,7 @@ namespace CON.Machines
         public Vector2Int GetOrigin();
         public void FullyPlaced(Builder player);
         public void ChangeVersion();
+        public GameObject GetGameObject();
         public object GetInformationToSave();
         public void LoadSavedInformation(object savedInformation);
     }

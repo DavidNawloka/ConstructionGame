@@ -31,13 +31,14 @@ namespace CON.Machines
         private void OnCollisionEnter(Collision collision)
         {
             ElementPickup elementPickup = collision.transform.GetComponentInParent<ElementPickup>();
+
             if (elementPickup == null) return;
 
-            Rigidbody rigidbody = collision.transform.GetComponentInParent<Rigidbody>();
+            Rigidbody rigidbody = elementPickup.transform.GetComponentInParent<Rigidbody>();
             rigidbody.isKinematic = true;
             elementPickup.transform.position = elementExitPoint.position;
             rigidbody.isKinematic = false;
-            rigidbody.AddForce(GetForceToKeepOnConveyor(rigidbody.transform) * elementExitForce, ForceMode.Impulse);
+            rigidbody.AddForce(-transform.right* elementExitForce, ForceMode.Impulse);
 
         }
         private Vector3 GetForceToKeepOnConveyor(Transform element)
@@ -68,7 +69,6 @@ namespace CON.Machines
         public void FullyPlaced(Builder player)
         {
             //GetComponent<NavMeshObstacle>().enabled = true; TODO: Check if other possibility for more walkability
-            GetComponent<BoxCollider>().enabled = true;
             this.player = player;
             player.onBuildModeChange += OnBuildModeChange;
         }
@@ -90,7 +90,10 @@ namespace CON.Machines
         {
 
         }
-
+        public GameObject GetGameObject()
+        {
+            return gameObject;
+        }
         public object GetInformationToSave()
         {
             return null;
@@ -100,6 +103,7 @@ namespace CON.Machines
         {
 
         }
+
     }
 
 }

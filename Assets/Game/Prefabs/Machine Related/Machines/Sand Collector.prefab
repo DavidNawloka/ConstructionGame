@@ -314,21 +314,6 @@ MonoBehaviour:
   elementExitPoint: {fileID: 8787990631489761955}
   elementTriggers:
   - {fileID: 4673276903350356052}
-  OnMachineClicked:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1429681703226100307}
-        m_TargetAssemblyTypeName: CON.UI.MachineVisualisation, Assembly-CSharp
-        m_MethodName: MachineClicked
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &3064543585581661434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -599,6 +584,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8532171369553445523, guid: 193526cddca811248969c03d69f4298c, type: 3}
+      propertyPath: onElementEnterTrigger.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532171369553445523, guid: 193526cddca811248969c03d69f4298c, type: 3}
       propertyPath: onElementEnter.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 0
       objectReference: {fileID: 0}
@@ -615,11 +604,35 @@ PrefabInstance:
       value: AddEnergyElement
       objectReference: {fileID: 0}
     - target: {fileID: 8532171369553445523, guid: 193526cddca811248969c03d69f4298c, type: 3}
+      propertyPath: onElementEnterTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532171369553445523, guid: 193526cddca811248969c03d69f4298c, type: 3}
+      propertyPath: onElementEnterTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7835850052883181845}
+    - target: {fileID: 8532171369553445523, guid: 193526cddca811248969c03d69f4298c, type: 3}
+      propertyPath: onElementEnterTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532171369553445523, guid: 193526cddca811248969c03d69f4298c, type: 3}
+      propertyPath: onElementEnterTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: AddEnergyElement
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532171369553445523, guid: 193526cddca811248969c03d69f4298c, type: 3}
       propertyPath: onElementEnter.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: CON.Machines.Machine, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8532171369553445523, guid: 193526cddca811248969c03d69f4298c, type: 3}
+      propertyPath: onElementEnterTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: CON.Machines.Machine, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532171369553445523, guid: 193526cddca811248969c03d69f4298c, type: 3}
       propertyPath: onElementEnter.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532171369553445523, guid: 193526cddca811248969c03d69f4298c, type: 3}
+      propertyPath: onElementEnterTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 8721472619505388570, guid: 193526cddca811248969c03d69f4298c, type: 3}
@@ -779,7 +792,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 4755586081650477839}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -790,7 +803,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 4755586081650477839}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 

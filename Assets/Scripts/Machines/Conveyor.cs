@@ -90,7 +90,10 @@ namespace CON.Machines
         {
             
         }
-
+        public GameObject GetGameObject()
+        {
+            return gameObject;
+        }
         public object GetInformationToSave()
         {
             return null;

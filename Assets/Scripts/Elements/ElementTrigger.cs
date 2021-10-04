@@ -8,20 +8,37 @@ namespace CON.Elements
     public class ElementTrigger : MonoBehaviour
     {
         [Tooltip("Can be null if no filter needed")][SerializeField] Element filter;
-        [SerializeField] UnityEvent<ElementPickup> onElementEnter;
-        [SerializeField] UnityEvent<ElementPickup> onElementStay;
+        [SerializeField] UnityEvent<ElementPickup> onElementEnterTrigger;
+        [SerializeField] UnityEvent<ElementPickup> onElementStayTrigger;
+        [SerializeField] UnityEvent<ElementPickup> onElementEnterCollider;
+        [SerializeField] UnityEvent<ElementPickup> onElementStayCollider;
 
         public void UpdateFilter(Element newFilter)
         {
             filter = newFilter;
         }
-
+        private void OnCollisionEnter(Collision other)
+        {
+            ElementPickup elementPickup = other.collider.GetComponentInParent<ElementPickup>();
+            if (elementPickup != null && CheckFilter(elementPickup.GetItemToEquip().element))
+            {
+                onElementEnterCollider.Invoke(elementPickup);
+            }
+        }
+        private void OnCollisionStay(Collision other)
+        {
+            ElementPickup elementPickup = other.collider.GetComponentInParent<ElementPickup>();
+            if (elementPickup != null && CheckFilter(elementPickup.GetItemToEquip().element))
+            {
+                onElementStayCollider.Invoke(elementPickup);
+            }
+        }
         private void OnTriggerEnter(Collider other)
         {
             ElementPickup elementPickup = other.GetComponentInParent<ElementPickup>();
             if (elementPickup != null && CheckFilter(elementPickup.GetItemToEquip().element))
             {
-                onElementEnter.Invoke(elementPickup);
+                onElementEnterTrigger.Invoke(elementPickup);
             }
         }
         private void OnTriggerStay(Collider other)
@@ -29,7 +46,7 @@ namespace CON.Elements
             ElementPickup elementPickup = other.GetComponentInParent<ElementPickup>();
             if (elementPickup != null && CheckFilter(elementPickup.GetItemToEquip().element))
             {
-                onElementStay.Invoke(elementPickup);
+                onElementStayTrigger.Invoke(elementPickup);
             }
         }
 

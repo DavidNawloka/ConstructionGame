@@ -3824,6 +3824,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8532171369553445523, guid: 193526cddca811248969c03d69f4298c, type: 3}
+      propertyPath: onElementEnterTrigger.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532171369553445523, guid: 193526cddca811248969c03d69f4298c, type: 3}
       propertyPath: onElementEnter.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 0
       objectReference: {fileID: 0}
@@ -3840,11 +3844,35 @@ PrefabInstance:
       value: OnElementLeftEnter
       objectReference: {fileID: 0}
     - target: {fileID: 8532171369553445523, guid: 193526cddca811248969c03d69f4298c, type: 3}
+      propertyPath: onElementEnterTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532171369553445523, guid: 193526cddca811248969c03d69f4298c, type: 3}
+      propertyPath: onElementEnterTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: -3410572915405353184}
+    - target: {fileID: 8532171369553445523, guid: 193526cddca811248969c03d69f4298c, type: 3}
+      propertyPath: onElementEnterTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532171369553445523, guid: 193526cddca811248969c03d69f4298c, type: 3}
+      propertyPath: onElementEnterTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnElementLeftEnter
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532171369553445523, guid: 193526cddca811248969c03d69f4298c, type: 3}
       propertyPath: onElementEnter.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: CON.Machines.SeperatorConveyor, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8532171369553445523, guid: 193526cddca811248969c03d69f4298c, type: 3}
+      propertyPath: onElementEnterTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: CON.Machines.SeperatorConveyor, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532171369553445523, guid: 193526cddca811248969c03d69f4298c, type: 3}
       propertyPath: onElementEnter.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532171369553445523, guid: 193526cddca811248969c03d69f4298c, type: 3}
+      propertyPath: onElementEnterTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 8721472619505388570, guid: 193526cddca811248969c03d69f4298c, type: 3}
@@ -3946,6 +3974,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8532171369553445523, guid: 193526cddca811248969c03d69f4298c, type: 3}
+      propertyPath: onElementEnterTrigger.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532171369553445523, guid: 193526cddca811248969c03d69f4298c, type: 3}
       propertyPath: onElementEnter.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 0
       objectReference: {fileID: 0}
@@ -3962,11 +3994,35 @@ PrefabInstance:
       value: OnElementRightEnter
       objectReference: {fileID: 0}
     - target: {fileID: 8532171369553445523, guid: 193526cddca811248969c03d69f4298c, type: 3}
+      propertyPath: onElementEnterTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532171369553445523, guid: 193526cddca811248969c03d69f4298c, type: 3}
+      propertyPath: onElementEnterTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: -3410572915405353184}
+    - target: {fileID: 8532171369553445523, guid: 193526cddca811248969c03d69f4298c, type: 3}
+      propertyPath: onElementEnterTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532171369553445523, guid: 193526cddca811248969c03d69f4298c, type: 3}
+      propertyPath: onElementEnterTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnElementRightEnter
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532171369553445523, guid: 193526cddca811248969c03d69f4298c, type: 3}
       propertyPath: onElementEnter.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: CON.Machines.SeperatorConveyor, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8532171369553445523, guid: 193526cddca811248969c03d69f4298c, type: 3}
+      propertyPath: onElementEnterTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: CON.Machines.SeperatorConveyor, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532171369553445523, guid: 193526cddca811248969c03d69f4298c, type: 3}
       propertyPath: onElementEnter.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532171369553445523, guid: 193526cddca811248969c03d69f4298c, type: 3}
+      propertyPath: onElementEnterTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 8721472619505388570, guid: 193526cddca811248969c03d69f4298c, type: 3}

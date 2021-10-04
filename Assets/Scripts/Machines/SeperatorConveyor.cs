@@ -145,6 +145,10 @@ namespace CON.Machines
         {
             ToggleHookPosition();
         }
+        public GameObject GetGameObject()
+        {
+            return gameObject;
+        }
         public object GetInformationToSave()
         {
             return new SavedSeperatorConveyor(isRightToLeft,elementCounter);

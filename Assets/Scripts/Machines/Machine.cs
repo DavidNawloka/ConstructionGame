@@ -212,7 +212,10 @@ namespace CON.Machines
         {
             
         }
-
+        public GameObject GetGameObject()
+        {
+            return gameObject;
+        }
         public object GetInformationToSave()
         {
             return new SavedMachine(productionTimer,elementsProduced,currentInstruction,inventory.CaptureState());

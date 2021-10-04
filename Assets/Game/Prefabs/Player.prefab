@@ -190,6 +190,9 @@ MonoBehaviour:
   - {fileID: 8095774179287151682, guid: 304d2fdd939737b42b19b11edc61fffe, type: 3}
   - {fileID: 4053394887740499496, guid: 4f51d495af72aec49839a18a741c86d3, type: 3}
   - {fileID: 927031865721193231, guid: d7820a8157b577945b006a633d59d393, type: 3}
+  - {fileID: 8540175721113228109, guid: da5ce1522570b3d44a9db9dbf1bba4dd, type: 3}
+  rotationTime: 0.05
+  maxSmoothMove: 1
 --- !u!114 &7684909
 MonoBehaviour:
   m_ObjectHideFlags: 0
