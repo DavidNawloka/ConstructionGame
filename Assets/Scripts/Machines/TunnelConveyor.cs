@@ -10,6 +10,7 @@ namespace CON.Machines
     {
         [SerializeField] Vector2Int[] takenGridPositions;
         [SerializeField] InventoryItem[] elementBuildingRequirements;
+        [SerializeField] Element elementPlacementRequirement;
         [SerializeField] Transform elementExitPoint;
         [SerializeField] float elementExitForce = 2;
         [SerializeField] GameObject directionArrow;
@@ -76,6 +77,10 @@ namespace CON.Machines
         public InventoryItem[] GetNeededBuildingElements()
         {
             return elementBuildingRequirements;
+        }
+        public Element GetElementPlacementRequirement()
+        {
+            return elementPlacementRequirement;
         }
         public void SetOrigin(Vector2Int gridOrigin)
         {

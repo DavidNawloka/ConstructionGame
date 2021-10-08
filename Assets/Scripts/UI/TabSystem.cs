@@ -6,9 +6,10 @@ namespace CON.UI
 {
     public class TabSystem : MonoBehaviour
     {
+        [Tooltip("If null, all children will be taken as tabs")][SerializeField] GameObject[] tabs;
         GameObject oldTab;
 
-        private void Awake()
+        private void Start()
         {
             CloseAllTabs();
         }
@@ -29,9 +30,19 @@ namespace CON.UI
 
         private void CloseAllTabs()
         {
-            foreach(Transform child in transform) 
+            if(tabs == null)
             {
-                child.gameObject.SetActive(false);
+                foreach (Transform child in transform)
+                {
+                    child.gameObject.SetActive(false);
+                }
+            }
+            else
+            {
+                foreach (GameObject tab in tabs)
+                {
+                    tab.SetActive(false);
+                }
             }
         }
     }

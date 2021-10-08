@@ -14,27 +14,32 @@ namespace CON.UI
         [SerializeField] TextMeshProUGUI[] requirementAmounts;
         [SerializeField] Image[] requirementSprites;
         [SerializeField] GameObject placeablePrefab;
+        [SerializeField] Image elementPlacementIndicator;
 
         Transform player;
         Button button;
+        IPlaceable placeable;
 
         private void Awake()
         {
             player = GameObject.FindGameObjectWithTag("Player").transform;
             button = GetComponent<Button>();
+            placeable = placeablePrefab.GetComponent<IPlaceable>();
         }
         private void OnEnable()
         {
             player.GetComponent<Inventory>().OnInventoryChange.AddListener(UpdateRequirements);
             button.onClick.AddListener(OnClick);
+            UpdateRequirements(player.GetComponent<Inventory>());
         }
         private void Start()
         {
-            buttonHead.text = placeablePrefab.name;
+            if (placeable.GetElementPlacementRequirement() == null) elementPlacementIndicator.color = Color.white;
+            else elementPlacementIndicator.color = placeable.GetElementPlacementRequirement().colorRepresentation;
+            
         }
         private void UpdateRequirements(Inventory playerInventory)
         {
-            IPlaceable placeable = placeablePrefab.GetComponent<IPlaceable>();
             InventoryItem[] requirements = placeable.GetNeededBuildingElements();
 
             bool hasAllItems = true;

@@ -34,7 +34,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 180}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.527, y: 0.5}
+  m_AnchoredPosition: {x: -1.527, y: 1.104}
   m_SizeDelta: {x: 5, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8647592526658899174
@@ -260,6 +260,7 @@ MonoBehaviour:
     amount: 2
   - element: {fileID: 11400000, guid: c2f82b61e121f29408d0cfa36fd30d2e, type: 2}
     amount: 2
+  elementPlacementRequirement: {fileID: 0}
   elementExitPoint: {fileID: 1946695025493053410}
   elementExitForce: 4
   directionArrow: {fileID: 3893540391469004405}

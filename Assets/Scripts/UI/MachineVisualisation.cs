@@ -124,13 +124,14 @@ namespace CON.UI
                     0);
             }
         }
-        private void UpdateConnectionPosition()
+        private void UpdateConnectionPosition() 
         {
             Vector3 machineScreenSpacePosition = Camera.main.WorldToScreenPoint(machine.transform.position);
             Vector3 posDifference = transform.position - machineScreenSpacePosition;
 
-            horizontalConnection.sizeDelta = new Vector2(Mathf.Abs(posDifference.x)*1.4f, horizontalConnection.sizeDelta.y);
-            verticalConnection.sizeDelta = new Vector2(Mathf.Abs(posDifference.y) * 1.4f, verticalConnection.sizeDelta.y);
+            // Depends on size of game window, something is locally calculated
+            horizontalConnection.sizeDelta = new Vector2(Mathf.Abs(posDifference.x), horizontalConnection.sizeDelta.y);
+            verticalConnection.sizeDelta = new Vector2(Mathf.Abs(posDifference.y), verticalConnection.sizeDelta.y);
 
             horizontalConnection.position = new Vector3((posDifference.x / 2) + machineScreenSpacePosition.x, transform.position.y);
 

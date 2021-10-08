@@ -10,6 +10,7 @@ namespace CON.Machines
     {
         [SerializeField] Vector2Int[] takenGridPositions;
         [SerializeField] InventoryItem[] elementBuildingRequirements;
+        [SerializeField] Element elementPlacementRequirement;
         [SerializeField] Transform[] pathOfElement;
         [SerializeField] float forceToApplyForward;
         [SerializeField] float forceToApplySide;
@@ -122,7 +123,10 @@ namespace CON.Machines
         {
             return elementBuildingRequirements;
         }
-
+        public Element GetElementPlacementRequirement()
+        {
+            return elementPlacementRequirement;
+        }
         public Vector2Int GetOrigin()
         {
             return gridOrigin;

@@ -8,6 +8,7 @@ namespace CON.Machines
         public Vector2Int[] GetTakenGridPositions();
         public void SetTakenGridPositions(Vector2Int[] takenGridPositions);
         public InventoryItem[] GetNeededBuildingElements();
+        public Element GetElementPlacementRequirement();
         public void SetOrigin(Vector2Int gridOrigin);
         public Vector2Int GetOrigin();
         public void FullyPlaced(Builder player);

@@ -34,6 +34,7 @@ namespace CON.Machines
         GameObject currentMachine;
         IPlaceable currentPlaceable;
         Vector2Int[] takenGridPositions;
+        Vector3 currentMoveGoal;
         Dictionary<SerializableVector3,SavedPlaceable> builtObjects = new Dictionary<SerializableVector3, SavedPlaceable>();
 
         Inventory inventory;
@@ -96,6 +97,7 @@ namespace CON.Machines
             {
                 HandleRotation();
                 PlacementMode();
+                SmoothMovePlaceable();
             }
         }
 
@@ -106,10 +108,21 @@ namespace CON.Machines
 
             isPlacementMode = true;
             currentMachinePrefab = machine;
-            currentMachine = Instantiate(machine);
+            currentMachine = Instantiate(machine, GetMouseWorldPosition(),machine.transform.rotation);
             currentPlaceable = currentMachine.GetComponent<IPlaceable>();
             takenGridPositions = currentPlaceable.GetTakenGridPositions();
             currentMachine.transform.parent = buildObjectsParent;
+        }
+
+        private Vector3 GetMouseWorldPosition()
+        {
+            ;
+            RaycastHit rayCastHit;
+            if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out rayCastHit))
+            {
+                return rayCastHit.point;
+            }
+            return transform.position;
         }
 
         public void OnPauseChange(bool isPaused)
@@ -208,13 +221,19 @@ namespace CON.Machines
                 
                 if (IsObstructedAll(x, y)) return;
 
-                currentMachine.transform.position = grid.GetWorldPositionCenter(x, y);
-                //currentMachine.transform.position = Vector3.MoveTowards(currentMachine.transform.position, grid.GetWorldPositionCenter(x, y), maxSmoothMove);
+                currentMoveGoal = grid.GetWorldPositionCenter(x, y);
+                
+                
                 if (Input.GetMouseButton(0))
                 {
                     Placement(x, y);
                 }
             }
+        }
+        private void SmoothMovePlaceable()
+        {
+            float distance = Vector3.Distance(currentMachine.transform.position, currentMoveGoal);
+            currentMachine.transform.position = Vector3.MoveTowards(currentMachine.transform.position, currentMoveGoal, maxSmoothMove+distance/10);
         }
         private bool IsObstructedAll(int x, int y)
         {
@@ -237,17 +256,20 @@ namespace CON.Machines
                 grid.SetObstructed(x + takenGridPosition.x, y + takenGridPosition.y, true);
             }
 
+            currentMachine.transform.position = currentMoveGoal;
             currentPlaceable.SetOrigin(new Vector2Int(x, y));
             currentPlaceable.FullyPlaced(this);
             builtObjects.Add(new SerializableVector3(currentMachine.transform.position),new SavedPlaceable(GetPlaceableObjectsID(currentMachinePrefab), currentMachine.transform.eulerAngles, new Vector2Int(x,y),takenGridPositions, currentPlaceable));
             ReenablePlacementMode();
         }
+
+
+        
         private bool IsPlacementPossible(int x, int y)
         {
             if (!AreEnoughElements()) return false;
 
-            Machine machine = currentMachine.transform.GetComponent<Machine>();
-            if (machine != null && machine.GetElementPlacementRequirement() != null &&!grid.HasElement(x, y, machine.GetElementPlacementRequirement())) return false;
+            if (currentPlaceable.GetElementPlacementRequirement() != null &&!grid.HasElement(x, y, currentPlaceable.GetElementPlacementRequirement())) return false;
 
             return true;
         }
