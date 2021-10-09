@@ -12,15 +12,23 @@ namespace CON.UI
 {
     public class MachineVisualisation : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
+        [Header("Inventory")]
         [SerializeField] Image[] requirementSprite;
         [SerializeField] TextMeshProUGUI[] requirementTMPro;
         [SerializeField] TextMeshProUGUI[] inventorySlotTMPro;
         [SerializeField] RectTransform sliderForeground;
+        [Header("Connectors")]
         [SerializeField] RectTransform horizontalConnection;
         [SerializeField] RectTransform verticalConnection;
+        [Header("Machine specific")]
         [SerializeField] Image[] requirementImages;
         [SerializeField] Image outcomeImage;
+        [Header("Instruction related")]
         [SerializeField] TMP_Dropdown instructionDropdown;
+        [SerializeField] Image[] instructionIndicatorSprites;
+        [SerializeField] TextMeshProUGUI[] instructionIndicatorTMPro;
+        [SerializeField] Image instructionIndicatorOutcomeSprite;
+        [SerializeField] TextMeshProUGUI instructionIndicatorOutcomeTMPro;
 
         CanvasGroup canvasGroup;
         Machine machine;
@@ -39,6 +47,7 @@ namespace CON.UI
         private void Start()
         {
             SetActiveCanvas(false);
+            UpdateInstructionIndicator();
             UpdateRequirementUIMultiple();
             UpdateRequirementUIOnce();
         }
@@ -61,10 +70,16 @@ namespace CON.UI
             sliderForeground.localScale = new Vector3(machine.GetProductionFraction(), 1, 1);
         }
 
+        public void SetPauseActive(bool isPaused)
+        {
+            machine.SetPause(isPaused);
+        }
+
         public void UpdateCurrentInstruction(int instructionIndex)
         {
             machine.SetCurrentInstruction(instructionIndex);
             UpdateRequirementUIMultiple();
+            UpdateInstructionIndicator();
         }
 
         public void UpdateInventorySlot(Inventory inventory) // Event from Inventory Class function from Machine
@@ -129,13 +144,52 @@ namespace CON.UI
             Vector3 machineScreenSpacePosition = Camera.main.WorldToScreenPoint(machine.transform.position);
             Vector3 posDifference = transform.position - machineScreenSpacePosition;
 
-            // Depends on size of game window, something is locally calculated
+
             horizontalConnection.sizeDelta = new Vector2(Mathf.Abs(posDifference.x), horizontalConnection.sizeDelta.y);
             verticalConnection.sizeDelta = new Vector2(Mathf.Abs(posDifference.y), verticalConnection.sizeDelta.y);
 
             horizontalConnection.position = new Vector3((posDifference.x / 2) + machineScreenSpacePosition.x, transform.position.y);
 
             verticalConnection.position = new Vector3(machineScreenSpacePosition.x, (posDifference.y / 2)+machineScreenSpacePosition.y);
+        }
+        private void UpdateInstructionIndicator()
+        {
+            Instruction machineInstruction = machine.GetCurrentInstruction();
+
+            for (int index = 0; index < 3; index++)
+            {
+                instructionIndicatorSprites[index].sprite = null;
+                instructionIndicatorSprites[index].color = new Color(0,0,0,0);
+                instructionIndicatorTMPro[index].text = "";
+            }
+
+            switch (machineInstruction.requirements.Length)
+            {
+                case 1:
+                    instructionIndicatorSprites[1].sprite = machineInstruction.requirements[0].element.sprite;
+                    instructionIndicatorSprites[1].color = new Color(1,1,1,1);
+                    instructionIndicatorTMPro[1].text = machineInstruction.requirements[0].amount.ToString();
+                    break;
+                case 2:
+                    instructionIndicatorSprites[0].sprite = machineInstruction.requirements[0].element.sprite;
+                    instructionIndicatorSprites[0].color = new Color(1, 1, 1, 1);
+                    instructionIndicatorTMPro[0].text = machineInstruction.requirements[0].amount.ToString();
+
+                    instructionIndicatorSprites[2].sprite = machineInstruction.requirements[1].element.sprite;
+                    instructionIndicatorSprites[2].color = new Color(1, 1, 1, 1);
+                    instructionIndicatorTMPro[2].text = machineInstruction.requirements[1].amount.ToString();
+                    break;
+                case 3:
+                    for (int index = 0; index < 3; index++)
+                    {
+                        instructionIndicatorSprites[index].sprite = machineInstruction.requirements[index].element.sprite;
+                        instructionIndicatorSprites[index].color = new Color(1,1,1,1);
+                        instructionIndicatorTMPro[index].text = machineInstruction.requirements[index].amount.ToString();
+                    }
+                    break;
+            }
+            instructionIndicatorOutcomeSprite.sprite = machineInstruction.outcome.element.sprite;
+            instructionIndicatorOutcomeTMPro.text = machineInstruction.outcome.amount.ToString();
         }
         private void UpdateRequirementUIMultiple()
         {

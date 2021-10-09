@@ -6,12 +6,14 @@ namespace CON.UI
 {
     public class TabSystem : MonoBehaviour
     {
+        [Tooltip("If null, no tab will be shown")] [SerializeField] GameObject defaultTabToShow;
         [Tooltip("If null, all children will be taken as tabs")][SerializeField] GameObject[] tabs;
         GameObject oldTab;
 
         private void Start()
         {
             CloseAllTabs();
+            if (defaultTabToShow != null) ShowTab(defaultTabToShow);
         }
 
         public void CloseTab()

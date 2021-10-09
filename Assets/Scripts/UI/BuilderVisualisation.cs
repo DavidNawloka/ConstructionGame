@@ -11,8 +11,6 @@ namespace CON.UI
     public class BuilderVisualisation : MonoBehaviour
     {
         [SerializeField] Image demolishModeOverlayImage;
-        [SerializeField] TabSystem buildModeTabSystem;
-        [SerializeField] GameObject conveyorTab;
 
         CanvasGroup canvasGroup;
         BuildingGridMesh buildingGridMesh;
@@ -42,7 +40,6 @@ namespace CON.UI
         }
         private void SetCanvasGroup(bool isActive)
         {
-            if(isActive) buildModeTabSystem.ShowTab(conveyorTab);
             canvasGroup.interactable = isActive;
             canvasGroup.blocksRaycasts = isActive;
             buildingGridMesh.SetActiveMesh(isActive);
