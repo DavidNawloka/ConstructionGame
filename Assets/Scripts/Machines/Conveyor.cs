@@ -1,3 +1,4 @@
+using CON.Core;
 using CON.Elements;
 using System;
 using System.Collections;
@@ -18,6 +19,12 @@ namespace CON.Machines
 
         Vector2Int gridOrigin;
         Builder player;
+        AudioLooper audioLoop;
+
+        private void Awake()
+        {
+            audioLoop = GetComponent<AudioLooper>();
+        }
 
         private void Start()
         {
@@ -71,6 +78,7 @@ namespace CON.Machines
             //GetComponent<NavMeshObstacle>().enabled = true; TODO: Check if other possibility for more walkability
             GetComponent<BoxCollider>().enabled = true;
             this.player = player;
+            audioLoop.StartPlaying();
             player.onBuildModeChange += OnBuildModeChange;
         }
 

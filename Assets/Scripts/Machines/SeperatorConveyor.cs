@@ -1,3 +1,4 @@
+using CON.Core;
 using CON.Elements;
 using System.Collections;
 using System.Collections.Generic;
@@ -23,6 +24,13 @@ namespace CON.Machines
         int elementCounter = 1;
         Vector2Int gridOrigin;
         Builder player;
+        AudioLooper audioLoop;
+
+        private void Awake()
+        {
+            audioLoop = GetComponent<AudioLooper>();
+        }
+
         private void Start()
         {
             UpdateHookPosition();
@@ -116,6 +124,7 @@ namespace CON.Machines
             GetComponent<NavMeshObstacle>().enabled = true;
             GetComponent<BoxCollider>().enabled = true;
             this.player = player;
+            audioLoop.StartPlaying();
             player.onBuildModeChange += OnBuildModeChange;
         }
 

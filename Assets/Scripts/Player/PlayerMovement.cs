@@ -1,4 +1,5 @@
 using Astutos.Saving;
+using CON.Core;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ namespace CON.Player
 {
     public class PlayerMovement : MonoBehaviour, ISaveable
     {
+        AudioLooper audioLooper;
         NavMeshAgent navMeshAgent;
         Animator animator;
 
@@ -16,12 +18,26 @@ namespace CON.Player
 
         private void Awake()
         {
+            audioLooper = GetComponent<AudioLooper>();
             animator = GetComponent<Animator>();
             navMeshAgent = GetComponent<NavMeshAgent>();
         }
         private void Update()
         {
             animator.SetFloat(SPEED_PARAMETER, navMeshAgent.velocity.magnitude);
+            HandleSound();
+        }
+
+        private void HandleSound()
+        {
+            if(navMeshAgent.velocity.magnitude > .2f)
+            {
+                audioLooper.StartPlaying();
+            }
+            else
+            {
+                audioLooper.EndPlaying();
+            }
         }
 
         public bool MoveTo(Ray cameraRay)
