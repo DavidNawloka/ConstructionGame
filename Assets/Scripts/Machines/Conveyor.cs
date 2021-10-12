@@ -16,14 +16,15 @@ namespace CON.Machines
         [SerializeField] float forceToApplyForward;
         [SerializeField] float forceToApplySide;
         [SerializeField] GameObject directionArrow;
+        [SerializeField] AudioClip[] conveyorSounds;
 
         Vector2Int gridOrigin;
         Builder player;
-        AudioLooper audioLoop;
+        AudioSourceManager audioLoop;
 
         private void Awake()
         {
-            audioLoop = GetComponent<AudioLooper>();
+            audioLoop = GetComponent<AudioSourceManager>();
         }
 
         private void Start()
@@ -78,7 +79,7 @@ namespace CON.Machines
             //GetComponent<NavMeshObstacle>().enabled = true; TODO: Check if other possibility for more walkability
             GetComponent<BoxCollider>().enabled = true;
             this.player = player;
-            audioLoop.StartPlaying();
+            audioLoop.StartLooping(conveyorSounds);
             player.onBuildModeChange += OnBuildModeChange;
         }
 

@@ -19,16 +19,16 @@ namespace CON.Machines
         [SerializeField] bool isRightToLeft = true;
         [SerializeField] Transform hook;
         [SerializeField] Animation hookAnimation;
-
+        [SerializeField] AudioClip[] conveyorSounds;
 
         int elementCounter = 1;
         Vector2Int gridOrigin;
         Builder player;
-        AudioLooper audioLoop;
+        AudioSourceManager audioLoop;
 
         private void Awake()
         {
-            audioLoop = GetComponent<AudioLooper>();
+            audioLoop = GetComponent<AudioSourceManager>();
         }
 
         private void Start()
@@ -124,7 +124,7 @@ namespace CON.Machines
             GetComponent<NavMeshObstacle>().enabled = true;
             GetComponent<BoxCollider>().enabled = true;
             this.player = player;
-            audioLoop.StartPlaying();
+            audioLoop.StartLooping(conveyorSounds);
             player.onBuildModeChange += OnBuildModeChange;
         }
 

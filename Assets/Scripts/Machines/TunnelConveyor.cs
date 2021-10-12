@@ -15,14 +15,15 @@ namespace CON.Machines
         [SerializeField] Transform elementExitPoint;
         [SerializeField] float elementExitForce = 2;
         [SerializeField] GameObject directionArrow;
+        [SerializeField] AudioClip[] conveyorSounds;
 
         Vector2Int gridOrigin;
         Builder player;
-        AudioLooper audioLoop;
+        AudioSourceManager audioLoop;
 
         private void Awake()
         {
-            audioLoop = GetComponent<AudioLooper>();
+            audioLoop = GetComponent<AudioSourceManager>();
         }
         private void Start()
         {
@@ -77,7 +78,7 @@ namespace CON.Machines
         {
             //GetComponent<NavMeshObstacle>().enabled = true; TODO: Check if other possibility for more walkability
             this.player = player;
-            audioLoop.StartPlaying();
+            audioLoop.StartLooping(conveyorSounds);
             player.onBuildModeChange += OnBuildModeChange;
         }
 

@@ -6,10 +6,11 @@ using UnityEngine;
 namespace CON.Elements
 {
 
-    public class ElementPickup : MonoBehaviour,IMouseClickable
+    public class ElementPickup : MonoBehaviour,IMouseClickable // TODO: Make Parent Element Pickup prefab, make all other prefab variants
     {
         [SerializeField] InventoryItem itemToEuqip;
         [SerializeField] float maxDistance = 2f;
+        [SerializeField] AudioClip[] pickupSounds;
 
         public InventoryItem GetItemToEquip()
         {
@@ -19,12 +20,17 @@ namespace CON.Elements
         {
             if (other.transform.tag == "Water") Destroy(gameObject);
             if (other.transform.tag != "Player") return;
-            EquipElement(other.transform);
+            StartCoroutine(EquipElement(other.transform));
         }
-        private void EquipElement(Transform player)
+        private IEnumerator EquipElement(Transform player)
         {
             if (player.GetComponent<Inventory>().EquipItem(itemToEuqip))
             {
+                int randIndex = Random.Range(0, pickupSounds.Length);
+                GetComponent<AudioSourceManager>().PlayOnce(pickupSounds[randIndex]);
+                GetComponentInChildren<MeshRenderer>().enabled = false;
+                GetComponentInChildren<MeshCollider>().enabled = false;
+                yield return new WaitForSeconds(pickupSounds[randIndex].length);
                 Destroy(gameObject);
             }
         }
@@ -35,7 +41,7 @@ namespace CON.Elements
         {
             if(Vector3.Distance(transform.position, player.position) <= maxDistance)
             {
-                EquipElement(player);
+                StartCoroutine(EquipElement(player));
                 return true;
             }
             return false;

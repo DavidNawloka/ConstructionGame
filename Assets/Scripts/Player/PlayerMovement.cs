@@ -10,7 +10,9 @@ namespace CON.Player
 {
     public class PlayerMovement : MonoBehaviour, ISaveable
     {
-        AudioLooper audioLooper;
+        [SerializeField] AudioClip[] defaultStepsSounds;
+
+        AudioSourceManager audioLooper;
         NavMeshAgent navMeshAgent;
         Animator animator;
 
@@ -18,7 +20,7 @@ namespace CON.Player
 
         private void Awake()
         {
-            audioLooper = GetComponent<AudioLooper>();
+            audioLooper = GetComponent<AudioSourceManager>();
             animator = GetComponent<Animator>();
             navMeshAgent = GetComponent<NavMeshAgent>();
         }
@@ -32,11 +34,11 @@ namespace CON.Player
         {
             if(navMeshAgent.velocity.magnitude > .2f)
             {
-                audioLooper.StartPlaying();
+                audioLooper.StartLooping(defaultStepsSounds);
             }
             else
             {
-                audioLooper.EndPlaying();
+                audioLooper.EndLoopingImmediate();
             }
         }
 
