@@ -6129,4 +6129,32 @@ AnimationClip:
     script: {fileID: 0}
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 0
+    functionName: PlayOnce
+    data: 
+    objectReferenceParameter: {fileID: 8300000, guid: 399aeee31db12a54199036b283ba73e3, type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.21666667
+    functionName: PlayOnce
+    data: 
+    objectReferenceParameter: {fileID: 8300000, guid: a849731d8b91c0748b2f020b4fd8d8cc, type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.6333333
+    functionName: PlayOnce
+    data: 
+    objectReferenceParameter: {fileID: 8300000, guid: bbc233e6c3e211640b92c7e29ec8486a, type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.9
+    functionName: PlayOnce
+    data: 
+    objectReferenceParameter: {fileID: 8300000, guid: 86819d7bb88e5634ca3879a23a368171, type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0

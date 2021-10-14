@@ -328,15 +328,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c96c6991b0872824ba45e862deccd0cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioFilesToLoop:
-  - {fileID: 8300000, guid: 9917d43904733844b98be553473e73d6, type: 3}
-  - {fileID: 8300000, guid: 399aeee31db12a54199036b283ba73e3, type: 3}
-  - {fileID: 8300000, guid: 57081bb006f224048a34bb7f3684ce2c, type: 3}
-  - {fileID: 8300000, guid: 1c59cc79c621e2e4ba54802225674bd4, type: 3}
-  - {fileID: 8300000, guid: a1d8dcae592f25d448fd5fa0a521bcf9, type: 3}
-  - {fileID: 8300000, guid: 3f1d566f8949695489727b12970abdc2, type: 3}
-  - {fileID: 8300000, guid: f87a06d7d3823c54b91f803df156f4a6, type: 3}
-  playTimerMultiplier: 1
+  playedSounds: []
+  loopPlayTimerMultiplier: 1
+  immediateStopTime: 0.1
 --- !u!82 &8862302114284035785
 AudioSource:
   m_ObjectHideFlags: 0
@@ -349,7 +343,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.8
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -357,8 +351,8 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
+  MinDistance: 0.13
+  MaxDistance: 2
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0

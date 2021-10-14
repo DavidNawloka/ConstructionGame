@@ -4,8 +4,10 @@ using UnityEngine;
 
 namespace CON.Core 
 {
+    [RequireComponent(typeof(AudioSource))]
     public class AudioSourceManager : MonoBehaviour
     {
+        [Tooltip("Will be taken if given AudioClip array is null")][SerializeField] AudioClip[] playedSounds;
         [SerializeField] float loopPlayTimerMultiplier = 1;
         [SerializeField] float immediateStopTime = .1f;
 
@@ -28,15 +30,16 @@ namespace CON.Core
             playTimer = 0;
             audioSource.PlayOneShot(currentAudioFilesToLoop[currentAudioClipLoopIndex]);
             currentAudioClipLoopIndex++;
-            if (currentAudioClipLoopIndex == currentAudioFilesToLoop.Length) currentAudioClipLoopIndex = GetRandomIndex();
+            if (currentAudioClipLoopIndex == currentAudioFilesToLoop.Length) currentAudioClipLoopIndex = GetRandomIndex(currentAudioFilesToLoop);
         }
-        private int GetRandomIndex()
+        private int GetRandomIndex(object[] array)
         {
-            return Random.Range(0, currentAudioFilesToLoop.Length);
+            return Random.Range(0, array.Length);
         }
-        public void PlayOnce(AudioClip audioClip)
+        public void PlayOnce(AudioClip audioClip = null)
         {
-            audioSource.PlayOneShot(audioClip);
+            if(audioClip == null) audioSource.PlayOneShot(playedSounds[GetRandomIndex(playedSounds)]);
+            else audioSource.PlayOneShot(audioClip);
         }
         public void ToggleLooping(AudioClip[] audioFilesToLoop = null)
         {
@@ -59,7 +62,7 @@ namespace CON.Core
         {
             currentAudioFilesToLoop = audioFilesToLoop;
             shouldPlay = isPlaying;
-            if(isPlaying) currentAudioClipLoopIndex = GetRandomIndex();
+            if(isPlaying) currentAudioClipLoopIndex = GetRandomIndex(currentAudioFilesToLoop);
         }
 
         private IEnumerator StopPlayingImmediate()

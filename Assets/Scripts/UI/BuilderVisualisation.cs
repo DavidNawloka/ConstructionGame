@@ -1,4 +1,5 @@
 using CON.BuildingGrid;
+using CON.Core;
 using CON.Machines;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,14 +12,18 @@ namespace CON.UI
     public class BuilderVisualisation : MonoBehaviour
     {
         [SerializeField] Image demolishModeOverlayImage;
+        [SerializeField] AudioClip ToggleBuildModeSound;
+        [SerializeField] AudioClip ToggleDemolishModeSound;
 
         CanvasGroup canvasGroup;
         BuildingGridMesh buildingGridMesh;
         Builder builder;
+        AudioSourceManager audioSourceManager;
         private void Awake()
         {
             canvasGroup = GetComponent<CanvasGroup>();
             builder = FindObjectOfType<Builder>();
+            audioSourceManager = GetComponent<AudioSourceManager>();
             buildingGridMesh = builder.GetGridMesh();
         }
         private void OnEnable()
@@ -37,9 +42,11 @@ namespace CON.UI
         private void OnDemolishModeChange(bool isActive) // Builder class event function
         {
             demolishModeOverlayImage.gameObject.SetActive(isActive);
+            audioSourceManager.PlayOnce(ToggleDemolishModeSound);
         }
         private void SetCanvasGroup(bool isActive)
         {
+            audioSourceManager.PlayOnce(ToggleBuildModeSound);
             canvasGroup.interactable = isActive;
             canvasGroup.blocksRaycasts = isActive;
             buildingGridMesh.SetActiveMesh(isActive);

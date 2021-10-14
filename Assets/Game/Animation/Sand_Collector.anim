@@ -3172,4 +3172,25 @@ AnimationClip:
     script: {fileID: 0}
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 0
+    functionName: PlayOnce
+    data: 
+    objectReferenceParameter: {fileID: 8300000, guid: 57e3ada7b6d3a3f4b803366954b41f7d, type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.45
+    functionName: PlayOnce
+    data: 
+    objectReferenceParameter: {fileID: 8300000, guid: 34fb95181857b504aa960fa748817ed7, type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.96666664
+    functionName: PlayOnce
+    data: 
+    objectReferenceParameter: {fileID: 8300000, guid: 87a4e46d48fc31e4b824005e3aae86a8, type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0

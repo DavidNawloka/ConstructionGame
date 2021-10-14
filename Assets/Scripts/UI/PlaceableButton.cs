@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine.UI;
 using CON.Elements;
 using CON.Machines;
+using CON.Core;
 
 namespace CON.UI
 {
@@ -15,16 +16,19 @@ namespace CON.UI
         [SerializeField] Image[] requirementSprites;
         [SerializeField] GameObject placeablePrefab;
         [SerializeField] Image elementPlacementIndicator;
+        [SerializeField] AudioClip clickSound;
 
         Transform player;
         Button button;
         IPlaceable placeable;
+        AudioSourceManager audioSourceManager;
 
         private void Awake()
         {
             player = GameObject.FindGameObjectWithTag("Player").transform;
             button = GetComponent<Button>();
             placeable = placeablePrefab.GetComponent<IPlaceable>();
+            audioSourceManager = GetComponent<AudioSourceManager>();
         }
         private void OnEnable()
         {
@@ -75,6 +79,7 @@ namespace CON.UI
         private void OnClick()
         {
             player.GetComponent<Builder>().ActivatePlacementMode(placeablePrefab);
+            audioSourceManager.PlayOnce(clickSound);
         }
 
     }

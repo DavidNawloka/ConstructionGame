@@ -66,6 +66,7 @@ namespace CON.Machines
         public void SetPause(bool isPaused)
         {
             this.isPaused = isPaused;
+            productionTimer = 0;
         }
         public void AddAllEnergyElements()
         {
@@ -164,9 +165,19 @@ namespace CON.Machines
         {
             foreach(Animation animation in GetComponentsInChildren<Animation>())
             {
+                AudioSource audioSource = animation.transform.GetComponent<AudioSource>();
                 animation.playAutomatically = false;
-                if (isActive) animation.Play();
-                else animation.Stop();
+                if (isActive)
+                {
+                    animation.Play();
+                    if(audioSource != null) audioSource.Play();
+                }
+                else
+                {
+                    animation.Rewind();
+                    if (audioSource != null) audioSource.Stop();
+                }
+
             }
         }
 
