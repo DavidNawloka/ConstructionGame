@@ -9,6 +9,7 @@ namespace CON.UI
     public class SaveInitiater : MonoBehaviour
     {
         [SerializeField] TMP_InputField inputField;
+        [SerializeField] AudioClip saveButtonSound;
         SavingWrapper savingWrapper;
 
         private void Awake()
@@ -37,6 +38,7 @@ namespace CON.UI
 
         public void Save()
         {
+            GetComponent<AudioSource>().PlayOneShot(saveButtonSound);
             EndOfEdit(inputField.text);
             savingWrapper.StartSave(inputField.text);
             inputField.text = savingWrapper.GetDefaultSaveName();

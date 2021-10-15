@@ -270,7 +270,7 @@ MonoBehaviour:
   - {fileID: 8672162051752117222}
   placeablePrefab: {fileID: 6366741075993714630, guid: bb6ca1340ae038249b5009f58c022cc3, type: 3}
   elementPlacementIndicator: {fileID: 9104281689491155876}
-  clickSound: {fileID: 8300000, guid: 8168268e9e5def7498dcd9519eb5a7c7, type: 3}
+  clickSound: {fileID: 8300000, guid: b6d1b4a1c8da01a4ea7972b477368d6b, type: 3}
 --- !u!114 &9009537895062955149
 MonoBehaviour:
   m_ObjectHideFlags: 0

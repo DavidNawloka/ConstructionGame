@@ -191,7 +191,7 @@ Transform:
   m_GameObject: {fileID: 2825724677146666541}
   m_LocalRotation: {x: -0, y: 0.11686466, z: -0, w: 0.99314785}
   m_LocalPosition: {x: -0.08, y: -0.051, z: -0.035}
-  m_LocalScale: {x: 0.7458599, y: 0.74586, z: 0.7458599}
+  m_LocalScale: {x: 0.74586004, y: 0.74586, z: 0.74586004}
   m_Children:
   - {fileID: 7551843539618107269}
   m_Father: {fileID: 6453611143745620307}
@@ -420,11 +420,11 @@ Transform:
   m_GameObject: {fileID: 6955682764991405415}
   m_LocalRotation: {x: -0.6469712, y: -0.2853563, z: 0.28535628, w: 0.6469713}
   m_LocalPosition: {x: 1.431, y: 0.803, z: 0}
-  m_LocalScale: {x: 16.319754, y: 3.5669804, z: 0.93507254}
+  m_LocalScale: {x: 16.319752, y: 3.5669804, z: 0.93507254}
   m_Children: []
   m_Father: {fileID: 6453611143745620307}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: -42.399, y: -90, z: 90}
+  m_LocalEulerAnglesHint: {x: -15.802639, y: -90, z: 90}
 --- !u!33 &2771046656145615919
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -502,7 +502,7 @@ Transform:
   m_GameObject: {fileID: 7341435152802704561}
   m_LocalRotation: {x: -0.5056457, y: -0.4942898, z: -0.49428946, w: 0.50564605}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 29.827734, y: 6.5193963, z: 1.709039}
+  m_LocalScale: {x: 29.827734, y: 6.5193963, z: 1.7090389}
   m_Children: []
   m_Father: {fileID: 6453611143745620307}
   m_RootOrder: 1
@@ -1221,15 +1221,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3851371371528952899, guid: c5b8648e8372dc341a02aee966771e91, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: -3.186
+      value: -25.863457
       objectReference: {fileID: 0}
     - target: {fileID: 3851371371528952899, guid: c5b8648e8372dc341a02aee966771e91, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -35.87291
+      value: -66.47011
       objectReference: {fileID: 0}
     - target: {fileID: 3851371371528952899, guid: c5b8648e8372dc341a02aee966771e91, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 89.999
+      value: 66.484146
       objectReference: {fileID: 0}
     - target: {fileID: 4483616518808520441, guid: c5b8648e8372dc341a02aee966771e91, type: 3}
       propertyPath: m_Name

@@ -141,27 +141,47 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e24cec6367d47b40a43f3cb089a10fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultStepsSounds:
-  - {fileID: 8300000, guid: 31ce2f4f55b79d743ae941e2bc3a8dfa, type: 3}
-  - {fileID: 8300000, guid: 82b9e7907a6c3154b86a53c1be46ff71, type: 3}
-  - {fileID: 8300000, guid: f43edb311d1c4d74fa9b4b86c9157fa6, type: 3}
-  - {fileID: 8300000, guid: 9fa438d00f348394a8f0f6c053659a36, type: 3}
-  - {fileID: 8300000, guid: 1241db8d81c902d4db1bc5e06ba500b3, type: 3}
-  - {fileID: 8300000, guid: 524ca5d8ba6570f47a403855a9d2cf29, type: 3}
-  - {fileID: 8300000, guid: 6f1fa4fa8b3675843abe9345bbefffdd, type: 3}
-  - {fileID: 8300000, guid: 4abc431d61ba42a4197ca0aba3bad8d3, type: 3}
-  - {fileID: 8300000, guid: db210683cc12f49488148d7e59a51aec, type: 3}
-  - {fileID: 8300000, guid: 4bcc738c9307a9d4784ce4e137f5aefb, type: 3}
-  - {fileID: 8300000, guid: 17a55e09664ccf54392bb53bbf824804, type: 3}
-  - {fileID: 8300000, guid: add3298d47405fd4da3a313bbc049fe2, type: 3}
-  - {fileID: 8300000, guid: 826b5ab8735d6ff4c9e018ef29045829, type: 3}
-  - {fileID: 8300000, guid: 95f5d05b56992b54db766ac6cd05a7d4, type: 3}
-  - {fileID: 8300000, guid: 33d255937ea9cb74dbaf46d7a552672d, type: 3}
-  - {fileID: 8300000, guid: 7ec804530ad09cd4093a5ef030cfc7ec, type: 3}
-  - {fileID: 8300000, guid: 466266db15b02104584d921885bcaa8a, type: 3}
-  - {fileID: 8300000, guid: 64d4d5a88368ecf4e9d81d94341ac235, type: 3}
-  - {fileID: 8300000, guid: c11ecc89dec9e1a428e927466942ba39, type: 3}
-  - {fileID: 8300000, guid: 4ca3f7b75bbc47c45a464277174030a4, type: 3}
+  footstepSoundMappings:
+  - terrainLayerIndices: 0000000003000000
+    footstepSounds:
+    - {fileID: 8300000, guid: 82b9e7907a6c3154b86a53c1be46ff71, type: 3}
+    - {fileID: 8300000, guid: f43edb311d1c4d74fa9b4b86c9157fa6, type: 3}
+    - {fileID: 8300000, guid: 9fa438d00f348394a8f0f6c053659a36, type: 3}
+    - {fileID: 8300000, guid: 1241db8d81c902d4db1bc5e06ba500b3, type: 3}
+    - {fileID: 8300000, guid: 524ca5d8ba6570f47a403855a9d2cf29, type: 3}
+    - {fileID: 8300000, guid: 6f1fa4fa8b3675843abe9345bbefffdd, type: 3}
+    - {fileID: 8300000, guid: 4abc431d61ba42a4197ca0aba3bad8d3, type: 3}
+    - {fileID: 8300000, guid: db210683cc12f49488148d7e59a51aec, type: 3}
+    - {fileID: 8300000, guid: 4bcc738c9307a9d4784ce4e137f5aefb, type: 3}
+    - {fileID: 8300000, guid: 17a55e09664ccf54392bb53bbf824804, type: 3}
+    - {fileID: 8300000, guid: add3298d47405fd4da3a313bbc049fe2, type: 3}
+    - {fileID: 8300000, guid: 826b5ab8735d6ff4c9e018ef29045829, type: 3}
+    - {fileID: 8300000, guid: 95f5d05b56992b54db766ac6cd05a7d4, type: 3}
+    - {fileID: 8300000, guid: 33d255937ea9cb74dbaf46d7a552672d, type: 3}
+    - {fileID: 8300000, guid: 7ec804530ad09cd4093a5ef030cfc7ec, type: 3}
+    - {fileID: 8300000, guid: 466266db15b02104584d921885bcaa8a, type: 3}
+    - {fileID: 8300000, guid: 64d4d5a88368ecf4e9d81d94341ac235, type: 3}
+    - {fileID: 8300000, guid: c11ecc89dec9e1a428e927466942ba39, type: 3}
+    - {fileID: 8300000, guid: 4ca3f7b75bbc47c45a464277174030a4, type: 3}
+    - {fileID: 8300000, guid: 31ce2f4f55b79d743ae941e2bc3a8dfa, type: 3}
+  - terrainLayerIndices: 0100000002000000
+    footstepSounds:
+    - {fileID: 8300000, guid: 3ec9ef3892d02044a9d62e412eb45ffb, type: 3}
+    - {fileID: 8300000, guid: 1d7e7e6569aab5a45a837f470eaddc8b, type: 3}
+    - {fileID: 8300000, guid: 31be579b280d0bc459635877e8c45aee, type: 3}
+    - {fileID: 8300000, guid: c3f3efc1106f84643a38bd21f6826aaf, type: 3}
+    - {fileID: 8300000, guid: 2de8329adc6f9b944a5ab0875fb59924, type: 3}
+    - {fileID: 8300000, guid: f39f1d43c5b9fbf449e7b39d056e5aad, type: 3}
+    - {fileID: 8300000, guid: d3ea0567dbe95714eb0ca07f43a37a96, type: 3}
+    - {fileID: 8300000, guid: 161d5a427e88d594f9906708ccdc5663, type: 3}
+    - {fileID: 8300000, guid: 7a5ff4a806216b14ab9dba35a4fb258c, type: 3}
+    - {fileID: 8300000, guid: bd5653e52c4636e4aa3b0ced8f49a18d, type: 3}
+    - {fileID: 8300000, guid: 6c8508d96905ea749ae50b49916fde55, type: 3}
+    - {fileID: 8300000, guid: 35bda0c39b1fbe64196a669bfb99757d, type: 3}
+    - {fileID: 8300000, guid: 6259119f201fafa4ca80646eff6b4b1f, type: 3}
+    - {fileID: 8300000, guid: b04914b5801123b4dafba88cbcb5bc74, type: 3}
+    - {fileID: 8300000, guid: 9a30499e47789df48aa9bdb1ec7b0982, type: 3}
+  mainTerrain: {fileID: 0}
 --- !u!114 &-3932610976177162302
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -216,6 +236,30 @@ MonoBehaviour:
   - {fileID: 8540175721113228109, guid: da5ce1522570b3d44a9db9dbf1bba4dd, type: 3}
   rotationTime: 0.1
   maxSmoothMove: 0.1
+  placementSounds:
+  - {fileID: 8300000, guid: c25e609f1550fdc419e6396e7afa6b4f, type: 3}
+  - {fileID: 8300000, guid: 34ba75b36f279564cb438a97666cb21c, type: 3}
+  - {fileID: 8300000, guid: a3feec449da461844bd1eb71e5acb913, type: 3}
+  - {fileID: 8300000, guid: f39fc693f0ba95a449d8596ee1fc24fc, type: 3}
+  - {fileID: 8300000, guid: 64e5171576bff73409bee6a0985606c1, type: 3}
+  demolishSounds:
+  - {fileID: 8300000, guid: 012d840d7f55eb4429070eed4b5ecf7d, type: 3}
+  - {fileID: 8300000, guid: a015a4728f475a54fa87ce3a03a1aba3, type: 3}
+  - {fileID: 8300000, guid: d8975efc083e87442adcf9a4247879cc, type: 3}
+  - {fileID: 8300000, guid: 39978bcac8570a04d900ae9282553c4b, type: 3}
+  - {fileID: 8300000, guid: c3769e3b51c22bb4cb16fc8b1fc9f174, type: 3}
+  - {fileID: 8300000, guid: 4c23d4c8161692543a459b9c5dfe50a8, type: 3}
+  - {fileID: 8300000, guid: ff27d7d42cf225445847e841789e2fbf, type: 3}
+  - {fileID: 8300000, guid: bb1e2b6069a525b4ca57f5fe5584fc63, type: 3}
+  rotationSounds:
+  - {fileID: 8300000, guid: 2444855a17750ec43bab7496edd31fc2, type: 3}
+  - {fileID: 8300000, guid: 3b36d147b0980734cac6bbbf5fbbbdde, type: 3}
+  - {fileID: 8300000, guid: a82dadb4b0104f049980ef2293089605, type: 3}
+  - {fileID: 8300000, guid: e1b004cc800c2fe47b636022f37f4e53, type: 3}
+  - {fileID: 8300000, guid: 8059a92a769afb44994fd3e24efa4398, type: 3}
+  - {fileID: 8300000, guid: 19b99eddbc6436d489dfbaf6e0010102, type: 3}
+  - {fileID: 8300000, guid: e1be6879da07da741a196ed5a74fe8b5, type: 3}
+  - {fileID: 8300000, guid: 9b2fb227e4e6a8249b3d60eecc7ab9b8, type: 3}
 --- !u!114 &7684909
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -253,7 +297,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c96c6991b0872824ba45e862deccd0cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loopPlayTimerMultiplier: 0.7
+  playedSounds: []
+  loopPlayTimerMultiplier: 0.65
+  immediateStopTime: 0.1
 --- !u!82 &1613691051
 AudioSource:
   m_ObjectHideFlags: 0

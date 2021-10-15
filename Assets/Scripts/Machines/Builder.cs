@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using CON.Core;
 
 namespace CON.Machines
 {
@@ -15,6 +16,11 @@ namespace CON.Machines
         [SerializeField] GameObject[] placeableObjectsPrefabs;
         [SerializeField] float rotationTime = .2f;
         [SerializeField] float maxSmoothMove = 2f;
+        [Header("Sound Effects")]
+        [SerializeField] AudioClip[] placementSounds;
+        [SerializeField] AudioClip[] demolishSounds;
+        [SerializeField] AudioClip[] rotationSounds;
+
 
         public event Action<bool> onDemolishModeChange;
         public event Action<bool> onBuildModeChange;
@@ -27,8 +33,9 @@ namespace CON.Machines
         bool isDemolishMode = false;
         bool isBuildMode = false;
         bool isPlacementMode = false;
-        bool isRotating;
 
+        bool isRotating;
+        Quaternion currentRotationGoal;
 
         GameObject currentMachinePrefab;
         GameObject currentMachine;
@@ -38,10 +45,12 @@ namespace CON.Machines
         Dictionary<SerializableVector3,SavedPlaceable> builtObjects = new Dictionary<SerializableVector3, SavedPlaceable>();
 
         Inventory inventory;
+        AudioSourceManager audioSourceManager;
 
         private void Awake()
         {
             inventory = GetComponent<Inventory>();
+            audioSourceManager = GetComponent<AudioSourceManager>();
             gridMesh = FindObjectOfType<BuildingGridMesh>();
         }
 
@@ -108,15 +117,15 @@ namespace CON.Machines
 
             isPlacementMode = true;
             currentMachinePrefab = machine;
-            currentMachine = Instantiate(machine, GetMouseWorldPosition(),machine.transform.rotation);
+            currentMachine = Instantiate(machine);
             currentPlaceable = currentMachine.GetComponent<IPlaceable>();
             takenGridPositions = currentPlaceable.GetTakenGridPositions();
+            currentMachine.transform.position = GetNewMachinePosition();
             currentMachine.transform.parent = buildObjectsParent;
         }
 
-        private Vector3 GetMouseWorldPosition()
+        private Vector3 GetNewMachinePosition()
         {
-            ;
             RaycastHit rayCastHit;
             if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out rayCastHit))
             {
@@ -194,6 +203,7 @@ namespace CON.Machines
                     }
 
                     Destroy(placedMachine.GetGameObject());
+                    audioSourceManager.PlayOnceFromMultiple(demolishSounds);
                 }
             }
         }
@@ -201,10 +211,12 @@ namespace CON.Machines
         {
             if ((Input.GetKeyDown(KeyCode.Q) || Input.mouseScrollDelta.y >= 1f) && !isRotating)
             {
+                audioSourceManager.PlayOnceFromMultiple(rotationSounds);
                 RotateLeft();
             }
             if ((Input.GetKeyDown(KeyCode.E) || Input.mouseScrollDelta.y <= -1f) && !isRotating)
             {
+                audioSourceManager.PlayOnceFromMultiple(rotationSounds);
                 RotateRight(true);
             }
         }
@@ -257,9 +269,13 @@ namespace CON.Machines
             }
 
             currentMachine.transform.position = currentMoveGoal;
+            currentMachine.transform.rotation = currentRotationGoal;
+            isRotating = false;
             currentPlaceable.SetOrigin(new Vector2Int(x, y));
             currentPlaceable.FullyPlaced(this);
             builtObjects.Add(new SerializableVector3(currentMachine.transform.position),new SavedPlaceable(GetPlaceableObjectsID(currentMachinePrefab), currentMachine.transform.eulerAngles, new Vector2Int(x,y),takenGridPositions, currentPlaceable));
+            audioSourceManager.PlayOnceFromMultiple(placementSounds);
+
             ReenablePlacementMode();
         }
 
@@ -341,7 +357,8 @@ namespace CON.Machines
                 int y = takenGridPositions[index].y * -1;
                 takenGridPositions[index] = new Vector2Int(y, x);
             }
-            StartCoroutine(StartRotation(Quaternion.Euler(new Vector3(0, currentMachine.transform.localEulerAngles.y - 90, 0))));
+            currentRotationGoal = Quaternion.Euler(new Vector3(0, currentMachine.transform.localEulerAngles.y - 90, 0));
+            StartCoroutine(StartRotation(currentRotationGoal));
         }
         private void RotateRight(bool isSmoothed)
         {
@@ -351,8 +368,9 @@ namespace CON.Machines
                 int y = takenGridPositions[index].y ;
                 takenGridPositions[index] = new Vector2Int(y, x);
             }
-            if(isSmoothed) StartCoroutine(StartRotation(Quaternion.Euler(new Vector3(0, currentMachine.transform.localEulerAngles.y + 90, 0))));
-            else currentMachine.transform.localRotation = Quaternion.Euler(new Vector3(0, currentMachine.transform.localEulerAngles.y + 90, 0));
+            currentRotationGoal = Quaternion.Euler(new Vector3(0, currentMachine.transform.localEulerAngles.y + 90, 0));
+            if (isSmoothed) StartCoroutine(StartRotation(currentRotationGoal));
+            else currentMachine.transform.localRotation = currentRotationGoal;
         }
         IEnumerator StartRotation(Quaternion goal)
         {
@@ -361,11 +379,12 @@ namespace CON.Machines
             float amount = 0;
             while(amount < rotationTime)
             {
+                if (!isRotating) break;
                 currentMachine.transform.localRotation = Quaternion.Slerp(initialRotation, goal,amount/rotationTime);
                 amount += Time.deltaTime;
                 yield return null;
             }
-            currentMachine.transform.localRotation = goal;
+            if(isRotating) currentMachine.transform.localRotation = goal;
             isRotating = false;
         }
         // Interface Implementations

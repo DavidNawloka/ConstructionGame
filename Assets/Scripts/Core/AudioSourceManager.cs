@@ -32,10 +32,12 @@ namespace CON.Core
             currentAudioClipLoopIndex++;
             if (currentAudioClipLoopIndex == currentAudioFilesToLoop.Length) currentAudioClipLoopIndex = GetRandomIndex(currentAudioFilesToLoop);
         }
-        private int GetRandomIndex(object[] array)
+        
+        public void PlayOnceFromMultiple(AudioClip[] audioClipList)
         {
-            return Random.Range(0, array.Length);
+            PlayOnce(audioClipList[GetRandomIndex(audioClipList)]);
         }
+
         public void PlayOnce(AudioClip audioClip = null)
         {
             if(audioClip == null) audioSource.PlayOneShot(playedSounds[GetRandomIndex(playedSounds)]);
@@ -58,13 +60,22 @@ namespace CON.Core
             SetActiveLooping(false, null);
             StartCoroutine(StopPlayingImmediate());
         }
+
+        public void UpdateAudioFilesToLoop(AudioClip[] newAudioFilesToLoop)
+        {
+            currentAudioFilesToLoop = newAudioFilesToLoop;
+        }
+
         private void SetActiveLooping(bool isPlaying, AudioClip[] audioFilesToLoop)
         {
             currentAudioFilesToLoop = audioFilesToLoop;
             shouldPlay = isPlaying;
             if(isPlaying) currentAudioClipLoopIndex = GetRandomIndex(currentAudioFilesToLoop);
         }
-
+        private int GetRandomIndex(object[] array)
+        {
+            return Random.Range(0, array.Length);
+        }
         private IEnumerator StopPlayingImmediate()
         {
             float timer = immediateStopTime;
