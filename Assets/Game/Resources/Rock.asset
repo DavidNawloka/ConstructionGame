@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Rock
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: e5f3437a4ee8d4d7699855d708eac35d, type: 3}
-  pickupPrefab: {fileID: 4825747043008671139, guid: 5ef1a58bf6660174b9800d200b634bec, type: 3}
+  pickupPrefab: {fileID: 3816951843708669490, guid: 5b0a4a668785c4749bca292ef2a54e2f, type: 3}
   minScale: 0.5
   maxScale: 1
   colorRepresentation: {r: 0.254717, g: 0.254717, b: 0.254717, a: 1}

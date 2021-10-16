@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Water
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 2c2d2336318a141e4b50860d2f5f6089, type: 3}
-  pickupPrefab: {fileID: 203295002677003439, guid: 4dda65963130544419acf18583d16b39, type: 3}
+  pickupPrefab: {fileID: 975987919209291597, guid: faea8532f062c03498b3505cb38ad5d0, type: 3}
   minScale: 1
   maxScale: 2
   colorRepresentation: {r: 0, g: 0.30317068, b: 1, a: 1}

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Wood
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 1cafe3b92468c46cca28e6fdc360f8af, type: 3}
-  pickupPrefab: {fileID: 8485946570687198051, guid: ba78828b13e61864ba2045cf9ec729d1, type: 3}
+  pickupPrefab: {fileID: 8863411339530342142, guid: 5c58c4d509ebed14eb7162cc2b8c7ff3, type: 3}
   minScale: 1
   maxScale: 2
   colorRepresentation: {r: 0.3962264, g: 0.22064373, b: 0, a: 1}

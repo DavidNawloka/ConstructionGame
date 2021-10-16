@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using CON.Core;
+using UnityEngine.EventSystems;
 
 namespace CON.Machines
 {
@@ -283,6 +284,8 @@ namespace CON.Machines
         
         private bool IsPlacementPossible(int x, int y)
         {
+            if (EventSystem.current.IsPointerOverGameObject()) return false;
+
             if (!AreEnoughElements()) return false;
 
             if (currentPlaceable.GetElementPlacementRequirement() != null &&!grid.HasElement(x, y, currentPlaceable.GetElementPlacementRequirement())) return false;

@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306c17a07d80ee143a9ea93f6bc4d98d, type: 3}
+  m_Name: Iron Ore
+  m_EditorClassIdentifier: 
+  sprite: {fileID: 21300000, guid: b991e919d18a0459aa163fc3c5145e63, type: 3}
+  pickupPrefab: {fileID: 843184961021154459, guid: 9e646108ae3d16542b6b92e676a0d9fe, type: 3}
+  minScale: 0.9
+  maxScale: 1.1
+  colorRepresentation: {r: 1, g: 0.46266893, b: 0.25943398, a: 1}
