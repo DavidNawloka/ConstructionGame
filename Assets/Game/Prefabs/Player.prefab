@@ -234,6 +234,9 @@ MonoBehaviour:
   - {fileID: 4053394887740499496, guid: 4f51d495af72aec49839a18a741c86d3, type: 3}
   - {fileID: 927031865721193231, guid: d7820a8157b577945b006a633d59d393, type: 3}
   - {fileID: 8540175721113228109, guid: da5ce1522570b3d44a9db9dbf1bba4dd, type: 3}
+  - {fileID: 399632920827051588, guid: c7ee451bd1a8c5f499435823273368e3, type: 3}
+  - {fileID: 399632920827051588, guid: 36ce3007136b7e24fb29069f17f5b802, type: 3}
+  - {fileID: 399632920827051588, guid: ec739a22f4b58bf40911b13a7ea4f0fe, type: 3}
   rotationTime: 0.1
   maxSmoothMove: 0.1
   placementSounds:

@@ -24,7 +24,7 @@ namespace CON.UI
             canvasGroup = GetComponent<CanvasGroup>();
             builder = FindObjectOfType<Builder>();
             audioSourceManager = GetComponent<AudioSourceManager>();
-            buildingGridMesh = builder.GetGridMesh();
+            buildingGridMesh = FindObjectOfType<BuildingGridMesh>();
         }
         private void OnEnable()
         {

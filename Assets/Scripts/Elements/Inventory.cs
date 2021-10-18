@@ -129,6 +129,17 @@ namespace CON.Elements
             else return false;
             
         }
+        public int GetAmountOfElement(Element element)
+        {
+            foreach (InventoryItem inventoryItem in inventory)
+            {
+                if(inventoryItem.element == element)
+                {
+                    return inventoryItem.amount;
+                }
+            }
+            return -1;
+        }
         private void BuildEmptyInventory()
         {
             inventory = new InventoryItem[inventorySlots];

@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 
 namespace CON.Elements
@@ -49,14 +51,16 @@ namespace CON.Elements
                 UnityEngine.Random.Range(resource.minScale, resource.maxScale),
                 UnityEngine.Random.Range(resource.minScale, resource.maxScale));
 
-            
+#if UNITY_EDITOR
             GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(resource.pickupPrefab);
             instance.transform.position = worldPosition;
             instance.transform.rotation = UnityEngine.Random.rotation;
             instance.transform.localScale = scale;
             instance.tag = "Pickup";
             instance.transform.parent = transform;
+#endif
         }
+
         private void OnDrawGizmosSelected()
         {
 

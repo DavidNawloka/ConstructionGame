@@ -7,6 +7,7 @@ using UnityEngine.AI;
 using System;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using CON.Progression;
 
 namespace CON.Machines 
 {
@@ -30,6 +31,7 @@ namespace CON.Machines
         bool fullyPlaced = false;
         Inventory playerInventory;
         Instruction currentInstruction;
+        ProgressionManager progressionManager;
 
         float productionTimer = 0f;
         int elementsProduced = 0;
@@ -38,6 +40,7 @@ namespace CON.Machines
         void Awake()
         {
             inventory = GetComponent<Inventory>();
+            progressionManager = FindObjectOfType<ProgressionManager>();
             currentInstruction = possibleInstructions[0];
         }
         private void Start()
@@ -151,6 +154,8 @@ namespace CON.Machines
         {
             Instantiate(currentInstruction.outcome.element.pickupPrefab, elementExitPoint.position, Quaternion.identity);
             elementsProduced++;
+
+            progressionManager.GetInventory().EquipItem(currentInstruction.outcome);
 
             if (elementsProduced >= currentInstruction.outcome.amount)
             {
