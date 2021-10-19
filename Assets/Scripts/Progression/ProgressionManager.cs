@@ -8,9 +8,11 @@ namespace CON.Progression
 {
     public class ProgressionManager : MonoBehaviour
     {
-        [SerializeField] List<Unlockable> unlockedPlaceables;
+        [SerializeField] List<Unlockable> startingPlaceables;
 
-        [HideInInspector] public UnityEvent<List<Unlockable>> OnPlaceableUnlocked;
+        List<Unlockable> unlockedPlaceables = new List<Unlockable>();
+
+        [HideInInspector] public UnityEvent<Unlockable> OnPlaceableUnlocked;
         [HideInInspector] public UnityEvent<Inventory> OnMachineProducedElement;
 
         Inventory inventory;
@@ -21,8 +23,11 @@ namespace CON.Progression
 
         private void Start()
         {
-            OnPlaceableUnlocked.Invoke(unlockedPlaceables);
             OnMachineProducedElement.Invoke(inventory);
+            foreach (Unlockable placeable in startingPlaceables)
+            {
+                UnlockPlaceable(placeable);
+            }
         }
 
         public Inventory GetInventory()
@@ -38,7 +43,7 @@ namespace CON.Progression
         public void UnlockPlaceable(Unlockable unlockable)
         {
             unlockedPlaceables.Add(unlockable);
-            OnPlaceableUnlocked.Invoke(unlockedPlaceables);
+            OnPlaceableUnlocked.Invoke(unlockable);
         }
 
 
@@ -50,6 +55,7 @@ namespace CON.Progression
             foreach (Transform node in transform)
             {
                 node.GetComponent<ProgressionNode>().InstantiateConnectors();
+                node.GetComponent<ProgressionNode>().UpdateUnlockableVisualisation();
             }
         }
 

@@ -6,14 +6,15 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEditor;
 using System;
+using Astutos.Saving;
 
 namespace CON.Progression
 {
-    public class ProgressionNode : MonoBehaviour
+    public class ProgressionNode : MonoBehaviour, ISaveable
     {
         public bool unlocked = false;
         [SerializeField] ProgressionNode[] parentNodes;
-        [SerializeField] ElementRequirementVisualisation[] requirementVisualisation;
+        [SerializeField] InventoryItemVisualisation[] requirementVisualisation;
         [SerializeField] Unlockable unlockable;
         [SerializeField] GameObject nodeConnector;
         [Header("Unlockable Visualisation")]
@@ -22,6 +23,7 @@ namespace CON.Progression
         [SerializeField] TextMeshProUGUI unlockableDescription;
         [SerializeField] Button unlockButton;
         [SerializeField] GameObject lockedView;
+        [SerializeField] Color unlockedBackgroundColor;
 
         ProgressionManager progressionManager;
 
@@ -38,13 +40,13 @@ namespace CON.Progression
         private void Start()
         {
             UpdateUnlockableVisualisation();
-            UpdateRequirements();
         }
-        private void UpdateUnlockableVisualisation()
+        public void UpdateUnlockableVisualisation()
         {
             unlockableName.text = unlockable.name;
             unlockableImage.sprite = unlockable.sprite;
             unlockableDescription.text = unlockable.description;
+            UpdateRequirements();
         }
         private void UpdateRequirements()
         {
@@ -67,10 +69,20 @@ namespace CON.Progression
             {
                 if (!requirementVisualisation[index].tmPro.transform.gameObject.activeInHierarchy)
                 {
-                    print("hello");
                     continue;
                 }
-                requirementVisualisation[index].tmPro.text = inventory.GetAmountOfElement(unlockable.elementRequirements[index].element) + " / " + unlockable.elementRequirements[index].amount.ToString();
+
+                int amountOfElementProduced = inventory.GetAmountOfElement(unlockable.elementRequirements[index].element);
+                requirementVisualisation[index].tmPro.text = amountOfElementProduced + " / " + unlockable.elementRequirements[index].amount.ToString();
+
+                if(amountOfElementProduced >= unlockable.elementRequirements[index].amount)
+                {
+                    requirementVisualisation[index].tmPro.color = Color.green;
+                }
+                else
+                {
+                    requirementVisualisation[index].tmPro.color = Color.red;
+                }
             }
         }
 
@@ -78,9 +90,11 @@ namespace CON.Progression
         {
             unlocked = true;
             progressionManager.UnlockPlaceable(unlockable);
+            GetComponent<Image>().color = unlockedBackgroundColor;
+            unlockButton.interactable = false;
         }
 
-        private void CheckUnlockView(List<Unlockable> unlockedPlaceables)
+        private void CheckUnlockView(Unlockable unlockedPlaceable)
         {
             foreach (ProgressionNode parentNode in parentNodes)
             {
@@ -112,14 +126,22 @@ namespace CON.Progression
             }
         }
 #endif
-
-
-        [System.Serializable]
-        class ElementRequirementVisualisation
+        public object CaptureState()
         {
-            public Image image; 
-            public TextMeshProUGUI tmPro; 
+            return unlocked;
         }
+
+        public void RestoreState(object state)
+        {
+            if (state == null) return;
+            unlocked = (bool)state;
+            if (unlocked && unlockable.prefab != null)
+            {
+                lockedView.SetActive(false);
+                OnClick();
+            }
+        }
+
     }
 
 }

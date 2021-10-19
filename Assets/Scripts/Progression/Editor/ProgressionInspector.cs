@@ -15,7 +15,7 @@ namespace CON.Progression
 
             ProgressionManager progressionManager = (ProgressionManager)target;
 
-            if (GUILayout.Button("Instantiate Node Connectors"))
+            if (GUILayout.Button("Initialise all Nodes"))
             {
                 progressionManager.InstantiateConnectors();
             }

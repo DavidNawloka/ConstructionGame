@@ -14,6 +14,15 @@ namespace CON.Progression
         public new string name;
         public string description;
         public InventoryItem[] elementRequirements;
+        public PlaceableType type;
+
+    }
+
+    public enum PlaceableType
+    {
+        Conveyor,
+        Gatherer,
+        Crafter
     }
 
 }

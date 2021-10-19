@@ -6,17 +6,20 @@ using UnityEngine.UI;
 using CON.Elements;
 using CON.Machines;
 using CON.Core;
+using CON.Progression;
 
 namespace CON.UI
 {
     public class PlaceableButton : MonoBehaviour
     {
-        [SerializeField] TextMeshProUGUI buttonHead;
-        [SerializeField] TextMeshProUGUI[] requirementAmounts;
-        [SerializeField] Image[] requirementSprites;
-        [SerializeField] GameObject placeablePrefab;
-        [SerializeField] Image elementPlacementIndicator;
+
+        [SerializeField] InventoryItemVisualisation[] requirementVisualisation;
         [SerializeField] AudioClip clickSound;
+        [Header("Placeable Specific")]
+        [SerializeField] TextMeshProUGUI placeableName;
+        [SerializeField] GameObject placeablePrefab;
+        [SerializeField] Image placeableImage;
+        [SerializeField] Image elementPlacementIndicator;
 
         Transform player;
         Button button;
@@ -27,22 +30,27 @@ namespace CON.UI
         {
             player = GameObject.FindGameObjectWithTag("Player").transform;
             button = GetComponent<Button>();
-            placeable = placeablePrefab.GetComponent<IPlaceable>();
             audioSourceManager = GetComponent<AudioSourceManager>();
         }
-        private void OnEnable()
+
+        public void InitialiseButton(Unlockable newPlaceable)
         {
-            player.GetComponent<Inventory>().OnInventoryChange.AddListener(UpdateRequirements);
-            button.onClick.AddListener(OnClick);
-            UpdateRequirements(player.GetComponent<Inventory>());
-        }
-        private void Start()
-        {
+            placeablePrefab = newPlaceable.prefab;
+            placeableName.text = newPlaceable.name;
+            placeableImage.sprite = newPlaceable.sprite;
+
+            placeable = placeablePrefab.GetComponent<IPlaceable>();
+
             if (placeable.GetElementPlacementRequirement() == null) elementPlacementIndicator.color = Color.white;
             else elementPlacementIndicator.color = placeable.GetElementPlacementRequirement().colorRepresentation;
-            
+
+            UpdateRequirementsVisualisation(player.GetComponent<Inventory>());
+
+            button.onClick.AddListener(OnClick);
+            player.GetComponent<Inventory>().OnInventoryChange.AddListener(UpdateRequirementsVisualisation);
         }
-        private void UpdateRequirements(Inventory playerInventory)
+
+        private void UpdateRequirementsVisualisation(Inventory playerInventory)
         {
             InventoryItem[] requirements = placeable.GetNeededBuildingElements();
 
@@ -52,25 +60,25 @@ namespace CON.UI
             {
                 if (!playerInventory.HasItem(requirements[index]))
                 {
-                    requirementAmounts[index].color = Color.red;
+                    requirementVisualisation[index].tmPro.color = Color.red;
                     hasAllItems = false;
                 }
                 else
                 {
-                    requirementAmounts[index].color = Color.white;
+                    requirementVisualisation[index].tmPro.color = Color.white;
                 }
-                requirementAmounts[index].text = requirements[index].amount.ToString();
-                requirementSprites[index].sprite = requirements[index].element.sprite;
+                requirementVisualisation[index].tmPro.text = requirements[index].amount.ToString();
+                requirementVisualisation[index].image.sprite = requirements[index].element.sprite;
             }
 
             if (hasAllItems) 
-            { 
-                buttonHead.color = Color.white;
+            {
+                placeableName.color = Color.white;
                 button.interactable = true;
             }
             else
             {
-                buttonHead.color = Color.red;
+                placeableName.color = Color.red;
                 button.interactable = false;
             }
         }

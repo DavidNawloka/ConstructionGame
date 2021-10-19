@@ -17,9 +17,10 @@ MonoBehaviour:
   name: Iron Ore Miner
   description: Allows the automation of iron ore mining
   elementRequirements:
-  - element: {fileID: 11400000, guid: 296a20792c61e7e4eb31c9133973c3b5, type: 2}
-    amount: 10
-  - element: {fileID: 11400000, guid: 90af84c016779b64abdbae59aa56cd21, type: 2}
-    amount: 15
-  - element: {fileID: 11400000, guid: c2f82b61e121f29408d0cfa36fd30d2e, type: 2}
-    amount: 5
+  - element: {fileID: 11400000, guid: ce0a705810326c5428f93e3650c09cec, type: 2}
+    amount: 35
+  - element: {fileID: 11400000, guid: 5d9ca0baebc0b5040b1ace9cebd67708, type: 2}
+    amount: 40
+  - element: {fileID: 11400000, guid: a5ce88407542bab4b861a21db95ade0e, type: 2}
+    amount: 45
+  type: 1

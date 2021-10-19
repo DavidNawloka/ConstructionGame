@@ -385,6 +385,7 @@ MonoBehaviour:
   sliderForeground: {fileID: 3577943908516547851}
   horizontalConnection: {fileID: 1361637262}
   verticalConnection: {fileID: 5953011860258777254}
+  head: {fileID: 2757025254589606818}
   requirementImages: []
   outcomeImage: {fileID: 0}
   instructionDropdown: {fileID: 3609665841599354255}

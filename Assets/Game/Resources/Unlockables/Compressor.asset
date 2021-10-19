@@ -17,9 +17,10 @@ MonoBehaviour:
   name: Compressor
   description: Compresses elements into denser versions of them
   elementRequirements:
-  - element: {fileID: 11400000, guid: 296a20792c61e7e4eb31c9133973c3b5, type: 2}
-    amount: 10
-  - element: {fileID: 11400000, guid: 90af84c016779b64abdbae59aa56cd21, type: 2}
-    amount: 15
+  - element: {fileID: 11400000, guid: ce0a705810326c5428f93e3650c09cec, type: 2}
+    amount: 25
+  - element: {fileID: 11400000, guid: 07c6d23cc05dd23458135c08435071a3, type: 2}
+    amount: 55
   - element: {fileID: 11400000, guid: c2f82b61e121f29408d0cfa36fd30d2e, type: 2}
-    amount: 5
+    amount: 75
+  type: 2

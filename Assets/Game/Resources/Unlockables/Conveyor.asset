@@ -10,15 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 14c4c6a47ff8cf4409683131c5373922, type: 3}
-  m_Name: Tunnel_Conveyor
+  m_Name: Conveyor
   m_EditorClassIdentifier: 
-  prefab: {fileID: 8540175721113228109, guid: da5ce1522570b3d44a9db9dbf1bba4dd, type: 3}
-  sprite: {fileID: 21300000, guid: ec3d44b7a2b9c6b44b673f78f537183d, type: 3}
-  name: Tunnel
-  description: Allows for underground transportation of elements
+  prefab: {fileID: 6366741075993714630, guid: bb6ca1340ae038249b5009f58c022cc3, type: 3}
+  sprite: {fileID: 21300000, guid: 9d756df655d1f8d428f2a1b6264d1f13, type: 3}
+  name: Conveyor
+  description: Allow for the transportation of elements
   elementRequirements:
   - element: {fileID: 11400000, guid: 90af84c016779b64abdbae59aa56cd21, type: 2}
-    amount: 25
-  - element: {fileID: 11400000, guid: c2f82b61e121f29408d0cfa36fd30d2e, type: 2}
-    amount: 35
+    amount: 2
   type: 0

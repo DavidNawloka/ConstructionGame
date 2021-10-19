@@ -10,17 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 14c4c6a47ff8cf4409683131c5373922, type: 3}
-  m_Name: Sand_Collector
+  m_Name: Wood_Gatherer
   m_EditorClassIdentifier: 
-  prefab: {fileID: 8095774179287151682, guid: 304d2fdd939737b42b19b11edc61fffe, type: 3}
-  sprite: {fileID: 21300000, guid: a7d266fdb42b8594a8663f41303ba248, type: 3}
-  name: Sand Collector
-  description: Allows the automation of sand collecting
+  prefab: {fileID: 927031865721193231, guid: d7820a8157b577945b006a633d59d393, type: 3}
+  sprite: {fileID: 21300000, guid: 00d0e07746d09e341bccad0f495abe21, type: 3}
+  name: Wood Gatherer
+  description: Allows the automation of wood gathering
   elementRequirements:
-  - element: {fileID: 11400000, guid: 90af84c016779b64abdbae59aa56cd21, type: 2}
-    amount: 45
   - element: {fileID: 11400000, guid: c2f82b61e121f29408d0cfa36fd30d2e, type: 2}
-    amount: 75
-  - element: {fileID: 11400000, guid: 07c6d23cc05dd23458135c08435071a3, type: 2}
-    amount: 5
+    amount: 15
   type: 1

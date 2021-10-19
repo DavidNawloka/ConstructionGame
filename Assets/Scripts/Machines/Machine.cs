@@ -34,7 +34,6 @@ namespace CON.Machines
         ProgressionManager progressionManager;
 
         float productionTimer = 0f;
-        int elementsProduced = 0;
         Vector2Int gridOrigin;
 
         void Awake()
@@ -152,17 +151,14 @@ namespace CON.Machines
 
         private void ProduceElement()
         {
-            Instantiate(currentInstruction.outcome.element.pickupPrefab, elementExitPoint.position, Quaternion.identity);
-            elementsProduced++;
-
             progressionManager.GetInventory().EquipItem(currentInstruction.outcome);
 
-            if (elementsProduced >= currentInstruction.outcome.amount)
+            for (int amount = 0; amount < currentInstruction.outcome.amount; amount++)
             {
-                inventory.RemoveItem(currentInstruction.requirements);
-                elementsProduced = 0;
+                Instantiate(currentInstruction.outcome.element.pickupPrefab, elementExitPoint.position, Quaternion.identity);
             }
-            
+            inventory.RemoveItem(currentInstruction.requirements);
+
         }
 
 
@@ -238,7 +234,7 @@ namespace CON.Machines
         }
         public object GetInformationToSave()
         {
-            return new SavedMachine(isPaused,productionTimer,elementsProduced,currentInstruction,inventory.CaptureState());
+            return new SavedMachine(isPaused,productionTimer,currentInstruction,inventory.CaptureState());
         }
 
         public void LoadSavedInformation(object savedInformation)
@@ -246,7 +242,6 @@ namespace CON.Machines
             SavedMachine savedMachine = (SavedMachine)savedInformation;
 
             productionTimer = savedMachine.productionTimer;
-            elementsProduced = savedMachine.elementsProduced;
             SetCurrentInstruction(savedMachine.machineInstruction.DeSerialize());
             inventory.RestoreState(savedMachine.inventoryState);
             SetPause(savedMachine.isPaused);
@@ -258,13 +253,11 @@ namespace CON.Machines
         {
             public bool isPaused;
             public float productionTimer;
-            public int elementsProduced;
             public SerializedInstruction machineInstruction;
             public object inventoryState;
-            public SavedMachine(bool isPaused, float productionTimer, int elementsProduced, Instruction currentInstruction, object inventoryState)
+            public SavedMachine(bool isPaused, float productionTimer, Instruction currentInstruction, object inventoryState)
             {
                 this.productionTimer = productionTimer;
-                this.elementsProduced = elementsProduced;
                 this.machineInstruction = currentInstruction.Serialize();
                 this.inventoryState = inventoryState;
                 this.isPaused = isPaused;

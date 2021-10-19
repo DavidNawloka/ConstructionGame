@@ -138,7 +138,7 @@ namespace CON.Elements
                     return inventoryItem.amount;
                 }
             }
-            return -1;
+            return 0;
         }
         private void BuildEmptyInventory()
         {
