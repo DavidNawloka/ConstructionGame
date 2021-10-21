@@ -21,22 +21,17 @@ namespace CON.UI
         [SerializeField] GameObject gathererTab;
         [SerializeField] GameObject crafterTab;
 
-        CanvasGroup canvasGroup;
-        BuildingGridMesh buildingGridMesh;
         Builder builder;
         AudioSourceManager audioSourceManager;
         ProgressionManager progressionManager;
 
         private void Awake()
         {
-            canvasGroup = GetComponent<CanvasGroup>();
             builder = FindObjectOfType<Builder>();
             audioSourceManager = GetComponent<AudioSourceManager>();
-            buildingGridMesh = FindObjectOfType<BuildingGridMesh>();
             progressionManager = FindObjectOfType<ProgressionManager>();
 
             builder.onDemolishModeChange += OnDemolishModeChange;
-            builder.onBuildModeChange += SetCanvasGroup;
             progressionManager.OnPlaceableUnlocked.AddListener(UnlockPlaceable);
         }
         public void ToggleBuildMode() // Button onClick event function
@@ -70,16 +65,6 @@ namespace CON.UI
                     break;
             }
             buttonInstance.GetComponent<RectTransform>().localScale = Vector3.one;
-        }
-        private void SetCanvasGroup(bool isActive)
-        {
-            audioSourceManager.PlayOnce(ToggleBuildModeSound);
-            canvasGroup.interactable = isActive;
-            canvasGroup.blocksRaycasts = isActive;
-            buildingGridMesh.SetActiveMesh(isActive);
-
-            if (isActive) canvasGroup.alpha = 1;
-            else canvasGroup.alpha = 0;
         }
     }
 }

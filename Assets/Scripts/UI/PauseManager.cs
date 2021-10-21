@@ -9,20 +9,17 @@ namespace CON.UI
 
     public class PauseManager : MonoBehaviour
     {
-        [SerializeField] Transform HUD;
         [SerializeField] Transform BuildModeUI;
 
         public UnityEvent<bool> OnPauseStatusChange;
 
         bool isPaused = false;
-        CanvasGroup canvasGroup;
+
+        UserInterfaceManager userInterfaceManager;
+
         private void Awake()
         {
-            canvasGroup = GetComponent<CanvasGroup>();
-        }
-        private void Start()
-        {
-            SetCanvasGroup(false);
+            userInterfaceManager = FindObjectOfType<UserInterfaceManager>();
         }
         private void Update()
         {
@@ -34,6 +31,7 @@ namespace CON.UI
 
         private void TogglePauseMenu()
         {
+            userInterfaceManager.ToggleUI(3);
             isPaused = !isPaused;
             SetPause();
         }
@@ -42,20 +40,8 @@ namespace CON.UI
         {
             OnPauseStatusChange.Invoke(isPaused);
 
-            HUD.gameObject.SetActive(!isPaused);
-            BuildModeUI.gameObject.SetActive(!isPaused);
-            SetCanvasGroup(isPaused);
-
             if (isPaused) Time.timeScale = 0;
             else Time.timeScale = 1;
-        }
-        private void SetCanvasGroup(bool isActive)
-        {
-            canvasGroup.interactable = isActive;
-            canvasGroup.blocksRaycasts = isActive;
-
-            if (isActive) canvasGroup.alpha = 1;
-            else canvasGroup.alpha = 0;
         }
     }
 

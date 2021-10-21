@@ -8,6 +8,7 @@ using UnityEngine;
 using System.Linq;
 using CON.Core;
 using UnityEngine.EventSystems;
+using CON.UI; // TODO: Fix questionable dependency
 
 namespace CON.Machines
 {
@@ -47,12 +48,14 @@ namespace CON.Machines
 
         Inventory inventory;
         AudioSourceManager audioSourceManager;
+        UserInterfaceManager userInterfaceManager;
 
         private void Awake()
         {
             inventory = GetComponent<Inventory>();
             audioSourceManager = GetComponent<AudioSourceManager>();
             gridMesh = FindObjectOfType<BuildingGridMesh>();
+            userInterfaceManager = FindObjectOfType<UserInterfaceManager>();
         }
 
         private void Start()
@@ -143,11 +146,13 @@ namespace CON.Machines
         public void ToggleBuildMode()
         {
             isBuildMode = !isBuildMode;
+            userInterfaceManager.ToggleUI(1);
             SetActiveBuildMode();
         }
         private void SetActiveBuildMode()
         {
             onBuildModeChange(isBuildMode);
+            gridMesh.SetActiveMesh(isBuildMode);
             if (isDemolishMode) SetActiveDemolishMode(isBuildMode);
             if (isPlacementMode) DeactivatePlacementModeDestruction();
         }

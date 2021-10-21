@@ -168,15 +168,16 @@ namespace CON.Machines
             {
                 AudioSource audioSource = animation.transform.GetComponent<AudioSource>();
                 animation.playAutomatically = false;
+                if (audioSource != null) audioSource.enabled = isActive;
                 if (isActive)
                 {
                     animation.Play();
-                    if(audioSource != null) audioSource.Play();
+                    
                 }
                 else
                 {
                     animation.Rewind();
-                    if (audioSource != null) audioSource.Stop();
+                    animation.Stop();
                 }
 
             }
