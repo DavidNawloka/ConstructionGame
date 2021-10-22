@@ -82,7 +82,7 @@ namespace CON.Machines
         {
             if (Input.GetKeyDown(KeyCode.B))
             {
-                ToggleBuildMode();
+                userInterfaceManager.ToggleUI(1);
             }
 
             if (!isBuildMode) return;
@@ -146,7 +146,6 @@ namespace CON.Machines
         public void ToggleBuildMode()
         {
             isBuildMode = !isBuildMode;
-            userInterfaceManager.ToggleUI(1);
             SetActiveBuildMode();
         }
         private void SetActiveBuildMode()
@@ -242,8 +241,9 @@ namespace CON.Machines
                 currentMoveGoal = grid.GetWorldPositionCenter(x, y);
                 
                 
-                if (Input.GetMouseButton(0))
+                if (Input.GetMouseButton(0) || Input.GetMouseButtonDown(0))
                 {
+                    
                     Placement(x, y);
                 }
             }
@@ -265,8 +265,9 @@ namespace CON.Machines
         }
         private void Placement(int x, int y)
         {
+            
             if (!IsPlacementPossible(x, y)) return;
-
+            
             RemoveElements(currentPlaceable);
 
             foreach (Vector2Int takenGridPosition in takenGridPositions)
@@ -292,8 +293,10 @@ namespace CON.Machines
             if (EventSystem.current.IsPointerOverGameObject()) return false;
 
             if (!AreEnoughElements()) return false;
-
+            
             if (currentPlaceable.GetElementPlacementRequirement() != null &&!grid.HasElement(x, y, currentPlaceable.GetElementPlacementRequirement())) return false;
+
+            
 
             return true;
         }

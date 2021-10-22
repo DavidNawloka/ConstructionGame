@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace CON.UI
 {
@@ -9,6 +10,8 @@ namespace CON.UI
         [SerializeField] UserInterfaceType[] UITypes;
 
         AudioSource audioSource;
+
+        List<UserInterfaceType> tempClosedUITypes = new List<UserInterfaceType>();
 
         private void Awake()
         {
@@ -31,15 +34,37 @@ namespace CON.UI
         {
             UserInterfaceType userInterfaceType = UITypes[typeIndex];
             if(userInterfaceType.audioClip != null) audioSource.PlayOneShot(userInterfaceType.audioClip);
+            userInterfaceType.OnToggle.Invoke();
+
+            if(!isActive && userInterfaceType.shouldBeShownAlone && tempClosedUITypes.Count != 0)
+            {
+                foreach (UserInterfaceType UIType in tempClosedUITypes)
+                {
+                    SetActiveUserInterfaceType(UIType, true);
+                }
+                tempClosedUITypes.Clear();
+            }
+
             if (isActive && userInterfaceType.shouldBeShownAlone)
             {
                 foreach (UserInterfaceType UIType in UITypes)
                 {
-                    SetActiveCanvasGroup(UIType.canvasGroup, false); // Need way of reenabeling these disabled UI TODO: FIX UI System
+                    if (!UIType.isEnabled) continue;
+
+                    SetActiveUserInterfaceType(UIType, false);
+                    tempClosedUITypes.Add(UIType);
                 }
 
             }
             SetActiveCanvasGroup(userInterfaceType.canvasGroup, isActive);
+            userInterfaceType.isEnabled = isActive;
+        }
+
+        private void SetActiveUserInterfaceType(UserInterfaceType UIType, bool isActive)
+        {
+            SetActiveCanvasGroup(UIType.canvasGroup, isActive);
+            UIType.isEnabled = isActive;
+            UIType.OnToggle.Invoke();
         }
 
         private void SetActiveCanvasGroup(CanvasGroup canvasGroup, bool isActive)
@@ -55,7 +80,9 @@ namespace CON.UI
         {
             public CanvasGroup canvasGroup;
             public bool shouldBeShownAlone;
+            public bool isEnabled;
             public AudioClip audioClip;
+            public UnityEvent OnToggle;
         }
     }
 

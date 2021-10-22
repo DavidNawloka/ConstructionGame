@@ -24,19 +24,21 @@ namespace CON.UI
         Builder builder;
         AudioSourceManager audioSourceManager;
         ProgressionManager progressionManager;
+        UserInterfaceManager userInterfaceManager;
 
         private void Awake()
         {
             builder = FindObjectOfType<Builder>();
             audioSourceManager = GetComponent<AudioSourceManager>();
             progressionManager = FindObjectOfType<ProgressionManager>();
+            userInterfaceManager = FindObjectOfType<UserInterfaceManager>();
 
             builder.onDemolishModeChange += OnDemolishModeChange;
             progressionManager.OnPlaceableUnlocked.AddListener(UnlockPlaceable);
         }
         public void ToggleBuildMode() // Button onClick event function
         {
-            builder.ToggleBuildMode();
+            userInterfaceManager.ToggleUI(1);
         }
         public void ToggleDemolishMode() // Button onClick event function
         {
