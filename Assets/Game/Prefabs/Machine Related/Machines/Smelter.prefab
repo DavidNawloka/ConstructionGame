@@ -509,6 +509,10 @@ PrefabInstance:
       propertyPath: requirementImages.Array.data[1]
       value: 
       objectReference: {fileID: 9129773819954235117}
+    - target: {fileID: 5010560864208540764, guid: b1f40ce24e4af6d4f8432e613e2fe790, type: 3}
+      propertyPath: m_text
+      value: Smelter
+      objectReference: {fileID: 0}
     - target: {fileID: 7413841449523547028, guid: b1f40ce24e4af6d4f8432e613e2fe790, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

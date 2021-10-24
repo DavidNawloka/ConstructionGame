@@ -30,6 +30,7 @@ namespace CON.Machines
         bool isPaused = false;
         bool fullyPlaced = false;
         Inventory playerInventory;
+        Builder builder;
         Instruction currentInstruction;
         ProgressionManager progressionManager;
 
@@ -201,6 +202,7 @@ namespace CON.Machines
         public void FullyPlaced(Builder player)
         {
             GetComponent<NavMeshObstacle>().enabled = true;
+            builder = player;
             fullyPlaced = true;
             playerInventory = player.GetComponent<Inventory>();
         }
@@ -220,7 +222,7 @@ namespace CON.Machines
         }
         private void OnMouseDown()
         {
-            if (!fullyPlaced || EventSystem.current.IsPointerOverGameObject()) return ;
+            if (!fullyPlaced || EventSystem.current.IsPointerOverGameObject() || builder.IsDemolishMode()) return;
 
             OnMachineClicked();
         }

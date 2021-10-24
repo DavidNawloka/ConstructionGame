@@ -25,7 +25,7 @@ namespace CON.BuildingGrid
 
         public void UpdateTexture(Texture2D updatedTexture)
         {
-            meshRenderer.material.mainTexture = updatedTexture;
+            meshRenderer.sharedMaterial.mainTexture = updatedTexture;
             meshRenderer.UpdateGIMaterials();
         }
 

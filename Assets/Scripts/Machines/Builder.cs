@@ -18,6 +18,7 @@ namespace CON.Machines
         [SerializeField] GameObject[] placeableObjectsPrefabs;
         [SerializeField] float rotationTime = .2f;
         [SerializeField] float maxSmoothMove = 2f;
+        [SerializeField] float distanceDivider = 10f;
         [Header("Sound Effects")]
         [SerializeField] AudioClip[] placementSounds;
         [SerializeField] AudioClip[] demolishSounds;
@@ -170,6 +171,11 @@ namespace CON.Machines
             return gridMesh;
         }
         
+        public bool IsDemolishMode()
+        {
+            return isDemolishMode;
+        }
+
         private void DemolishMode()
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -180,7 +186,7 @@ namespace CON.Machines
                 int y;
                 grid.GetGridPosition(raycastHit.point, out x, out y);
 
-                if (Input.GetMouseButtonDown(0) && grid.IsObstructed(x, y))
+                if (Input.GetMouseButtonDown(0) && grid.IsObstructed(x, y) && !EventSystem.current.IsPointerOverGameObject())
                 {
                    
                     IPlaceable placedMachine = raycastHit.collider.GetComponentInParent<IPlaceable>();
@@ -251,7 +257,7 @@ namespace CON.Machines
         private void SmoothMovePlaceable()
         {
             float distance = Vector3.Distance(currentMachine.transform.position, currentMoveGoal);
-            currentMachine.transform.position = Vector3.MoveTowards(currentMachine.transform.position, currentMoveGoal, maxSmoothMove+distance/10);
+            currentMachine.transform.position = Vector3.MoveTowards(currentMachine.transform.position, currentMoveGoal, ((maxSmoothMove*distance)/ distanceDivider) *Time.deltaTime);
         }
         private bool IsObstructedAll(int x, int y)
         {
@@ -325,6 +331,7 @@ namespace CON.Machines
             isPlacementMode = false;
             currentMachine = null;
             currentPlaceable = null;
+            currentRotationGoal = Quaternion.Euler(Vector3.one);
         }
         private void ReenablePlacementMode()
         {

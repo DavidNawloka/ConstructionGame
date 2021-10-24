@@ -1326,6 +1326,10 @@ PrefabInstance:
       propertyPath: requirementImages.Array.data[1]
       value: 
       objectReference: {fileID: 152710719768194050}
+    - target: {fileID: 5010560864208540764, guid: b1f40ce24e4af6d4f8432e613e2fe790, type: 3}
+      propertyPath: m_text
+      value: Rock Gatherer
+      objectReference: {fileID: 0}
     - target: {fileID: 6017883457135555050, guid: b1f40ce24e4af6d4f8432e613e2fe790, type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
       value: 25

@@ -115,7 +115,7 @@ namespace Astutos.Saving
         {
             int timePlayedAll = ((int)Time.time) + timePlayedInSeconds;
             int machinesBuilt = FindObjectsOfType<Machine>().Length;
-            int conveyorsBuilt = FindObjectsOfType<Conveyor>().Length + FindObjectsOfType<SeperatorConveyor>().Length;
+            int conveyorsBuilt = FindObjectsOfType<Conveyor>().Length + FindObjectsOfType<SplitterConveyor>().Length;
             return new JsonSavedStatisticData(timePlayedAll, machinesBuilt, conveyorsBuilt);
         }
 

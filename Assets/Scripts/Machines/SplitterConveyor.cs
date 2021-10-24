@@ -1,14 +1,17 @@
 using CON.Core;
 using CON.Elements;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.EventSystems;
 
 namespace CON.Machines
 {
-    public class SeperatorConveyor : MonoBehaviour, IPlaceable
+    public class SplitterConveyor : MonoBehaviour, IPlaceable
     {
+        public bool isRightToLeft = true;
         [SerializeField] Vector2Int[] takenGridPositions;
         [SerializeField] InventoryItem[] elementBuildingRequirements;
         [SerializeField] Element elementPlacementRequirement;
@@ -16,15 +19,19 @@ namespace CON.Machines
         [SerializeField] float forceToApplyForward;
         [SerializeField] float forceToApplySide;
         [SerializeField] GameObject[] directionArrows;
-        [SerializeField] bool isRightToLeft = true;
         [SerializeField] Transform hook;
         [SerializeField] Animation hookAnimation;
         [SerializeField] AudioClip[] conveyorSounds;
 
+        [HideInInspector] public event Action OnSplitterClicked;
+        [HideInInspector] public event Action OnFullyPlaced;
+
+        int elementRatio = 2;
         int elementCounter = 1;
         Vector2Int gridOrigin;
         Builder player;
         AudioSourceManager audioLoop;
+        bool isFullyPlaced = false;
 
         private void Awake()
         {
@@ -36,12 +43,17 @@ namespace CON.Machines
             UpdateHookPosition();
             if (player != null) OnBuildModeChange(false);
         }
+        private void OnDisable()
+        {
+            if (player == null) return;
+            player.onBuildModeChange -= OnBuildModeChange;
+        }
         private void ToggleHookPosition()
         {
             isRightToLeft = !isRightToLeft;
             UpdateHookPosition();
         }
-        private void UpdateHookPosition()
+        public void UpdateHookPosition()
         {
             if (!isRightToLeft)
             {
@@ -52,10 +64,10 @@ namespace CON.Machines
                 hook.localPosition = new Vector3(hook.localPosition.x, hook.localPosition.y, 8);
             }
         }
-        private void OnDisable()
+        public void UpdateElementRatio(int afterHowManyElements)
         {
-            if (player == null) return;
-            player.onBuildModeChange -= OnBuildModeChange;
+            elementRatio = afterHowManyElements + 1;
+            elementCounter = 1;
         }
         private void OnBuildModeChange(bool isActive)
         {
@@ -64,23 +76,25 @@ namespace CON.Machines
                 arrow.SetActive(isActive);
             }
         }
+
         public void OnElementRightEnter(ElementPickup elementPickup)
         {
-            if (!isRightToLeft) return;
+            if (!isRightToLeft || !isFullyPlaced) return;
             Rigidbody rigidbody = elementPickup.GetComponent<Rigidbody>();
             StartCoroutine(MoveElement(rigidbody));
             
         }
         public void OnElementLeftEnter(ElementPickup elementPickup)
         {
-            if (isRightToLeft) return;
+            if (isRightToLeft || !isFullyPlaced) return;
             Rigidbody rigidbody = elementPickup.GetComponent<Rigidbody>();
             StartCoroutine(MoveElement(rigidbody));
         }
         private IEnumerator MoveElement(Rigidbody rigidbody)
         {
-            if (elementCounter == 2)
+            if (elementCounter == elementRatio)
             {
+                elementCounter = 1;
                 rigidbody.isKinematic = true;
                 rigidbody.transform.parent = hook;
 
@@ -92,7 +106,7 @@ namespace CON.Machines
                 rigidbody.isKinematic = false;
                 rigidbody.transform.parent = null;
 
-                elementCounter = 1;
+                
             }
             else if (!rigidbody.isKinematic) elementCounter++;
         }
@@ -118,13 +132,21 @@ namespace CON.Machines
         }
 
         // Interface Implementations
+        private void OnMouseDown()
+        {
+            if (!isFullyPlaced || EventSystem.current.IsPointerOverGameObject() || player.IsDemolishMode()) return;
+
+            OnSplitterClicked();
+        }
 
         public void FullyPlaced(Builder player)
         {
             GetComponent<NavMeshObstacle>().enabled = true;
             GetComponent<BoxCollider>().enabled = true;
             this.player = player;
+            isFullyPlaced = true;
             audioLoop.StartLooping(conveyorSounds);
+            OnFullyPlaced();
             player.onBuildModeChange += OnBuildModeChange;
         }
 
@@ -164,15 +186,17 @@ namespace CON.Machines
         }
         public object GetInformationToSave()
         {
-            return new SavedSeperatorConveyor(isRightToLeft,elementCounter);
+            return new SavedSeperatorConveyor(isRightToLeft,elementCounter,elementRatio);
         }
 
         public void LoadSavedInformation(object savedInformation)
         {
+            if (savedInformation == null) return;
             SavedSeperatorConveyor savedSeperatorConveyor = (SavedSeperatorConveyor)savedInformation;
 
             isRightToLeft = savedSeperatorConveyor.isRightToLeft;
             elementCounter = savedSeperatorConveyor.elementCounter;
+            elementRatio = savedSeperatorConveyor.elementRatio;
 
             UpdateHookPosition();
         }
@@ -181,12 +205,14 @@ namespace CON.Machines
         private class SavedSeperatorConveyor
         {
             public bool isRightToLeft;
+            public int elementRatio;
             public int elementCounter;
 
-            public SavedSeperatorConveyor(bool isRightToLeft, int elementCounter)
+            public SavedSeperatorConveyor(bool isRightToLeft, int elementCounter,int elementRatio)
             {
                 this.isRightToLeft = isRightToLeft;
                 this.elementCounter = elementCounter;
+                this.elementRatio = elementRatio;
             }
         }
     }

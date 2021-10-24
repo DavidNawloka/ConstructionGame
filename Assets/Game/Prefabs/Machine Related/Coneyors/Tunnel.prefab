@@ -104,7 +104,7 @@ RectTransform:
   m_Children:
   - {fileID: 1788321265649740011}
   m_Father: {fileID: 8540175721113228106}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -195,11 +195,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6079990869133443725}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.991, y: 1.016, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0.7069834, y: -0, z: -0, w: 0.7072302}
+  m_LocalPosition: {x: 0, y: 0.00037427602, z: 0.015304384}
+  m_LocalScale: {x: 0.015536718, y: 0.015243523, z: 0.01674585}
   m_Children: []
-  m_Father: {fileID: 8540175721113228106}
+  m_Father: {fileID: 8061005107963142383}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8540175721113228109
@@ -235,7 +235,6 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1946695025493053410}
   - {fileID: 976683414190426190}
   - {fileID: 3325563868274089357}
   - {fileID: 8061005107963142383}
@@ -265,6 +264,9 @@ MonoBehaviour:
   elementPlacementRequirement: {fileID: 0}
   elementExitPoint: {fileID: 1946695025493053410}
   elementExitForce: 4
+  elementExitConveyor: {fileID: 8061005107963142383}
+  elementEntryConveyor: {fileID: 3325563868274089357}
+  maxTunnelBlocks: 3
   directionArrow: {fileID: 3893540391469004405}
   conveyorSounds:
   - {fileID: 8300000, guid: 9917d43904733844b98be553473e73d6, type: 3}
@@ -436,7 +438,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 9fbb11d6326da3d40a770b1d944c9a30, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9fbb11d6326da3d40a770b1d944c9a30, type: 3}
       propertyPath: m_LocalScale.x
@@ -502,7 +504,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 9fbb11d6326da3d40a770b1d944c9a30, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9fbb11d6326da3d40a770b1d944c9a30, type: 3}
       propertyPath: m_LocalScale.x

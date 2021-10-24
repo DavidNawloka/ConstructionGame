@@ -238,7 +238,8 @@ MonoBehaviour:
   - {fileID: 399632920827051588, guid: 36ce3007136b7e24fb29069f17f5b802, type: 3}
   - {fileID: 399632920827051588, guid: ec739a22f4b58bf40911b13a7ea4f0fe, type: 3}
   rotationTime: 0.1
-  maxSmoothMove: 0.1
+  maxSmoothMove: 5
+  distanceDivider: 0.3
   placementSounds:
   - {fileID: 8300000, guid: c25e609f1550fdc419e6396e7afa6b4f, type: 3}
   - {fileID: 8300000, guid: 34ba75b36f279564cb438a97666cb21c, type: 3}
@@ -275,6 +276,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e98323fe8ac05144798f97ff6969051f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  placeableToUnlock:
+  - {fileID: 11400000, guid: 8993b10b46aedc246b41456c097ae21e, type: 2}
+  - {fileID: 11400000, guid: f0cffcd5068a8214a8261ce14fa9d9fb, type: 2}
+  - {fileID: 11400000, guid: 8c6786968f5e2a44fa6bd3399541d2c5, type: 2}
+  - {fileID: 11400000, guid: 7b406fd776e91fd40b2c28b9755892d4, type: 2}
+  - {fileID: 11400000, guid: c9962fd1e2d8bca4f868d17858dcd93e, type: 2}
+  - {fileID: 11400000, guid: 4716ab4b42550924b9b7606cb375ce6f, type: 2}
+  - {fileID: 11400000, guid: 29e8ec23b0ff67a469d47ce2e53d680f, type: 2}
+  - {fileID: 11400000, guid: a35805ee368754843b90503e5b115e1d, type: 2}
+  - {fileID: 11400000, guid: 7950eb452d66558418ab55b9bf6248fe, type: 2}
+  - {fileID: 11400000, guid: e01fb2551ae21ee409cff65aad8017b6, type: 2}
 --- !u!114 &242470760144233005
 MonoBehaviour:
   m_ObjectHideFlags: 0

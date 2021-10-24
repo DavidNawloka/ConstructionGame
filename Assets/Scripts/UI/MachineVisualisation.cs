@@ -10,16 +10,12 @@ using CON.Machines;
 
 namespace CON.UI
 {
-    public class MachineVisualisation : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+    public class MachineVisualisation : MonoBehaviour
     {
         [Header("Inventory")]
-        [SerializeField] Image[] requirementSprite;
-        [SerializeField] TextMeshProUGUI[] requirementTMPro;
+        [SerializeField] InventoryItemVisualisation[] inventoryRequirmentVisualiser;
         [SerializeField] TextMeshProUGUI[] inventorySlotTMPro;
         [SerializeField] RectTransform sliderForeground;
-        [Header("Connectors")]
-        [SerializeField] RectTransform horizontalConnection;
-        [SerializeField] RectTransform verticalConnection;
         [Header("Machine specific")]
         [SerializeField] Image[] requirementImages;
         [SerializeField] Image outcomeImage;
@@ -30,23 +26,17 @@ namespace CON.UI
         [SerializeField] Image instructionIndicatorOutcomeSprite;
         [SerializeField] TextMeshProUGUI instructionIndicatorOutcomeTMPro;
 
-        CanvasGroup canvasGroup;
+        
         Machine machine;
-
-        bool isFirstClick;
-        bool isHidden = true;
-
-        bool followMouse = false;
-        Vector3 initialMousePosition;
+        MoveableWindow moveableWindow;
 
         private void Awake()
         {
-            canvasGroup = GetComponent<CanvasGroup>();
             machine = GetComponentInParent<Machine>();
+            moveableWindow = GetComponent<MoveableWindow>();
         }
         private void Start()
         {
-            SetActiveCanvas(false);
             UpdateInstructionIndicator();
             UpdateRequirementUIMultiple();
             UpdateRequirementUIOnce();
@@ -64,9 +54,6 @@ namespace CON.UI
         }
         private void Update()
         {
-            if (isHidden) return;
-            UpdateOwnPosition();
-            UpdateConnectionPosition();
             sliderForeground.localScale = new Vector3(machine.GetProductionFraction(), 1, 1);
         }
 
@@ -91,6 +78,17 @@ namespace CON.UI
                     inventorySlotTMPro[requirementIndex].color = Color.white;
                 }
                 else inventorySlotTMPro[requirementIndex].color = Color.red;
+
+                if (inventory.GetAmountOfElement(machine.GetCurrentInstruction().requirements[requirementIndex].element) > 0)
+                {
+                    inventoryRequirmentVisualiser[requirementIndex].image.enabled = false;
+                    inventoryRequirmentVisualiser[requirementIndex].tmPro.enabled = false;
+                }
+                else
+                {
+                    inventoryRequirmentVisualiser[requirementIndex].image.enabled = true;
+                    inventoryRequirmentVisualiser[requirementIndex].tmPro.enabled = true;
+                }
             }
         }
 
@@ -102,23 +100,10 @@ namespace CON.UI
         public void MachineClicked() // Event from Machine Class function
         {
             transform.position = Camera.main.WorldToScreenPoint(machine.transform.position);
-            if (isFirstClick) SetActiveCanvas(true);
-            else SetActiveCanvas(false);
+            moveableWindow.ToggleCanvas(machine.transform);
         }
 
-        public void SetActiveCanvas(bool isActive) // Button function
-        {
-            canvasGroup.interactable = isActive;
-            canvasGroup.blocksRaycasts = isActive;
-            horizontalConnection.gameObject.SetActive(isActive);
-            verticalConnection.gameObject.SetActive(isActive);
-
-            isFirstClick = !isActive;
-            isHidden = !isActive;
-
-            if (isActive) canvasGroup.alpha = 1;
-            else canvasGroup.alpha = 0;
-        }
+        
 
         private void SetActiveElementIndicators(bool isActive)
         {
@@ -129,29 +114,6 @@ namespace CON.UI
             outcomeImage.enabled = isActive;
         }
 
-        private void UpdateOwnPosition()
-        {
-            if (followMouse)
-            {
-                transform.position = new Vector3(
-                    Mathf.Clamp(Input.mousePosition.x + initialMousePosition.x, 0, Screen.currentResolution.width),
-                    Mathf.Clamp(Input.mousePosition.y + initialMousePosition.y, 0, Screen.currentResolution.height),
-                    0);
-            }
-        }
-        private void UpdateConnectionPosition() 
-        {
-            Vector3 machineScreenSpacePosition = Camera.main.WorldToScreenPoint(machine.transform.position);
-            Vector3 posDifference = transform.position - machineScreenSpacePosition;
-
-
-            horizontalConnection.sizeDelta = new Vector2(Mathf.Abs(posDifference.x), horizontalConnection.sizeDelta.y);
-            verticalConnection.sizeDelta = new Vector2(Mathf.Abs(posDifference.y), verticalConnection.sizeDelta.y);
-
-            horizontalConnection.position = new Vector3((posDifference.x / 2) + machineScreenSpacePosition.x, transform.position.y);
-
-            verticalConnection.position = new Vector3(machineScreenSpacePosition.x, (posDifference.y / 2)+machineScreenSpacePosition.y);
-        }
         private void UpdateInstructionIndicator()
         {
             Instruction machineInstruction = machine.GetCurrentInstruction();
@@ -196,21 +158,19 @@ namespace CON.UI
             Instruction machineInstruction = machine.GetCurrentInstruction();
 
             bool isNeeded = machineInstruction.requirements.Length >= 2;
-            requirementTMPro[1].enabled = isNeeded;
-            requirementSprite[1].enabled = isNeeded;
+            inventoryRequirmentVisualiser[1].image.enabled = isNeeded;
+            inventoryRequirmentVisualiser[1].tmPro.enabled = isNeeded;
 
             isNeeded = machineInstruction.requirements.Length >= 3;
-            requirementTMPro[2].enabled = isNeeded;
-            requirementSprite[2].enabled = isNeeded;
+            inventoryRequirmentVisualiser[2].image.enabled = isNeeded;
+            inventoryRequirmentVisualiser[2].tmPro.enabled = isNeeded;
 
             for (int inventoryIndex = 0; inventoryIndex < machineInstruction.requirements.Length; inventoryIndex++)
             {
-                requirementSprite[inventoryIndex].sprite = machineInstruction.requirements[inventoryIndex].element.sprite;
-                requirementTMPro[inventoryIndex].text = machineInstruction.requirements[inventoryIndex].amount.ToString();
-            }
-            for (int requirementIndex = 0; requirementIndex < machineInstruction.requirements.Length; requirementIndex++)
-            {
-                requirementImages[requirementIndex].sprite = machineInstruction.requirements[requirementIndex].element.sprite;
+                inventoryRequirmentVisualiser[inventoryIndex].image.sprite = machineInstruction.requirements[inventoryIndex].element.sprite;
+                inventoryRequirmentVisualiser[inventoryIndex].tmPro.text = machineInstruction.requirements[inventoryIndex].amount.ToString();
+
+                requirementImages[inventoryIndex].sprite = machineInstruction.requirements[inventoryIndex].element.sprite;
             }
             outcomeImage.sprite = machineInstruction.outcome.element.sprite;
 
@@ -232,22 +192,6 @@ namespace CON.UI
             GameObject.FindGameObjectWithTag("Player").GetComponent<Builder>().onBuildModeChange += SetActiveElementIndicators;
         }
 
-        // Interface Implementations
-        public void OnPointerDown(PointerEventData eventData)
-        {
-            if (eventData.pointerCurrentRaycast.gameObject != null)
-            {
-                followMouse = true;
-                initialMousePosition = transform.position-Input.mousePosition;
-            }
-        }
-
-        public void OnPointerUp(PointerEventData eventData)
-        {
-            if (eventData.pointerCurrentRaycast.gameObject != null)
-            {
-                followMouse = false;
-            }
-        }
+        
     }
 }

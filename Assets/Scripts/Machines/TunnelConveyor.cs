@@ -14,16 +14,24 @@ namespace CON.Machines
         [SerializeField] Element elementPlacementRequirement;
         [SerializeField] Transform elementExitPoint;
         [SerializeField] float elementExitForce = 2;
+        [SerializeField] Transform elementExitConveyor;
+        [SerializeField] Transform elementEntryConveyor;
+        [SerializeField] int maxTunnelBlocks = 3;
         [SerializeField] GameObject directionArrow;
         [SerializeField] AudioClip[] conveyorSounds;
 
         Vector2Int gridOrigin;
         Builder player;
         AudioSourceManager audioLoop;
+        bool isFullyPlaced = false;
+
+        Vector3 initialLocalElementExitLocation;
+        int tunnelAdditionalBlocks = 0;
 
         private void Awake()
         {
             audioLoop = GetComponent<AudioSourceManager>();
+            initialLocalElementExitLocation = elementExitConveyor.localPosition;
         }
         private void Start()
         {
@@ -35,12 +43,11 @@ namespace CON.Machines
             if (player == null) return;
             player.onBuildModeChange -= OnBuildModeChange;
         }
-
-        private void OnCollisionEnter(Collision collision)
+        private void OnTriggerEnter(Collider other)
         {
-            ElementPickup elementPickup = collision.transform.GetComponentInParent<ElementPickup>();
+            ElementPickup elementPickup = other.transform.GetComponentInParent<ElementPickup>();
 
-            if (elementPickup == null) return;
+            if (elementPickup == null || !isFullyPlaced) return;
 
             Rigidbody rigidbody = elementPickup.transform.GetComponentInParent<Rigidbody>();
             rigidbody.isKinematic = true;
@@ -49,20 +56,17 @@ namespace CON.Machines
             rigidbody.AddForce(-transform.right* elementExitForce, ForceMode.Impulse);
 
         }
-        private Vector3 GetForceToKeepOnConveyor(Transform element)
-        {
-            if (Mathf.Approximately(transform.rotation.eulerAngles.y, 90) || Mathf.Approximately(transform.rotation.eulerAngles.y, 270))
-            {
-                return new Vector3(transform.position.x - element.position.x, 0, 0);
-            }
-            else
-            {
-                return new Vector3(0, 0, transform.position.z - element.position.z);
-            }
-        }
         private void OnBuildModeChange(bool isActive)
         {
             directionArrow.SetActive(isActive);
+        }
+
+        private void UpdateExitLocation()
+        {
+            elementExitConveyor.localPosition = new Vector3(initialLocalElementExitLocation.x - 1.5f*tunnelAdditionalBlocks, initialLocalElementExitLocation.y, initialLocalElementExitLocation.z);
+            takenGridPositions[1] = Vector2Int.RoundToInt(((Vector2)takenGridPositions[1]).normalized * (tunnelAdditionalBlocks+2));
+            Vector3 arrowLocation = (elementEntryConveyor.position + elementExitConveyor.position) / 2;
+            directionArrow.transform.position = new Vector3(arrowLocation.x,directionArrow.transform.position.y,arrowLocation.z);
         }
 
         // Interface implementations
@@ -76,7 +80,7 @@ namespace CON.Machines
         }
         public void FullyPlaced(Builder player)
         {
-            //GetComponent<NavMeshObstacle>().enabled = true; TODO: Check if other possibility for more walkability
+            isFullyPlaced = true;
             this.player = player;
             audioLoop.StartLooping(conveyorSounds);
             player.onBuildModeChange += OnBuildModeChange;
@@ -101,7 +105,10 @@ namespace CON.Machines
         }
         public void ChangeVersion()
         {
-
+            tunnelAdditionalBlocks++;
+            if (tunnelAdditionalBlocks == maxTunnelBlocks) tunnelAdditionalBlocks = 0;
+            UpdateExitLocation();
+            
         }
         public GameObject GetGameObject()
         {
@@ -109,12 +116,14 @@ namespace CON.Machines
         }
         public object GetInformationToSave()
         {
-            return null;
+            return tunnelAdditionalBlocks;
         }
 
         public void LoadSavedInformation(object savedInformation)
         {
-
+            if (savedInformation == null) return;
+            tunnelAdditionalBlocks = (int)savedInformation;
+            UpdateExitLocation();
         }
 
     }
