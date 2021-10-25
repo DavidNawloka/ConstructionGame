@@ -1,3 +1,4 @@
+using CON.Core;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,17 +11,20 @@ namespace CON.UI
         [SerializeField] UserInterfaceType[] UITypes;
 
         AudioSource audioSource;
+        EscManager escManager;
 
         List<UserInterfaceType> tempClosedUITypes = new List<UserInterfaceType>();
 
         private void Awake()
         {
             audioSource = GetComponent<AudioSource>();
+            escManager = FindObjectOfType<EscManager>();
         }
 
         public void ActivateUI(int typeIndex)
         {
             SetActiveUI(typeIndex, true);
+            
         }
         public void DeactiveUI(int typeIndex)
         {
@@ -54,8 +58,15 @@ namespace CON.UI
                     SetActiveUserInterfaceType(UIType, false);
                     tempClosedUITypes.Add(UIType);
                 }
-
+                
             }
+
+            if (userInterfaceType.closedByEsc)
+            {
+                if (isActive) escManager.AddEscFunction(() => DeactiveUI(typeIndex), userInterfaceType.GetHashCode().ToString());
+                else escManager.RemoveESCFunction(userInterfaceType.GetHashCode().ToString());
+            }
+
             SetActiveCanvasGroup(userInterfaceType.canvasGroup, isActive);
             userInterfaceType.isEnabled = isActive;
         }
@@ -81,6 +92,7 @@ namespace CON.UI
             public CanvasGroup canvasGroup;
             public bool shouldBeShownAlone;
             public bool isEnabled;
+            public bool closedByEsc;
             public AudioClip audioClip;
             public UnityEvent OnToggle;
         }

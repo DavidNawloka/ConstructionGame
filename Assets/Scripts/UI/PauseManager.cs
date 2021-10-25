@@ -21,15 +21,7 @@ namespace CON.UI
         {
             userInterfaceManager = FindObjectOfType<UserInterfaceManager>();
         }
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                TogglePauseMenu();
-            }
-        }
-
-        private void TogglePauseMenu()
+        public void TogglePauseMenu()
         {
             userInterfaceManager.ToggleUI(3);
             isPaused = !isPaused;

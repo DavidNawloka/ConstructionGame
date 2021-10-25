@@ -7,6 +7,9 @@ using UnityEngine;
 public class Cheating : MonoBehaviour
 {
     [SerializeField] Unlockable[] placeableToUnlock;
+
+    bool f2Pressed = false;
+
     void Update()
     {
         if (Debug.isDebugBuild)
@@ -22,8 +25,9 @@ public class Cheating : MonoBehaviour
                 GetComponent<Inventory>().EquipItem(new InventoryItem(rock, 100));
                 GetComponent<Inventory>().EquipItem(new InventoryItem(water, 100));
             }
-            if (Input.GetKeyDown(KeyCode.F2))
+            if (!f2Pressed && Input.GetKeyDown(KeyCode.F2))
             {
+                f2Pressed = true;
                 foreach(Unlockable placeable in placeableToUnlock)
                 {
                     FindObjectOfType<ProgressionManager>().UnlockPlaceable(placeable);

@@ -1,3 +1,4 @@
+using CON.Core;
 using CON.Machines;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace CON.UI
         [SerializeField] RectTransform horizontalConnection;
         [SerializeField] RectTransform verticalConnection;
 
+        EscManager escManager;
         Transform connectTo;
         CanvasGroup canvasGroup;
         bool followMouse = false;
@@ -21,6 +23,7 @@ namespace CON.UI
         void Awake()
         {
             canvasGroup = GetComponent<CanvasGroup>();
+            escManager = FindObjectOfType<EscManager>();
         }
         private void Start()
         {
@@ -47,8 +50,16 @@ namespace CON.UI
 
             isHidden = !isActive;
 
-            if (isActive) canvasGroup.alpha = 1;
-            else canvasGroup.alpha = 0;
+            if (isActive)
+            {
+                escManager.AddEscFunction(() => SetActiveCanvas(false, null), gameObject.GetHashCode().ToString());
+                canvasGroup.alpha = 1;
+            }
+            else
+            {
+                escManager.RemoveESCFunction(gameObject.GetHashCode().ToString());
+                canvasGroup.alpha = 0;
+            }
         }
         private void UpdateOwnPosition()
         {

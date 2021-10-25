@@ -192,13 +192,21 @@ namespace CON.Machines
         public void LoadSavedInformation(object savedInformation)
         {
             if (savedInformation == null) return;
-            SavedSeperatorConveyor savedSeperatorConveyor = (SavedSeperatorConveyor)savedInformation;
+            try // TODO: Remove Try Catch block after V0.7
+            {
+                SavedSeperatorConveyor savedSeperatorConveyor = (SavedSeperatorConveyor)savedInformation;
 
-            isRightToLeft = savedSeperatorConveyor.isRightToLeft;
-            elementCounter = savedSeperatorConveyor.elementCounter;
-            elementRatio = savedSeperatorConveyor.elementRatio;
+                isRightToLeft = savedSeperatorConveyor.isRightToLeft;
+                elementCounter = savedSeperatorConveyor.elementCounter;
+                elementRatio = savedSeperatorConveyor.elementRatio;
 
-            UpdateHookPosition();
+                UpdateHookPosition();
+            }
+            catch (InvalidCastException)
+            {
+                Debug.LogWarning("The loaded save is old (Splitter Hook placements might be invalid) and will cause errors after alpha version 0.7. Save manually again and delete this save!");
+            }
+            
         }
 
         [System.Serializable]

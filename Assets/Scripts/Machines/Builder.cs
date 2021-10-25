@@ -50,6 +50,7 @@ namespace CON.Machines
         Inventory inventory;
         AudioSourceManager audioSourceManager;
         UserInterfaceManager userInterfaceManager;
+        EscManager escManager;
 
         private void Awake()
         {
@@ -57,6 +58,7 @@ namespace CON.Machines
             audioSourceManager = GetComponent<AudioSourceManager>();
             gridMesh = FindObjectOfType<BuildingGridMesh>();
             userInterfaceManager = FindObjectOfType<UserInterfaceManager>();
+            escManager = FindObjectOfType<EscManager>();
         }
 
         private void Start()
@@ -120,6 +122,8 @@ namespace CON.Machines
             if (currentMachine != null) Destroy(currentMachine);
             if (isDemolishMode) SetActiveDemolishMode(false);
 
+            escManager.AddEscFunction(DeactivatePlacementModeDestruction, "placement");
+
             isPlacementMode = true;
             currentMachinePrefab = machine;
             currentMachine = Instantiate(machine);
@@ -153,6 +157,7 @@ namespace CON.Machines
         {
             onBuildModeChange(isBuildMode);
             gridMesh.SetActiveMesh(isBuildMode);
+
             if (isDemolishMode) SetActiveDemolishMode(isBuildMode);
             if (isPlacementMode) DeactivatePlacementModeDestruction();
         }
@@ -162,7 +167,13 @@ namespace CON.Machines
         }
         public void SetActiveDemolishMode(bool isActive)
         {
-            if (isActive) DeactivatePlacementModeDestruction();
+            if (isActive)
+            {
+                escManager.AddEscFunction(() => SetActiveDemolishMode(false), this.GetHashCode().ToString());
+                DeactivatePlacementModeDestruction();
+            }
+            else escManager.RemoveESCFunction(this.GetHashCode().ToString());
+
             isDemolishMode = isActive;
             onDemolishModeChange(isActive);
         }
@@ -327,6 +338,7 @@ namespace CON.Machines
         }
         private void DeactivatePlacementModeDestruction()
         {
+            escManager.RemoveESCFunction("placement");
             Destroy(currentMachine);
             isPlacementMode = false;
             currentMachine = null;
