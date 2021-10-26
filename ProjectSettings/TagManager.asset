@@ -10,6 +10,7 @@ TagManager:
   - MainCanvas
   - Ground
   - Water
+  - PlayerInventoryVisualisation
   layers:
   - Default
   - TransparentFX

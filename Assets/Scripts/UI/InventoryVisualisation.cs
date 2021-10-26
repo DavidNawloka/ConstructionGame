@@ -12,7 +12,17 @@ namespace CON.UI
         [SerializeField] Image[] inventorySlotsSprites;
         [SerializeField] TextMeshProUGUI[] inventorySlotsAmounts;
 
-        
+        public bool isVisible = true;
+
+        public void ToggleVisibility()
+        {
+            isVisible = !isVisible;
+        }
+
+        public Vector3 GetInventorySlotScreenPos(int slotIndex)
+        {
+            return inventorySlotsSprites[slotIndex].transform.position;
+        }
 
         public void UpdateInventory(Inventory inventory)
         {

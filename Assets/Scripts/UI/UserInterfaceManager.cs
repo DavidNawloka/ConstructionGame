@@ -1,3 +1,4 @@
+
 using CON.Core;
 using System.Collections;
 using System.Collections.Generic;
@@ -20,11 +21,31 @@ namespace CON.UI
             audioSource = GetComponent<AudioSource>();
             escManager = FindObjectOfType<EscManager>();
         }
+        private void Start()
+        {
+            foreach(UserInterfaceType UIType in UITypes)
+            {
+                if(UIType.isEnabled) UIType.animator.SetTrigger("show");
+            }
+        }
+
+        private void Update()
+        {
+            for (int typeIndex = 0; typeIndex < UITypes.Length; typeIndex++)
+            {
+                if (UITypes[typeIndex].keyToToggle == KeyCode.None) continue;
+
+                if (Input.GetKeyDown(UITypes[typeIndex].keyToToggle))
+                {
+                    ToggleUI(typeIndex);
+                }
+            }
+        }
 
         public void ActivateUI(int typeIndex)
         {
             SetActiveUI(typeIndex, true);
-            
+
         }
         public void DeactiveUI(int typeIndex)
         {
@@ -32,15 +53,13 @@ namespace CON.UI
         }
         public void ToggleUI(int typeIndex)
         {
-            SetActiveUI(typeIndex,!UITypes[typeIndex].canvasGroup.interactable);
+            SetActiveUI(typeIndex, !UITypes[typeIndex].isEnabled);
         }
         private void SetActiveUI(int typeIndex, bool isActive)
         {
             UserInterfaceType userInterfaceType = UITypes[typeIndex];
-            if(userInterfaceType.audioClip != null) audioSource.PlayOneShot(userInterfaceType.audioClip);
-            userInterfaceType.OnToggle.Invoke();
 
-            if(!isActive && userInterfaceType.shouldBeShownAlone && tempClosedUITypes.Count != 0)
+            if (!isActive && userInterfaceType.shouldBeShownAlone && tempClosedUITypes.Count != 0)
             {
                 foreach (UserInterfaceType UIType in tempClosedUITypes)
                 {
@@ -58,7 +77,7 @@ namespace CON.UI
                     SetActiveUserInterfaceType(UIType, false);
                     tempClosedUITypes.Add(UIType);
                 }
-                
+
             }
 
             if (userInterfaceType.closedByEsc)
@@ -66,33 +85,26 @@ namespace CON.UI
                 if (isActive) escManager.AddEscFunction(() => DeactiveUI(typeIndex), userInterfaceType.GetHashCode().ToString());
                 else escManager.RemoveESCFunction(userInterfaceType.GetHashCode().ToString());
             }
-
-            SetActiveCanvasGroup(userInterfaceType.canvasGroup, isActive);
-            userInterfaceType.isEnabled = isActive;
+            SetActiveUserInterfaceType(userInterfaceType, isActive);
         }
 
         private void SetActiveUserInterfaceType(UserInterfaceType UIType, bool isActive)
         {
-            SetActiveCanvasGroup(UIType.canvasGroup, isActive);
+            if (isActive) UIType.animator.SetTrigger("show");
+            else UIType.animator.SetTrigger("hide");
+
             UIType.isEnabled = isActive;
             UIType.OnToggle.Invoke();
-        }
-
-        private void SetActiveCanvasGroup(CanvasGroup canvasGroup, bool isActive)
-        {
-            if (isActive) canvasGroup.alpha = 1;
-            else canvasGroup.alpha = 0;
-
-            canvasGroup.interactable = isActive;
-            canvasGroup.blocksRaycasts = isActive;
+            if (UIType.audioClip != null) audioSource.PlayOneShot(UIType.audioClip);
         }
         [System.Serializable]
         public class UserInterfaceType
         {
-            public CanvasGroup canvasGroup;
+            public Animator animator;
             public bool shouldBeShownAlone;
             public bool isEnabled;
             public bool closedByEsc;
+            public KeyCode keyToToggle;
             public AudioClip audioClip;
             public UnityEvent OnToggle;
         }

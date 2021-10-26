@@ -80,6 +80,29 @@ namespace CON.Elements
             }
             return true;
         }
+        public bool EquipItemWhere(InventoryItem inventoryItemToEquip, out int inventoryPosIndex)
+        {
+            int materialIndex = -1;
+            inventoryPosIndex = -1;
+
+            for (int inventoryIndex = 0; inventoryIndex < inventory.Length; inventoryIndex++)
+            {
+                if (inventory[inventoryIndex].element == inventoryItemToEquip.element)
+                {
+                    inventoryPosIndex = inventoryIndex;
+                    return true;
+                }
+                if (inventory[inventoryIndex].element == null && materialIndex == -1)
+                {
+                    materialIndex = inventoryIndex;
+                }
+            }
+
+            if (GetUsedInventoryLength() >= inventorySlots) return false;
+
+            inventoryPosIndex = materialIndex;
+            return true;
+        }
         public bool EquipItem(InventoryItem inventoryItemToEquip)
         {
             int materialIndex = -1;

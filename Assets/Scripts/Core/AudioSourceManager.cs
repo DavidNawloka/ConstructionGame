@@ -10,6 +10,8 @@ namespace CON.Core
         [Tooltip("Will be taken if given AudioClip array is null")][SerializeField] AudioClip[] playedSounds;
         [SerializeField] float loopPlayTimerMultiplier = 1;
         [SerializeField] float immediateStopTime = .1f;
+        [SerializeField] bool shouldChangePitch = false;
+        [SerializeField] float pitchRange = 10f;
 
         AudioSource audioSource;
         AudioClip[] currentAudioFilesToLoop;
@@ -28,6 +30,7 @@ namespace CON.Core
             if (!shouldPlay || playTimer <= currentAudioFilesToLoop[currentAudioClipLoopIndex].length * loopPlayTimerMultiplier) return;
 
             playTimer = 0;
+            if (shouldChangePitch) ChangePitch();
             audioSource.PlayOneShot(currentAudioFilesToLoop[currentAudioClipLoopIndex]);
             currentAudioClipLoopIndex++;
             if (currentAudioClipLoopIndex == currentAudioFilesToLoop.Length) currentAudioClipLoopIndex = GetRandomIndex(currentAudioFilesToLoop);
@@ -40,7 +43,8 @@ namespace CON.Core
 
         public void PlayOnce(AudioClip audioClip = null)
         {
-            if(audioClip == null) audioSource.PlayOneShot(playedSounds[GetRandomIndex(playedSounds)]);
+            if (shouldChangePitch) ChangePitch();
+            if (audioClip == null) audioSource.PlayOneShot(playedSounds[GetRandomIndex(playedSounds)]);
             else audioSource.PlayOneShot(audioClip);
         }
         public void ToggleLooping(AudioClip[] audioFilesToLoop = null)
@@ -64,6 +68,11 @@ namespace CON.Core
         public void UpdateAudioFilesToLoop(AudioClip[] newAudioFilesToLoop)
         {
             currentAudioFilesToLoop = newAudioFilesToLoop;
+        }
+
+        private void ChangePitch()
+        {
+            audioSource.pitch = Random.Range(1 - pitchRange / 2, 1 + pitchRange / 2);
         }
 
         private void SetActiveLooping(bool isPlaying, AudioClip[] audioFilesToLoop)

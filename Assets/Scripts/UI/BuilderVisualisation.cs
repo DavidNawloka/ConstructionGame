@@ -38,7 +38,7 @@ namespace CON.UI
         }
         public void ToggleBuildMode() // Button onClick event function
         {
-            userInterfaceManager.ToggleUI(1);
+            userInterfaceManager.ToggleUI(2);
         }
         public void ToggleDemolishMode() // Button onClick event function
         {

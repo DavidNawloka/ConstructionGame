@@ -8,7 +8,6 @@ using UnityEngine;
 using System.Linq;
 using CON.Core;
 using UnityEngine.EventSystems;
-using CON.UI; // TODO: Fix questionable dependency
 
 namespace CON.Machines
 {
@@ -49,7 +48,6 @@ namespace CON.Machines
 
         Inventory inventory;
         AudioSourceManager audioSourceManager;
-        UserInterfaceManager userInterfaceManager;
         EscManager escManager;
 
         private void Awake()
@@ -57,7 +55,6 @@ namespace CON.Machines
             inventory = GetComponent<Inventory>();
             audioSourceManager = GetComponent<AudioSourceManager>();
             gridMesh = FindObjectOfType<BuildingGridMesh>();
-            userInterfaceManager = FindObjectOfType<UserInterfaceManager>();
             escManager = FindObjectOfType<EscManager>();
         }
 
@@ -83,11 +80,6 @@ namespace CON.Machines
 
         private void HandleInput()
         {
-            if (Input.GetKeyDown(KeyCode.B))
-            {
-                userInterfaceManager.ToggleUI(1);
-            }
-
             if (!isBuildMode) return;
 
             if (isPlacementMode && Input.GetKeyDown(KeyCode.C))

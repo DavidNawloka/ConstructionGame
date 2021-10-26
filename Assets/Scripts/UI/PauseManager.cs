@@ -23,7 +23,7 @@ namespace CON.UI
         }
         public void TogglePauseMenu()
         {
-            userInterfaceManager.ToggleUI(3);
+            userInterfaceManager.ToggleUI(4);
             isPaused = !isPaused;
             SetPause();
         }
