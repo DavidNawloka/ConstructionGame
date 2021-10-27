@@ -204,9 +204,17 @@ namespace CON.Elements
 
             SerializeableInventoryItem[] savedInventory = (SerializeableInventoryItem[])state;
 
-            inventory = new InventoryItem[savedInventory.Length];
+            if (gameObject.tag == "Player") inventory = new InventoryItem[11];
+            else inventory = new InventoryItem[savedInventory.Length];
+
             for (int index = 0; index < inventory.Length; index++)
             {
+                if(index > savedInventory.Length-1)
+                {
+                    inventory[index] = new InventoryItem(null, 0);
+                    continue;
+                }
+
                 SerializeableInventoryItem currentInventoryItem = savedInventory[index];
 
                 if (currentInventoryItem == null) inventory[index] = new InventoryItem(null, 0);

@@ -14,6 +14,7 @@ namespace CON.Elements
         [SerializeField] float maxDistance = 2f;
         [SerializeField] float maxElementMove = 2f;
         [SerializeField] float spawnedElementImageScale = 0.7f;
+        [SerializeField] float spawnedElementImageAlpha = 0.7f;
         [SerializeField] AudioClip[] pickupSounds;
 
         float timer = 0f;
@@ -61,6 +62,7 @@ namespace CON.Elements
 
             Image elementImage = elementGameObject.AddComponent<Image>();
             elementImage.sprite = itemToEuqip.element.sprite;
+            elementImage.color = new Color(1,1,1,spawnedElementImageAlpha);
             elementImage.transform.localScale = new Vector3(spawnedElementImageScale, spawnedElementImageScale, spawnedElementImageScale);
 
             yield return StartCoroutine(MoveElement(elementGameObject,targetPos));

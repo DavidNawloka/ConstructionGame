@@ -8,11 +8,11 @@ namespace CON.Core
 {
     public class ScreenCaptureSaving : MonoBehaviour
     {
-        [SerializeField] GameObject mainCanvas;
+        [SerializeField] Canvas mainCanvas;
         [SerializeField] BuildingGridMesh buildingGridMesh;
         public IEnumerator CaptureAndSaveScreenshot(string saveFile)
         {
-            mainCanvas.SetActive(false);
+            mainCanvas.enabled = false;
             bool isGridMeshActive = buildingGridMesh.IsActive();
             buildingGridMesh.SetActiveMesh(false);
             yield return new WaitForEndOfFrame();
@@ -29,7 +29,7 @@ namespace CON.Core
 
             //Save image to file
             System.IO.File.WriteAllBytes(GetPathFromSaveFile(saveFile), imageBytes);
-            mainCanvas.SetActive(true);
+            mainCanvas.enabled = true;
             buildingGridMesh.SetActiveMesh(isGridMeshActive);
         }
 

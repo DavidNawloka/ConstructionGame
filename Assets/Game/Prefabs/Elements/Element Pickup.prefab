@@ -50,8 +50,9 @@ MonoBehaviour:
     element: {fileID: 0}
     amount: 1
   maxDistance: 2
-  maxElementMove: 1500
+  maxElementMove: 2500
   spawnedElementImageScale: 0.7
+  spawnedElementImageAlpha: 0.6
   pickupSounds:
   - {fileID: 8300000, guid: babb8e7209fdc714e92ae8a0a11227df, type: 3}
 --- !u!54 &-7639887753407776485

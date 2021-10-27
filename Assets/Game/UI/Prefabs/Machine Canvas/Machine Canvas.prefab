@@ -356,6 +356,7 @@ MonoBehaviour:
   - {fileID: 8696666024237918544}
   - {fileID: 1955209983332506471}
   - {fileID: 4879381851735813736}
+  isVisible: 1
 --- !u!225 &287248674034743642
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -1518,6 +1519,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7627063213474842648}
     m_Modifications:
+    - target: {fileID: 1512708865717342188, guid: 6b301428f8d12644ba1a731050e2cb19, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1663351195497224876, guid: 6b301428f8d12644ba1a731050e2cb19, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -1529,6 +1534,10 @@ PrefabInstance:
     - target: {fileID: 1663351195497224876, guid: 6b301428f8d12644ba1a731050e2cb19, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: CON.UI.MachineVisualisation, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2249194449615533904, guid: 6b301428f8d12644ba1a731050e2cb19, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3667087877869765443, guid: 6b301428f8d12644ba1a731050e2cb19, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target

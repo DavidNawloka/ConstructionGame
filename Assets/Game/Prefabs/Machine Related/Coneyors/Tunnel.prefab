@@ -258,9 +258,9 @@ MonoBehaviour:
   - {x: -2, y: 0}
   elementBuildingRequirements:
   - element: {fileID: 11400000, guid: 90af84c016779b64abdbae59aa56cd21, type: 2}
-    amount: 2
+    amount: 5
   - element: {fileID: 11400000, guid: c2f82b61e121f29408d0cfa36fd30d2e, type: 2}
-    amount: 2
+    amount: 5
   elementPlacementRequirement: {fileID: 0}
   elementExitPoint: {fileID: 1946695025493053410}
   elementExitForce: 4
@@ -333,6 +333,8 @@ MonoBehaviour:
   playedSounds: []
   loopPlayTimerMultiplier: 1
   immediateStopTime: 0.1
+  shouldChangePitch: 0
+  pitchRange: 10
 --- !u!82 &8862302114284035785
 AudioSource:
   m_ObjectHideFlags: 0
