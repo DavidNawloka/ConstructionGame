@@ -21,10 +21,13 @@ namespace CON.UI
             savingWrapper = FindObjectOfType<SavingWrapper>();
             shownSaves = defaultShownSaves;
             UpdateSaveFilesVisualisation();
-            savingWrapper.OnSaveFileChange.AddListener(UpdateSaveFilesVisualisation);
+            
             
         }
-
+        private void Start()
+        {
+            savingWrapper.OnSaveFileChange.AddListener(UpdateSaveFilesVisualisation);
+        }
         private void OnEnable()
         {
             shownSaves = defaultShownSaves;
@@ -58,11 +61,10 @@ namespace CON.UI
 
             shownSaves = Mathf.Clamp(shownSaves, Mathf.Min(defaultShownSaves,saveFileDirectories.Length), saveFileDirectories.Length);
 
-            scrollRectContent.sizeDelta = new Vector2(scrollRectContent.rect.width,(250 * shownSaves) +300);
+            scrollRectContent.sizeDelta = new Vector2(scrollRectContent.rect.width,((saveFileVisualisationPrefab.GetComponent<RectTransform>().rect.height + 50) * shownSaves) +300);
             for (int saveFileIndex = 0; saveFileIndex < shownSaves; saveFileIndex++)
             {
                 SaveFileVisualisation saveFile = Instantiate(saveFileVisualisationPrefab, Vector3.zero,Quaternion.identity,scrollRectContent);
-                saveFile.transform.localPosition = new Vector3(0, -270 + (-250 * saveFileIndex));
 
                 JsonSavedStatisticData savedData = savingWrapper.LoadStatistics(saveFileDirectories[saveFileIndex]);
 

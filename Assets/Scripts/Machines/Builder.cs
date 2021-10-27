@@ -13,6 +13,7 @@ namespace CON.Machines
 {
     public class Builder : MonoBehaviour, ISaveable
     {
+        [SerializeField] AudioSource audioSource;
         [SerializeField] Transform buildObjectsParent;
         [SerializeField] GameObject[] placeableObjectsPrefabs;
         [SerializeField] float rotationTime = .2f;
@@ -47,13 +48,11 @@ namespace CON.Machines
         Dictionary<SerializableVector3,SavedPlaceable> builtObjects = new Dictionary<SerializableVector3, SavedPlaceable>();
 
         Inventory inventory;
-        AudioSourceManager audioSourceManager;
         EscManager escManager;
 
         private void Awake()
         {
             inventory = GetComponent<Inventory>();
-            audioSourceManager = GetComponent<AudioSourceManager>();
             gridMesh = FindObjectOfType<BuildingGridMesh>();
             escManager = FindObjectOfType<EscManager>();
         }
@@ -217,7 +216,7 @@ namespace CON.Machines
                     }
 
                     Destroy(placedMachine.GetGameObject());
-                    audioSourceManager.PlayOnceFromMultiple(demolishSounds);
+                    audioSource.PlayOneShot(demolishSounds[GetRandomArrayIndex(demolishSounds)]);
                 }
             }
         }
@@ -225,12 +224,12 @@ namespace CON.Machines
         {
             if ((Input.GetKeyDown(KeyCode.Q) || Input.mouseScrollDelta.y >= 1f) && !isRotating)
             {
-                audioSourceManager.PlayOnceFromMultiple(rotationSounds);
+                audioSource.PlayOneShot(rotationSounds[GetRandomArrayIndex(rotationSounds)]);
                 RotateLeft();
             }
             if ((Input.GetKeyDown(KeyCode.E) || Input.mouseScrollDelta.y <= -1f) && !isRotating)
             {
-                audioSourceManager.PlayOnceFromMultiple(rotationSounds);
+                audioSource.PlayOneShot(rotationSounds[GetRandomArrayIndex(rotationSounds)]);
                 RotateRight(true);
             }
         }
@@ -290,7 +289,7 @@ namespace CON.Machines
             currentPlaceable.SetOrigin(new Vector2Int(x, y));
             currentPlaceable.FullyPlaced(this);
             builtObjects.Add(new SerializableVector3(currentMachine.transform.position),new SavedPlaceable(GetPlaceableObjectsID(currentMachinePrefab), currentMachine.transform.eulerAngles, new Vector2Int(x,y),takenGridPositions, currentPlaceable));
-            audioSourceManager.PlayOnceFromMultiple(placementSounds);
+            audioSource.PlayOneShot(placementSounds[GetRandomArrayIndex(placementSounds)]);
 
             ReenablePlacementMode();
         }
@@ -409,6 +408,12 @@ namespace CON.Machines
             if(isRotating) currentMachine.transform.localRotation = goal;
             isRotating = false;
         }
+
+        private int GetRandomArrayIndex(Array array)
+        {
+            return UnityEngine.Random.Range(0, array.Length);
+        }
+
         // Interface Implementations
 
 

@@ -8,10 +8,18 @@ namespace CON.Core
 {
     public class ScreenCaptureSaving : MonoBehaviour
     {
-        [SerializeField] Canvas mainCanvas;
-        [SerializeField] BuildingGridMesh buildingGridMesh;
+        private BuildingGridMesh buildingGridMesh;
+
+        private Canvas mainCanvas;
+
+        private void Start()
+        {
+            
+        }
         public IEnumerator CaptureAndSaveScreenshot(string saveFile)
         {
+            mainCanvas = GameObject.FindGameObjectWithTag("MainCanvas").GetComponent<Canvas>();
+            buildingGridMesh = FindObjectOfType<BuildingGridMesh>();
             mainCanvas.enabled = false;
             bool isGridMeshActive = buildingGridMesh.IsActive();
             buildingGridMesh.SetActiveMesh(false);

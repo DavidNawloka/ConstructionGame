@@ -14,15 +14,14 @@ namespace Astutos.Saving
             File.WriteAllText(path, jsonState);
 
         }
-        public JsonSavedStatisticData Load(string saveFile)
+        public string Load(string saveFile)
         {
             string path = GetPathFromSaveFile(saveFile);
 
             if (!File.Exists(path)) return null;
 
             string jsonState = File.ReadAllText(path);
-
-            return JsonUtility.FromJson<JsonSavedStatisticData>(jsonState);
+            return jsonState;
         }
         private string GetPathFromSaveFile(string saveFile)
         {

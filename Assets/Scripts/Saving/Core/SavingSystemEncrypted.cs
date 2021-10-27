@@ -18,7 +18,6 @@ namespace Astutos.Saving
             Dictionary<string, object> state = LoadFile(saveFile);
 
             int lastSceneIndex = SceneManager.GetActiveScene().buildIndex;
-            print(lastSceneIndex);
             if (state.ContainsKey(buildIndexKey))
             {
                 lastSceneIndex = (int)state[buildIndexKey];

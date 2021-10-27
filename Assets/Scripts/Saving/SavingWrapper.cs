@@ -32,7 +32,7 @@ namespace Astutos.Saving
             screenCapture = FindObjectOfType<ScreenCaptureSaving>();
 
             saveFileNum = Directory.GetDirectories(Application.persistentDataPath).Length;
-            Load(defaultSaveFolderName + (saveFileNum).ToString());
+            //Load(defaultSaveFolderName + (saveFileNum).ToString());
         }
         
         public void StartSave(string saveName)// Button OnClick Event
@@ -64,8 +64,10 @@ namespace Astutos.Saving
 
         public void Load(string saveFolderName) // Button OnClick Event
         {
-            savingSystemEncrypted.Load(GetPathWithFolder(saveFolderName, MAIN_SAVE_FILE_NAME));
-            JsonSavedStatisticData savedData = savingSystemJson.Load(GetPathWithFolder(saveFolderName, STATISTIC_SAVE_FILE_NAME));
+            StartCoroutine(savingSystemEncrypted.LoadLastScene(GetPathWithFolder(saveFolderName, MAIN_SAVE_FILE_NAME)));
+            JsonSavedStatisticData savedData = JsonUtility.FromJson<JsonSavedStatisticData>(savingSystemJson.Load(GetPathWithFolder(saveFolderName, STATISTIC_SAVE_FILE_NAME)));
+
+            Time.timeScale = 1;
 
             if (savedData == null) return;
             timePlayedInSeconds = savedData.timePlayedInSeconds;
@@ -101,7 +103,7 @@ namespace Astutos.Saving
         }
         public JsonSavedStatisticData LoadStatistics(string saveFolderName)
         {
-            JsonSavedStatisticData savedData = savingSystemJson.Load(Path.Combine(Application.persistentDataPath,saveFolderName, STATISTIC_SAVE_FILE_NAME));
+            JsonSavedStatisticData savedData = JsonUtility.FromJson<JsonSavedStatisticData>(savingSystemJson.Load(Path.Combine(Application.persistentDataPath,saveFolderName, STATISTIC_SAVE_FILE_NAME)));
 
             if (savedData == null) return null;
             return savedData;
