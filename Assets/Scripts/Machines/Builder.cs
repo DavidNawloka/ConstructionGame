@@ -23,6 +23,12 @@ namespace CON.Machines
         [SerializeField] AudioClip[] placementSounds;
         [SerializeField] AudioClip[] demolishSounds;
         [SerializeField] AudioClip[] rotationSounds;
+        [Header("Key Mappings")]
+        [SerializeField] string deactivePlacementButtonName;
+        [SerializeField] string changeVersionButtonName;
+        [SerializeField] string toggleDemolishModeButtonName;
+        [SerializeField] string rotateLeftButtonName;
+        [SerializeField] string rotateRightButtonName;
 
 
         public event Action<bool> onDemolishModeChange;
@@ -48,13 +54,23 @@ namespace CON.Machines
         Dictionary<SerializableVector3,SavedPlaceable> builtObjects = new Dictionary<SerializableVector3, SavedPlaceable>();
 
         Inventory inventory;
-        EscManager escManager;
+        CloseButtonManager escManager;
+        SettingsManager settingsManager;
+
+        KeyCode deactivePlacementButton;
+        KeyCode changeVersionButton;
+        KeyCode toggleDemolishModeButton;
+        KeyCode rotateLeftButton;
+        KeyCode rotateRightButton;
 
         private void Awake()
         {
             inventory = GetComponent<Inventory>();
             gridMesh = FindObjectOfType<BuildingGridMesh>();
-            escManager = FindObjectOfType<EscManager>();
+            escManager = FindObjectOfType<CloseButtonManager>();
+            settingsManager = FindObjectOfType<SettingsManager>();
+
+            settingsManager.OnInputButtonsChanged += UpdateButtonMapping;
         }
 
         private void Start()
@@ -68,6 +84,14 @@ namespace CON.Machines
             onBuildModeChange(false);
         }
 
+        private void UpdateButtonMapping()
+        {
+            deactivePlacementButton = settingsManager.GetKey(deactivePlacementButtonName);
+            changeVersionButton = settingsManager.GetKey(changeVersionButtonName);
+            toggleDemolishModeButton = settingsManager.GetKey(toggleDemolishModeButtonName);
+            rotateLeftButton = settingsManager.GetKey(rotateLeftButtonName);
+            rotateRightButton = settingsManager.GetKey(rotateRightButtonName);
+        }
 
         private void Update()
         {
@@ -81,15 +105,15 @@ namespace CON.Machines
         {
             if (!isBuildMode) return;
 
-            if (isPlacementMode && Input.GetKeyDown(KeyCode.C))
+            if (isPlacementMode && Input.GetKeyDown(deactivePlacementButton))
             {
                 DeactivatePlacementModeDestruction();
             }
-            if(isPlacementMode && Input.GetKeyDown(KeyCode.V))
+            if(isPlacementMode && Input.GetKeyDown(changeVersionButton))
             {
                 currentPlaceable.ChangeVersion();
             }
-            if (Input.GetKeyDown(KeyCode.X))
+            if (Input.GetKeyDown(toggleDemolishModeButton))
             {
                 ToggleDemolishMode();
             }
@@ -113,7 +137,7 @@ namespace CON.Machines
             if (currentMachine != null) Destroy(currentMachine);
             if (isDemolishMode) SetActiveDemolishMode(false);
 
-            escManager.AddEscFunction(DeactivatePlacementModeDestruction, "placement");
+            escManager.AddFunction(DeactivatePlacementModeDestruction, "placement");
 
             isPlacementMode = true;
             currentMachinePrefab = machine;
@@ -160,10 +184,10 @@ namespace CON.Machines
         {
             if (isActive)
             {
-                escManager.AddEscFunction(() => SetActiveDemolishMode(false), this.GetHashCode().ToString());
+                escManager.AddFunction(() => SetActiveDemolishMode(false), this.GetHashCode().ToString());
                 DeactivatePlacementModeDestruction();
             }
-            else escManager.RemoveESCFunction(this.GetHashCode().ToString());
+            else escManager.RemoveFunction(this.GetHashCode().ToString());
 
             isDemolishMode = isActive;
             onDemolishModeChange(isActive);
@@ -222,12 +246,12 @@ namespace CON.Machines
         }
         private void HandleRotation()
         {
-            if ((Input.GetKeyDown(KeyCode.Q) || Input.mouseScrollDelta.y >= 1f) && !isRotating)
+            if ((Input.GetKeyDown(rotateLeftButton) || Input.mouseScrollDelta.y >= 1f) && !isRotating)
             {
                 audioSource.PlayOneShot(rotationSounds[GetRandomArrayIndex(rotationSounds)]);
                 RotateLeft();
             }
-            if ((Input.GetKeyDown(KeyCode.E) || Input.mouseScrollDelta.y <= -1f) && !isRotating)
+            if ((Input.GetKeyDown(rotateRightButton) || Input.mouseScrollDelta.y <= -1f) && !isRotating)
             {
                 audioSource.PlayOneShot(rotationSounds[GetRandomArrayIndex(rotationSounds)]);
                 RotateRight(true);
@@ -329,7 +353,7 @@ namespace CON.Machines
         }
         private void DeactivatePlacementModeDestruction()
         {
-            escManager.RemoveESCFunction("placement");
+            escManager.RemoveFunction("placement");
             Destroy(currentMachine);
             isPlacementMode = false;
             currentMachine = null;

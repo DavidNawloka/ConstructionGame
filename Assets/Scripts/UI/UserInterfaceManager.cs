@@ -12,14 +12,20 @@ namespace CON.UI
         [SerializeField] UserInterfaceType[] UITypes;
 
         AudioSource audioSource;
-        EscManager escManager;
+        CloseButtonManager escManager;
+        SettingsManager settingsManager;
 
         List<UserInterfaceType> tempClosedUITypes = new List<UserInterfaceType>();
+
+        bool blockInput = false;
 
         private void Awake()
         {
             audioSource = GetComponent<AudioSource>();
-            escManager = FindObjectOfType<EscManager>();
+            escManager = FindObjectOfType<CloseButtonManager>();
+            settingsManager = FindObjectOfType<SettingsManager>();
+
+            settingsManager.OnInputButtonsChanged += UpdateInputMapping;
         }
         private void Start()
         {
@@ -29,11 +35,20 @@ namespace CON.UI
             }
         }
 
+        private void UpdateInputMapping()
+        {
+            foreach (UserInterfaceType UIType in UITypes)
+            {
+                if (UIType.keyToToggleName != "") UIType.keyToToggle = settingsManager.GetKey(UIType.keyToToggleName);
+            }
+        }
+
         private void Update()
         {
+            if (blockInput) return;
             for (int typeIndex = 0; typeIndex < UITypes.Length; typeIndex++)
             {
-                if (UITypes[typeIndex].keyToToggle == KeyCode.None) continue;
+                if (UITypes[typeIndex].keyToToggleName == "") continue;
 
                 if (Input.GetKeyDown(UITypes[typeIndex].keyToToggle))
                 {
@@ -58,6 +73,7 @@ namespace CON.UI
         private void SetActiveUI(int typeIndex, bool isActive)
         {
             UserInterfaceType userInterfaceType = UITypes[typeIndex];
+            
 
             if (!isActive && userInterfaceType.shouldBeShownAlone && tempClosedUITypes.Count != 0)
             {
@@ -82,8 +98,8 @@ namespace CON.UI
 
             if (userInterfaceType.closedByEsc)
             {
-                if (isActive) escManager.AddEscFunction(() => DeactiveUI(typeIndex), userInterfaceType.GetHashCode().ToString());
-                else escManager.RemoveESCFunction(userInterfaceType.GetHashCode().ToString());
+                if (isActive) escManager.AddFunction(() => DeactiveUI(typeIndex), userInterfaceType.GetHashCode().ToString());
+                else escManager.RemoveFunction(userInterfaceType.GetHashCode().ToString());
             }
             SetActiveUserInterfaceType(userInterfaceType, isActive);
         }
@@ -92,6 +108,9 @@ namespace CON.UI
         {
             if (isActive) UIType.animator.SetTrigger("show");
             else UIType.animator.SetTrigger("hide");
+
+            if (UIType.shouldBeShownAlone && isActive) blockInput = true;
+            else blockInput = false;
 
             UIType.isEnabled = isActive;
             UIType.OnToggle.Invoke();
@@ -104,9 +123,10 @@ namespace CON.UI
             public bool shouldBeShownAlone;
             public bool isEnabled;
             public bool closedByEsc;
-            public KeyCode keyToToggle;
+            public string keyToToggleName;
             public AudioClip audioClip;
             public UnityEvent OnToggle;
+            [HideInInspector] public KeyCode keyToToggle;
         }
     }
 

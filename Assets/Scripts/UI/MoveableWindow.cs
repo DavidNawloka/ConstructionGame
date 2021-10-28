@@ -13,7 +13,7 @@ namespace CON.UI
         [SerializeField] RectTransform horizontalConnection;
         [SerializeField] RectTransform verticalConnection;
 
-        EscManager escManager;
+        CloseButtonManager escManager;
         Transform connectTo;
         CanvasGroup canvasGroup;
         bool followMouse = false;
@@ -23,7 +23,7 @@ namespace CON.UI
         void Awake()
         {
             canvasGroup = GetComponent<CanvasGroup>();
-            escManager = FindObjectOfType<EscManager>();
+            escManager = FindObjectOfType<CloseButtonManager>();
         }
         private void Start()
         {
@@ -52,12 +52,12 @@ namespace CON.UI
 
             if (isActive)
             {
-                escManager.AddEscFunction(() => SetActiveCanvas(false, null), gameObject.GetHashCode().ToString());
+                escManager.AddFunction(() => SetActiveCanvas(false, null), gameObject.GetHashCode().ToString());
                 canvasGroup.alpha = 1;
             }
             else
             {
-                escManager.RemoveESCFunction(gameObject.GetHashCode().ToString());
+                escManager.RemoveFunction(gameObject.GetHashCode().ToString());
                 canvasGroup.alpha = 0;
             }
         }
