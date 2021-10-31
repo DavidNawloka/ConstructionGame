@@ -9,6 +9,7 @@ namespace CON.Elements
     {
         public InventoryItem[] requirements;
         public InventoryItem outcome;
+        public float productionInterval = 2f;
 
         public SerializedInstruction Serialize()
         {

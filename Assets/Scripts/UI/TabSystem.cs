@@ -8,6 +8,10 @@ namespace CON.UI
     {
         [Tooltip("If null, no tab will be shown")] [SerializeField] GameObject defaultTabToShow;
         [Tooltip("If null, all children will be taken as tabs")][SerializeField] GameObject[] tabs;
+        [Tooltip("If false tab will appear instantly")][SerializeField] bool shouldSlideInFromLeft = false;
+        [Tooltip("Can be ignored if bool above false")][SerializeField] float timeToShowTab;
+
+
         GameObject oldTab;
 
         private void Start()
@@ -18,16 +22,28 @@ namespace CON.UI
 
         public void CloseTab()
         {
-            if (oldTab != null) oldTab.SetActive(false);
+            if (oldTab != null)
+            {
+                oldTab.SetActive(false);
+                if (shouldSlideInFromLeft) oldTab.transform.localScale = Vector3.zero;
+            }
             oldTab = null;
             return;
         }
         public void ShowTab(GameObject newTab)
         {
-            if (oldTab != null) oldTab.SetActive(false);
+            if (newTab == oldTab) return;
+            if (oldTab != null) CloseTab();
 
+
+            if (!shouldSlideInFromLeft)
+            {
+                newTab.transform.localScale = Vector3.one;
+                newTab.SetActive(true);
+            }
+            else StartCoroutine(SlideLeft(newTab.transform));
             oldTab = newTab;
-            newTab.SetActive(true);
+            
         }
 
         private void CloseAllTabs()
@@ -37,6 +53,7 @@ namespace CON.UI
                 foreach (Transform child in transform)
                 {
                     child.gameObject.SetActive(false);
+                    if (shouldSlideInFromLeft) child.localScale = Vector3.zero;
                 }
             }
             else
@@ -44,8 +61,23 @@ namespace CON.UI
                 foreach (GameObject tab in tabs)
                 {
                     tab.SetActive(false);
+                    if (shouldSlideInFromLeft) tab.transform.localScale = Vector3.zero;
                 }
             }
+        }
+
+        private IEnumerator SlideLeft(Transform tab)
+        {
+            float timer = 0;
+
+            tab.gameObject.SetActive(true);
+            while (timer < timeToShowTab)
+            {
+                tab.localScale = new Vector3(timer / timeToShowTab, 1, 1);
+                timer += Time.unscaledDeltaTime;
+                yield return null;
+            }
+            tab.localScale = Vector3.one;
         }
     }
 }

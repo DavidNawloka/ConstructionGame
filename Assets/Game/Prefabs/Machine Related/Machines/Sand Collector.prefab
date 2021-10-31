@@ -420,12 +420,11 @@ MonoBehaviour:
   elementPlacementRequirement: {fileID: 11400000, guid: a5ce88407542bab4b861a21db95ade0e, type: 2}
   elementBuildingRequirements:
   - element: {fileID: 11400000, guid: c2f82b61e121f29408d0cfa36fd30d2e, type: 2}
-    amount: 3
-  - element: {fileID: 11400000, guid: 90af84c016779b64abdbae59aa56cd21, type: 2}
+    amount: 4
+  - element: {fileID: 11400000, guid: 07c6d23cc05dd23458135c08435071a3, type: 2}
     amount: 5
   possibleInstructions:
   - {fileID: 11400000, guid: 7b9438e76b1db48489fd69f374000b40, type: 2}
-  productionIntervall: 4
   elementExitPoint: {fileID: 8787990631489761955}
   elementTriggers:
   - {fileID: 4673276903350356052}

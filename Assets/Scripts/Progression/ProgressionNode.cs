@@ -62,9 +62,9 @@ namespace CON.Progression
             }
         }
 
-        private void CheckIfEnoughElementsProduced(Inventory inventory) // doesn't work when there are less than 3 requirements
+        private void CheckIfEnoughElementsProduced(Inventory inventory)
         {
-            unlockButton.interactable = inventory.HasItem(unlockable.elementRequirements);
+            if(!unlocked) unlockButton.interactable = inventory.HasItem(unlockable.elementRequirements);
             for (int index = 0; index < requirementVisualisation.Length; index++)
             {
                 if (!requirementVisualisation[index].tmPro.transform.gameObject.activeInHierarchy)
@@ -92,6 +92,7 @@ namespace CON.Progression
             progressionManager.UnlockPlaceable(unlockable);
             GetComponent<Image>().color = unlockedBackgroundColor;
             unlockButton.interactable = false;
+            progressionManager.OnPlaceableUnlocked.RemoveListener(CheckUnlockView);
         }
 
         private void CheckUnlockView(Unlockable unlockedPlaceable)

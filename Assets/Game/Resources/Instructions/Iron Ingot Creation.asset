@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: Iron Ingot Creation
   m_EditorClassIdentifier: 
   requirements:
-  - element: {fileID: 11400000, guid: 90af84c016779b64abdbae59aa56cd21, type: 2}
+  - element: {fileID: 11400000, guid: 5d9ca0baebc0b5040b1ace9cebd67708, type: 2}
     amount: 1
   - element: {fileID: 11400000, guid: aa830a0922b0a9542b3953ccd6712b7e, type: 2}
-    amount: 2
+    amount: 3
   outcome:
     element: {fileID: 11400000, guid: 81efabcb8dd78c749b979e186d258d06, type: 2}
     amount: 1
+  productionInterval: 5

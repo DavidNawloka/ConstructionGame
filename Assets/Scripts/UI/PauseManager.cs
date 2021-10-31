@@ -3,14 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 namespace CON.UI
 {
 
     public class PauseManager : MonoBehaviour
     {
-        [SerializeField] Transform BuildModeUI;
-
         public UnityEvent<bool> OnPauseStatusChange;
 
         bool isPaused = false;
@@ -21,6 +20,12 @@ namespace CON.UI
         {
             userInterfaceManager = FindObjectOfType<UserInterfaceManager>();
         }
+
+        public void LoadScene(int sceneIndex)
+        {
+            SceneManager.LoadScene(sceneIndex);
+        }
+
         public void TogglePauseMenu()
         {
             userInterfaceManager.ToggleUI(4);

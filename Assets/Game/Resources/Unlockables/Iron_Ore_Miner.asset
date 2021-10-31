@@ -18,9 +18,9 @@ MonoBehaviour:
   description: Allows the automation of iron ore mining
   elementRequirements:
   - element: {fileID: 11400000, guid: ce0a705810326c5428f93e3650c09cec, type: 2}
-    amount: 35
+    amount: 70
   - element: {fileID: 11400000, guid: 5d9ca0baebc0b5040b1ace9cebd67708, type: 2}
-    amount: 40
-  - element: {fileID: 11400000, guid: a5ce88407542bab4b861a21db95ade0e, type: 2}
-    amount: 45
+    amount: 24
+  - element: {fileID: 11400000, guid: 890674b207473d3479e48248b3f5eba6, type: 2}
+    amount: 15
   type: 1

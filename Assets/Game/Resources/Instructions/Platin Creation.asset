@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: Platin Creation
   m_EditorClassIdentifier: 
   requirements:
-  - element: {fileID: 11400000, guid: 296a20792c61e7e4eb31c9133973c3b5, type: 2}
-    amount: 1
+  - element: {fileID: 11400000, guid: ce0a705810326c5428f93e3650c09cec, type: 2}
+    amount: 3
   - element: {fileID: 11400000, guid: 81efabcb8dd78c749b979e186d258d06, type: 2}
     amount: 2
   outcome:
     element: {fileID: 11400000, guid: b9a6dbfd4063dd5458dffedc6002a52b, type: 2}
     amount: 1
+  productionInterval: 2

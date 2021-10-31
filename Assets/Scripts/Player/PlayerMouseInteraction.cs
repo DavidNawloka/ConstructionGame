@@ -17,35 +17,32 @@ namespace CON.Player
         CinemachineVirtualCamera followCamera;
 
 
-        bool shouldZoom = true;
-        bool isPaused = false;
+        bool isZoomDisabled = false;
+        bool isInputDisabled = false;
 
         private void Awake()
         {
             playerMovement = GetComponent<PlayerMovement>();
             followCamera = GameObject.FindGameObjectWithTag("FollowCamera").GetComponent<CinemachineVirtualCamera>();
         }
-        private void OnEnable()
-        {
-            GetComponent<Builder>().onBuildModeChange += buildModeChange;
-        }
         private void Update()
         {
-            if(shouldZoom && !isPaused) ManageCameraZoom();
+            if (isInputDisabled) return;
+
+            if(!isZoomDisabled) ManageCameraZoom();
             if (UIInteraction()) return;
             if (WorldInteraction()) return;
             if (MovementInteraction()) return;
         }
 
-        public void OnPauseChange(bool isPaused)
+        public void OnZoomDeactivationChange(bool isDisabled) // Input Allowance Class Event
         {
-            this.isPaused = isPaused;
+            isZoomDisabled = isDisabled;
         }
-        private void buildModeChange(bool isActive)
+        public void OnInputDeactivationChange(bool isDisabled) // Input Allowance Class Event
         {
-            shouldZoom = !isActive;
+            isInputDisabled = isDisabled;
         }
-
         private void ManageCameraZoom()
         {
             int factor = 0;

@@ -24,7 +24,7 @@ namespace CON.Machines
         [SerializeField] AudioClip[] demolishSounds;
         [SerializeField] AudioClip[] rotationSounds;
         [Header("Key Mappings")]
-        [SerializeField] string deactivePlacementButtonName;
+        [SerializeField] string deactivatePlacementButtonName;
         [SerializeField] string changeVersionButtonName;
         [SerializeField] string toggleDemolishModeButtonName;
         [SerializeField] string rotateLeftButtonName;
@@ -36,9 +36,7 @@ namespace CON.Machines
 
         BuildingGridManager grid;
         BuildingGridMesh gridMesh;
-        
 
-        bool isPaused;
         bool isDemolishMode = false;
         bool isBuildMode = false;
         bool isPlacementMode = false;
@@ -56,8 +54,9 @@ namespace CON.Machines
         Inventory inventory;
         CloseButtonManager escManager;
         SettingsManager settingsManager;
+        InputAllowance inputAllowance;
 
-        KeyCode deactivePlacementButton;
+        KeyCode deactivatePlacementButton;
         KeyCode changeVersionButton;
         KeyCode toggleDemolishModeButton;
         KeyCode rotateLeftButton;
@@ -69,6 +68,7 @@ namespace CON.Machines
             gridMesh = FindObjectOfType<BuildingGridMesh>();
             escManager = FindObjectOfType<CloseButtonManager>();
             settingsManager = FindObjectOfType<SettingsManager>();
+            inputAllowance = FindObjectOfType<InputAllowance>();
 
             settingsManager.OnInputButtonsChanged += UpdateButtonMapping;
         }
@@ -81,12 +81,12 @@ namespace CON.Machines
                 grid = new BuildingGridManager(BuildingGridAssetManager.GetGrid(), texture);
                 gridMesh.InitiatePlane(texture);
             }
-            onBuildModeChange(false);
+            if(onBuildModeChange != null) onBuildModeChange(false);
         }
 
         private void UpdateButtonMapping()
         {
-            deactivePlacementButton = settingsManager.GetKey(deactivePlacementButtonName);
+            deactivatePlacementButton = settingsManager.GetKey(deactivatePlacementButtonName);
             changeVersionButton = settingsManager.GetKey(changeVersionButtonName);
             toggleDemolishModeButton = settingsManager.GetKey(toggleDemolishModeButtonName);
             rotateLeftButton = settingsManager.GetKey(rotateLeftButtonName);
@@ -95,7 +95,6 @@ namespace CON.Machines
 
         private void Update()
         {
-            if (isPaused) return;
             HandleInput();
             HandleModes();
         }
@@ -105,7 +104,7 @@ namespace CON.Machines
         {
             if (!isBuildMode) return;
 
-            if (isPlacementMode && Input.GetKeyDown(deactivePlacementButton))
+            if (isPlacementMode && Input.GetKeyDown(deactivatePlacementButton))
             {
                 DeactivatePlacementModeDestruction();
             }
@@ -158,11 +157,6 @@ namespace CON.Machines
             return transform.position;
         }
 
-        public void OnPauseChange(bool isPaused)
-        {
-            this.isPaused = isPaused;
-        }
-
         public void ToggleBuildMode()
         {
             isBuildMode = !isBuildMode;
@@ -170,7 +164,8 @@ namespace CON.Machines
         }
         private void SetActiveBuildMode()
         {
-            onBuildModeChange(isBuildMode);
+            if(onBuildModeChange != null) onBuildModeChange(isBuildMode);
+            inputAllowance.SetActiveZoom(isBuildMode);
             gridMesh.SetActiveMesh(isBuildMode);
 
             if (isDemolishMode) SetActiveDemolishMode(isBuildMode);

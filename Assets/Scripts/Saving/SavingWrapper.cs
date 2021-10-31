@@ -73,6 +73,13 @@ namespace Astutos.Saving
             timePlayedInSeconds = savedData.timePlayedInSeconds;
         }
 
+        public void LoadLastSave()
+        {
+            string[] allSaveFolders = GetAllSaveFolders();
+
+            Load(allSaveFolders[0]);
+        }
+
         public void Delete(string saveFolderName)
         {
             Directory.Delete(Path.Combine(Application.persistentDataPath, saveFolderName),true);

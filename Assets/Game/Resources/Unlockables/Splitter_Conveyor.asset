@@ -17,10 +17,6 @@ MonoBehaviour:
   name: Splitter
   description: Splits a stream of elements into two
   elementRequirements:
-  - element: {fileID: 11400000, guid: 90af84c016779b64abdbae59aa56cd21, type: 2}
-    amount: 45
-  - element: {fileID: 11400000, guid: c2f82b61e121f29408d0cfa36fd30d2e, type: 2}
-    amount: 55
   - element: {fileID: 11400000, guid: 296a20792c61e7e4eb31c9133973c3b5, type: 2}
-    amount: 20
+    amount: 15
   type: 0

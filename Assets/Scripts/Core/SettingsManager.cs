@@ -56,6 +56,13 @@ namespace CON.Core
         {
             Load();
             OnInputButtonsChanged();
+            Application.quitting += Save;
+        }
+
+
+        public void ExitGame()
+        {
+            Application.Quit();
         }
         public void Save()
         {
@@ -90,7 +97,14 @@ namespace CON.Core
             if (jsonSaving == null) return;
             SavedSettings savedSettings = JsonUtility.FromJson<SavedSettings>(jsonSaving.Load(settingsFileName));
 
-            if (savedSettings == null) return;
+            if (savedSettings == null) 
+            {
+                ResetAudioSettings();
+                ResetControlsSettings();
+                ResetVideoSettings();
+                Save();
+                return;
+            }
 
             ChangeGUIVolume(savedSettings.guiVolumeChange);
             gUIAudio.audioSlider.value = savedSettings.guiVolumeChange;
@@ -116,7 +130,7 @@ namespace CON.Core
             currentKeyMapping.Clear();
             int index = 0;
             foreach(SerializeableKeyMapping savedKeyMapping in savedSettings.serializeableKeyMappings)
-            {
+            {   
                 if(string.IsNullOrWhiteSpace(savedKeyMapping.name) || string.IsNullOrEmpty(savedKeyMapping.name))
                 {
                     currentKeyMapping.Add(defaultKeyMappings[index].name, defaultKeyMappings[index].key);
@@ -198,10 +212,11 @@ namespace CON.Core
             graphicsQualityDropdown.value = 2;
             graphicsQualityDropdown.RefreshShownValue();
 
+            print(defaultResolutionIndex);
             resolutionDropdown.value = defaultResolutionIndex;
             resolutionDropdown.RefreshShownValue();
 
-            screenModeDropdown.value = 1;
+            screenModeDropdown.value = 0;
             screenModeDropdown.RefreshShownValue();
         }
 

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 306c17a07d80ee143a9ea93f6bc4d98d, type: 3}
   m_Name: Iron Ingot
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: 7e082cc2cf2a4433d85e388c6bf94234, type: 3}
+  sprite: {fileID: 21300000, guid: cbce8c2bef3424f74ad0e6c3e8919ffc, type: 3}
   pickupPrefab: {fileID: 7882941537322569098, guid: e506ebdbdbca86b45986e8cfdee12b5a, type: 3}
   minScale: 0.9
   maxScale: 1.1

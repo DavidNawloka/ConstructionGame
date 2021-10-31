@@ -87,7 +87,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 0.8
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -351,7 +351,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: faf1e642b949824428c71c316764c774, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 0}
+  audioSource: {fileID: 1011145032373361653}
   buildObjectsParent: {fileID: 0}
   placeableObjectsPrefabs:
   - {fileID: 6366741075993714630, guid: bb6ca1340ae038249b5009f58c022cc3, type: 3}
@@ -393,6 +393,11 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 19b99eddbc6436d489dfbaf6e0010102, type: 3}
   - {fileID: 8300000, guid: e1be6879da07da741a196ed5a74fe8b5, type: 3}
   - {fileID: 8300000, guid: 9b2fb227e4e6a8249b3d60eecc7ab9b8, type: 3}
+  deactivatePlacementButtonName: Deactivate Placement Mode
+  changeVersionButtonName: Change Version
+  toggleDemolishModeButtonName: Toggle Demolish Mode
+  rotateLeftButtonName: Rotate Left
+  rotateRightButtonName: Rotate Right
 --- !u!114 &7684909
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -86,13 +86,12 @@ MonoBehaviour:
   - {x: 0, y: -1}
   elementPlacementRequirement: {fileID: 11400000, guid: aa830a0922b0a9542b3953ccd6712b7e, type: 2}
   elementBuildingRequirements:
-  - element: {fileID: 11400000, guid: 296a20792c61e7e4eb31c9133973c3b5, type: 2}
-    amount: 5
-  - element: {fileID: 11400000, guid: c2f82b61e121f29408d0cfa36fd30d2e, type: 2}
-    amount: 5
+  - element: {fileID: 11400000, guid: 5d9ca0baebc0b5040b1ace9cebd67708, type: 2}
+    amount: 1
+  - element: {fileID: 11400000, guid: 890674b207473d3479e48248b3f5eba6, type: 2}
+    amount: 2
   possibleInstructions:
   - {fileID: 11400000, guid: a752332fb56c85b47a592ffd57209774, type: 2}
-  productionIntervall: 3
   elementExitPoint: {fileID: 399632920266088884}
   elementTriggers:
   - {fileID: 1738965447166808348}

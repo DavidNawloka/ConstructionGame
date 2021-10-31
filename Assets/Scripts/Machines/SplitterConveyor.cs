@@ -20,7 +20,7 @@ namespace CON.Machines
         [SerializeField] float forceToApplySide;
         [SerializeField] GameObject[] directionArrows;
         [SerializeField] Transform hook;
-        [SerializeField] Animation hookAnimation;
+        [SerializeField] Animation hookAnimation; // TODO: Speed up animation
         [SerializeField] AudioClip[] conveyorSounds;
 
         [HideInInspector] public event Action OnSplitterClicked;
@@ -79,14 +79,14 @@ namespace CON.Machines
 
         public void OnElementRightEnter(ElementPickup elementPickup)
         {
-            if (!isRightToLeft || !isFullyPlaced) return;
+            if (!isRightToLeft || !isFullyPlaced || hookAnimation.isPlaying) return;
             Rigidbody rigidbody = elementPickup.GetComponent<Rigidbody>();
             StartCoroutine(MoveElement(rigidbody));
             
         }
         public void OnElementLeftEnter(ElementPickup elementPickup)
         {
-            if (isRightToLeft || !isFullyPlaced) return;
+            if (isRightToLeft || !isFullyPlaced || hookAnimation.isPlaying) return;
             Rigidbody rigidbody = elementPickup.GetComponent<Rigidbody>();
             StartCoroutine(MoveElement(rigidbody));
         }
@@ -136,7 +136,7 @@ namespace CON.Machines
         {
             if (!isFullyPlaced || EventSystem.current.IsPointerOverGameObject() || player.IsDemolishMode()) return;
 
-            OnSplitterClicked();
+            if(OnSplitterClicked != null) OnSplitterClicked();
         }
 
         public void FullyPlaced(Builder player)

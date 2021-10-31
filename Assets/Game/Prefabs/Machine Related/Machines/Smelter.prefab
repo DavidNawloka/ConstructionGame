@@ -87,14 +87,13 @@ MonoBehaviour:
   - {x: 0, y: -1}
   elementPlacementRequirement: {fileID: 0}
   elementBuildingRequirements:
-  - element: {fileID: 11400000, guid: 296a20792c61e7e4eb31c9133973c3b5, type: 2}
-    amount: 5
-  - element: {fileID: 11400000, guid: c2f82b61e121f29408d0cfa36fd30d2e, type: 2}
-    amount: 5
+  - element: {fileID: 11400000, guid: 48ffc0a461edf6c42b48e2b710958c18, type: 2}
+    amount: 2
+  - element: {fileID: 11400000, guid: ce0a705810326c5428f93e3650c09cec, type: 2}
+    amount: 2
   possibleInstructions:
   - {fileID: 11400000, guid: 176ec8c44a74d8e4394b6c97c15c271e, type: 2}
   - {fileID: 11400000, guid: 84eb62b3cd37a6f4cbc08f01de7a7144, type: 2}
-  productionIntervall: 3
   elementExitPoint: {fileID: 399632920266088884}
   elementTriggers:
   - {fileID: 764983054320734039}

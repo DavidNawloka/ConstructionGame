@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 306c17a07d80ee143a9ea93f6bc4d98d, type: 3}
-  m_Name: Platin
+  m_Name: Mechanical Part
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: 60cfa7e4a30b54a06b82f81391f03030, type: 3}
-  pickupPrefab: {fileID: 819396483644063089, guid: 4c7332d450f8f2a49901a31965551629, type: 3}
+  sprite: {fileID: 21300000, guid: 315ae634337024a13bd42fadd27f8d39, type: 3}
+  pickupPrefab: {fileID: 843184961021154459, guid: 1b91578c3b50cdf41962348360026cb1, type: 3}
   minScale: 0.9
   maxScale: 1.1
-  colorRepresentation: {r: 0.3018868, g: 0.3018868, b: 0.3018868, a: 1}
+  colorRepresentation: {r: 0, g: 0, b: 0, a: 0}

@@ -17,10 +17,10 @@ MonoBehaviour:
   name: Smelter
   description: The element given will be smelted into something more useful
   elementRequirements:
-  - element: {fileID: 11400000, guid: 890674b207473d3479e48248b3f5eba6, type: 2}
-    amount: 35
+  - element: {fileID: 11400000, guid: 48ffc0a461edf6c42b48e2b710958c18, type: 2}
+    amount: 15
+  - element: {fileID: 11400000, guid: a5ce88407542bab4b861a21db95ade0e, type: 2}
+    amount: 60
   - element: {fileID: 11400000, guid: 5d9ca0baebc0b5040b1ace9cebd67708, type: 2}
-    amount: 40
-  - element: {fileID: 11400000, guid: aa830a0922b0a9542b3953ccd6712b7e, type: 2}
-    amount: 25
+    amount: 12
   type: 2

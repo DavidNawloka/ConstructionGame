@@ -17,10 +17,10 @@ MonoBehaviour:
   name: Sand Collector
   description: Allows the automation of sand collecting
   elementRequirements:
-  - element: {fileID: 11400000, guid: 90af84c016779b64abdbae59aa56cd21, type: 2}
-    amount: 45
-  - element: {fileID: 11400000, guid: c2f82b61e121f29408d0cfa36fd30d2e, type: 2}
-    amount: 75
+  - element: {fileID: 11400000, guid: 48ffc0a461edf6c42b48e2b710958c18, type: 2}
+    amount: 7
+  - element: {fileID: 11400000, guid: ce0a705810326c5428f93e3650c09cec, type: 2}
+    amount: 15
   - element: {fileID: 11400000, guid: 07c6d23cc05dd23458135c08435071a3, type: 2}
-    amount: 5
+    amount: 50
   type: 1

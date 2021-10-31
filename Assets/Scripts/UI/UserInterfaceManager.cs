@@ -17,7 +17,7 @@ namespace CON.UI
 
         List<UserInterfaceType> tempClosedUITypes = new List<UserInterfaceType>();
 
-        bool blockInput = false;
+        bool inputDisabled = false;
 
         private void Awake()
         {
@@ -45,7 +45,7 @@ namespace CON.UI
 
         private void Update()
         {
-            if (blockInput) return;
+            if (inputDisabled) return;
             for (int typeIndex = 0; typeIndex < UITypes.Length; typeIndex++)
             {
                 if (UITypes[typeIndex].keyToToggleName == "") continue;
@@ -56,7 +56,10 @@ namespace CON.UI
                 }
             }
         }
-
+        public void OnInputDeactivationChange(bool isDisabled) // Input Allowance Class Event
+        {
+            inputDisabled = isDisabled;
+        }
         public void ActivateUI(int typeIndex)
         {
             SetActiveUI(typeIndex, true);
@@ -73,13 +76,14 @@ namespace CON.UI
         private void SetActiveUI(int typeIndex, bool isActive)
         {
             UserInterfaceType userInterfaceType = UITypes[typeIndex];
-            
+
+            if (!isActive) SetActiveUserInterfaceType(userInterfaceType, isActive, true);
 
             if (!isActive && userInterfaceType.shouldBeShownAlone && tempClosedUITypes.Count != 0)
             {
                 foreach (UserInterfaceType UIType in tempClosedUITypes)
                 {
-                    SetActiveUserInterfaceType(UIType, true);
+                    SetActiveUserInterfaceType(UIType, true, false);
                 }
                 tempClosedUITypes.Clear();
             }
@@ -90,7 +94,7 @@ namespace CON.UI
                 {
                     if (!UIType.isEnabled) continue;
 
-                    SetActiveUserInterfaceType(UIType, false);
+                    SetActiveUserInterfaceType(UIType, false, true);
                     tempClosedUITypes.Add(UIType);
                 }
 
@@ -101,20 +105,18 @@ namespace CON.UI
                 if (isActive) escManager.AddFunction(() => DeactiveUI(typeIndex), userInterfaceType.GetHashCode().ToString());
                 else escManager.RemoveFunction(userInterfaceType.GetHashCode().ToString());
             }
-            SetActiveUserInterfaceType(userInterfaceType, isActive);
+
+            if(isActive) SetActiveUserInterfaceType(userInterfaceType, isActive, true);
         }
 
-        private void SetActiveUserInterfaceType(UserInterfaceType UIType, bool isActive)
+        private void SetActiveUserInterfaceType(UserInterfaceType UIType, bool isActive, bool shouldPlaySound)
         {
             if (isActive) UIType.animator.SetTrigger("show");
             else UIType.animator.SetTrigger("hide");
 
-            if (UIType.shouldBeShownAlone && isActive) blockInput = true;
-            else blockInput = false;
-
             UIType.isEnabled = isActive;
             UIType.OnToggle.Invoke();
-            if (UIType.audioClip != null) audioSource.PlayOneShot(UIType.audioClip);
+            if (shouldPlaySound && UIType.audioClip != null) audioSource.PlayOneShot(UIType.audioClip);
         }
         [System.Serializable]
         public class UserInterfaceType

@@ -10,12 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 537a0ecd15b444d4eb62ddb08868e34c, type: 3}
-  m_Name: Sand Gathering
+  m_Name: Mechanical Part Creation
   m_EditorClassIdentifier: 
   requirements:
+  - element: {fileID: 11400000, guid: ce0a705810326c5428f93e3650c09cec, type: 2}
+    amount: 2
+  - element: {fileID: 11400000, guid: a5ce88407542bab4b861a21db95ade0e, type: 2}
+    amount: 3
   - element: {fileID: 11400000, guid: 07c6d23cc05dd23458135c08435071a3, type: 2}
     amount: 1
   outcome:
-    element: {fileID: 11400000, guid: a5ce88407542bab4b861a21db95ade0e, type: 2}
-    amount: 2
-  productionInterval: 2
+    element: {fileID: 11400000, guid: 48ffc0a461edf6c42b48e2b710958c18, type: 2}
+    amount: 1
+  productionInterval: 3

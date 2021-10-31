@@ -19,7 +19,6 @@ namespace CON.Machines
         [SerializeField] InventoryItem[] elementBuildingRequirements;
         [Header("Production")]
         [SerializeField] Instruction[] possibleInstructions;
-        [SerializeField] float productionIntervall;
         [SerializeField] Transform elementExitPoint;
         [SerializeField] ElementTrigger[] elementTriggers;
 
@@ -55,7 +54,7 @@ namespace CON.Machines
                 return;
             }
 
-            if (productionTimer >= productionIntervall)
+            if (productionTimer >= currentInstruction.productionInterval)
             {
                 productionTimer = 0;
                 ProduceElement();
@@ -123,7 +122,7 @@ namespace CON.Machines
         }
         public float GetProductionFraction()
         {
-            return productionTimer / productionIntervall;
+            return productionTimer / currentInstruction.productionInterval;
         }
 
         private int GetElementInstructionIndex(Element element)
@@ -156,7 +155,8 @@ namespace CON.Machines
 
             for (int amount = 0; amount < currentInstruction.outcome.amount; amount++)
             {
-                Instantiate(currentInstruction.outcome.element.pickupPrefab, elementExitPoint.position, Quaternion.identity);
+                Instantiate(currentInstruction.outcome.element.pickupPrefab, elementExitPoint.position+ UnityEngine.Random.insideUnitSphere*.1f, Quaternion.identity);
+                
             }
             inventory.RemoveItem(currentInstruction.requirements);
 

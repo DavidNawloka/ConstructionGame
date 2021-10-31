@@ -18,9 +18,7 @@ MonoBehaviour:
   description: Requires 3 elements to produce a new element
   elementRequirements:
   - element: {fileID: 11400000, guid: 90af84c016779b64abdbae59aa56cd21, type: 2}
-    amount: 45
-  - element: {fileID: 11400000, guid: 07c6d23cc05dd23458135c08435071a3, type: 2}
     amount: 25
   - element: {fileID: 11400000, guid: 296a20792c61e7e4eb31c9133973c3b5, type: 2}
-    amount: 15
+    amount: 50
   type: 2

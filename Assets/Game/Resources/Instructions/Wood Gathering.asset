@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   requirements:
   - element: {fileID: 11400000, guid: 296a20792c61e7e4eb31c9133973c3b5, type: 2}
-    amount: 3
+    amount: 2
   outcome:
     element: {fileID: 11400000, guid: 90af84c016779b64abdbae59aa56cd21, type: 2}
-    amount: 1
+    amount: 3
+  productionInterval: 2
