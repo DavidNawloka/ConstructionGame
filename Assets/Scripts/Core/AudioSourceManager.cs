@@ -26,8 +26,10 @@ namespace CON.Core
         }
         private void Update()
         {
+            if (!shouldPlay) return;
+
             playTimer += Time.deltaTime;
-            if (!shouldPlay || playTimer <= currentAudioFilesToLoop[currentAudioClipLoopIndex].length * loopPlayTimerMultiplier) return;
+            if (playTimer <= currentAudioFilesToLoop[currentAudioClipLoopIndex].length * loopPlayTimerMultiplier) return;
 
             playTimer = 0;
             if (shouldChangePitch) ChangePitch();

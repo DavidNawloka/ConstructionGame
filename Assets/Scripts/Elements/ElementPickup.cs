@@ -65,13 +65,13 @@ namespace CON.Elements
             elementImage.color = new Color(1,1,1,spawnedElementImageAlpha);
             elementImage.transform.localScale = new Vector3(spawnedElementImageScale, spawnedElementImageScale, spawnedElementImageScale);
 
-            yield return StartCoroutine(MoveElement(elementGameObject,targetPos));
+            yield return StartCoroutine(MoveElementSprite(elementGameObject,targetPos));
 
             Destroy(elementGameObject);
 
         }
 
-        private IEnumerator MoveElement(GameObject element,Vector3 targetPos)
+        private IEnumerator MoveElementSprite(GameObject element,Vector3 targetPos)
         {
             while(Vector3.Distance(element.transform.position,targetPos) > 3f)
             {

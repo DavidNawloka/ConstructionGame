@@ -11,13 +11,13 @@ namespace CON.Elements
     {
         [SerializeField] int inventorySlots;
 
-        public InventoryItem[] inventory;
+        private InventoryItem[] inventory;
 
         public UnityEvent<Inventory> OnInventoryChange;
 
         private void Start()
         {
-            if (inventory.Length == 0) BuildEmptyInventory();
+            if (inventory == null) BuildEmptyInventory();
             OnInventoryChange.Invoke(this);
         }
         public InventoryItem[] GetInventoryArray()
@@ -49,24 +49,23 @@ namespace CON.Elements
             for (int index = 0; index < inventory.Length; index++)
             {
                 InventoryItem inventoryItem = inventory[index];
-                if (inventoryItem.element == inventoryItemToRemove.element)
+                if (inventoryItem.element != inventoryItemToRemove.element) continue;
+
+                if (inventoryItem.amount == inventoryItemToRemove.amount)
                 {
-                    if(inventoryItem.amount == inventoryItemToRemove.amount)
-                    {
-                        inventoryItem = new InventoryItem(null, 0);
-                        status = true;
-                    }
-                    else if(inventoryItem.amount > inventoryItemToRemove.amount)
-                    {
-                        inventoryItem.amount -= inventoryItemToRemove.amount;
-                        status = true;
-                    }
-                    else
-                    {
-                        Debug.LogError("Amount to be removed of " + inventoryItemToRemove.element + " is " 
-                            + inventoryItemToRemove.amount + " , existing amount available " + inventoryItem.amount + " !");
-                    }
-                    inventory[index] = inventoryItem;
+                    inventoryItem.amount -= inventoryItemToRemove.amount;
+                    inventoryItem.element = null;
+                    status = true;
+                }
+                else if (inventoryItem.amount > inventoryItemToRemove.amount)
+                {
+                    inventoryItem.amount -= inventoryItemToRemove.amount;
+                    status = true;
+                }
+                else
+                {
+                    Debug.LogError("Amount to be removed of " + inventoryItemToRemove.element + " is "
+                        + inventoryItemToRemove.amount + " , existing amount available " + inventoryItem.amount + " !");
                 }
             }
             OnInventoryChange.Invoke(this);
@@ -76,37 +75,26 @@ namespace CON.Elements
         {
             foreach (InventoryItem inventoryItem in inventoryItemsToRemove)
             {
-                RemoveItem(inventoryItem);
+                if(!RemoveItem(inventoryItem)) return false;
             }
             return true;
         }
         public bool EquipItemWhere(InventoryItem inventoryItemToEquip, out int inventoryPosIndex)
         {
-            int materialIndex = -1;
-            inventoryPosIndex = -1;
-
             for (int inventoryIndex = 0; inventoryIndex < inventory.Length; inventoryIndex++)
             {
-                if (inventory[inventoryIndex].element == inventoryItemToEquip.element)
+                if (inventory[inventoryIndex].element == inventoryItemToEquip.element || inventory[inventoryIndex].element == null)
                 {
                     inventoryPosIndex = inventoryIndex;
                     return true;
                 }
-                if (inventory[inventoryIndex].element == null && materialIndex == -1)
-                {
-                    materialIndex = inventoryIndex;
-                }
             }
 
-            if (GetUsedInventoryLength() >= inventorySlots) return false;
-
-            inventoryPosIndex = materialIndex;
-            return true;
+            inventoryPosIndex = -1;
+            return false;
         }
         public bool EquipItem(InventoryItem inventoryItemToEquip)
         {
-            int materialIndex = -1;
-
             for (int inventoryIndex = 0; inventoryIndex < inventory.Length; inventoryIndex++)
             {
                 if (inventory[inventoryIndex].element == inventoryItemToEquip.element)
@@ -115,23 +103,22 @@ namespace CON.Elements
                     OnInventoryChange.Invoke(this);
                     return true;
                 }
-                if(inventory[inventoryIndex].element == null && materialIndex == -1)
+                if(inventory[inventoryIndex].element == null)
                 {
-                    materialIndex = inventoryIndex;
+                    inventory[inventoryIndex].element = inventoryItemToEquip.element;
+                    inventory[inventoryIndex].amount = inventoryItemToEquip.amount;
+                    OnInventoryChange.Invoke(this);
+                    return true;
                 }
             }
 
-            if (GetUsedInventoryLength() >= inventorySlots) return false;
-
-            inventory[materialIndex] = new InventoryItem(inventoryItemToEquip.element, inventoryItemToEquip.amount);
-            OnInventoryChange.Invoke(this);
-            return true;
+            return false;
         }
         public bool EquipItem(InventoryItem[] inventoryItemsToEquip)
         {
             foreach (InventoryItem inventoryItem in inventoryItemsToEquip)
             {
-                EquipItem(inventoryItem);
+                if(!EquipItem(inventoryItem)) return false;
             }
             return true;
         }
@@ -145,7 +132,8 @@ namespace CON.Elements
             }
             if (inventory[inventorySlotIndex].element == null)
             {
-                inventory[inventorySlotIndex] = new InventoryItem(inventoryItemToEquip.element, inventoryItemToEquip.amount);
+                inventory[inventorySlotIndex].element = inventoryItemToEquip.element;
+                inventory[inventorySlotIndex].amount = inventoryItemToEquip.amount;
                 OnInventoryChange.Invoke(this);
                 return true;
             }
@@ -171,20 +159,11 @@ namespace CON.Elements
                 inventory[index] = new InventoryItem(null, 0);
             }
         }
-        private int GetUsedInventoryLength()
-        {
-            int length = 0;
-            foreach (InventoryItem item in inventory)
-            {
-                if (item.element != null) length++;
-            }
-            return length;
-        }
 
         public object CaptureState()
         {
-
             SerializeableInventoryItem[] savedInventory = new SerializeableInventoryItem[inventory.Length];
+
             for (int index = 0; index < inventory.Length; index++)
             {
                 InventoryItem currentInventoryItem = inventory[index];
@@ -204,23 +183,16 @@ namespace CON.Elements
 
             SerializeableInventoryItem[] savedInventory = (SerializeableInventoryItem[])state;
 
-            if (gameObject.tag == "Player") inventory = new InventoryItem[11];
-            else inventory = new InventoryItem[savedInventory.Length];
+            inventory = new InventoryItem[savedInventory.Length];
 
             for (int index = 0; index < inventory.Length; index++)
             {
-                if(index > savedInventory.Length-1)
-                {
-                    inventory[index] = new InventoryItem(null, 0);
-                    continue;
-                }
-
                 SerializeableInventoryItem currentInventoryItem = savedInventory[index];
 
                 if (currentInventoryItem == null) inventory[index] = new InventoryItem(null, 0);
                 else
                 {
-                    inventory[index] = new InventoryItem((Element)Resources.Load(currentInventoryItem.elementName), currentInventoryItem.amount);
+                    inventory[index] = currentInventoryItem.DeSerialize();
                 }
             }
             OnInventoryChange.Invoke(this);

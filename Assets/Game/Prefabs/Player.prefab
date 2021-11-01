@@ -255,6 +255,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a854051a3dcd7db498eb3016a1e8a238, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  followCamera: {fileID: 0}
   maxCameraDistance: 25
   minCameraDistance: 5
 --- !u!114 &9164258976479346002
@@ -310,6 +311,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: b04914b5801123b4dafba88cbcb5bc74, type: 3}
     - {fileID: 8300000, guid: 9a30499e47789df48aa9bdb1ec7b0982, type: 3}
   mainTerrain: {fileID: 0}
+  minVelocityForSound: 0.2
 --- !u!114 &-3932610976177162302
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -322,8 +324,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3486bf6fbff47d047b371b6682631eac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventorySlots: 11
-  inventory: []
+  inventorySlots: 12
   OnInventoryChange:
     m_PersistentCalls:
       m_Calls:
@@ -351,8 +352,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: faf1e642b949824428c71c316764c774, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 1011145032373361653}
-  buildObjectsParent: {fileID: 0}
   placeableObjectsPrefabs:
   - {fileID: 6366741075993714630, guid: bb6ca1340ae038249b5009f58c022cc3, type: 3}
   - {fileID: 1613690524034605397, guid: 55925bf9d387089499b28dc2d5d8c612, type: 3}
@@ -366,6 +365,10 @@ MonoBehaviour:
   - {fileID: 399632920827051588, guid: c7ee451bd1a8c5f499435823273368e3, type: 3}
   - {fileID: 399632920827051588, guid: 36ce3007136b7e24fb29069f17f5b802, type: 3}
   - {fileID: 399632920827051588, guid: ec739a22f4b58bf40911b13a7ea4f0fe, type: 3}
+  buildingGridMesh: {fileID: 0}
+  coreGameObject: {fileID: 0}
+  audioSource: {fileID: 1011145032373361653}
+  buildObjectsParent: {fileID: 0}
   rotationTime: 0.1
   maxSmoothMove: 5
   distanceDivider: 0.3
@@ -419,7 +422,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4716ab4b42550924b9b7606cb375ce6f, type: 2}
   - {fileID: 11400000, guid: 29e8ec23b0ff67a469d47ce2e53d680f, type: 2}
   - {fileID: 11400000, guid: a35805ee368754843b90503e5b115e1d, type: 2}
-  - {fileID: 11400000, guid: 7950eb452d66558418ab55b9bf6248fe, type: 2}
   - {fileID: 11400000, guid: e01fb2551ae21ee409cff65aad8017b6, type: 2}
 --- !u!114 &242470760144233005
 MonoBehaviour:

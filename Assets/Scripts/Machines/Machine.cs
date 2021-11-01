@@ -35,6 +35,7 @@ namespace CON.Machines
 
         float productionTimer = 0f;
         Vector2Int gridOrigin;
+        string hash;
 
         void Awake()
         {
@@ -155,7 +156,7 @@ namespace CON.Machines
 
             for (int amount = 0; amount < currentInstruction.outcome.amount; amount++)
             {
-                Instantiate(currentInstruction.outcome.element.pickupPrefab, elementExitPoint.position+ UnityEngine.Random.insideUnitSphere*.1f, Quaternion.identity);
+                Instantiate(currentInstruction.outcome.element.pickupPrefab, elementExitPoint.position + UnityEngine.Random.insideUnitSphere*.1f, Quaternion.identity);
                 
             }
             inventory.RemoveItem(currentInstruction.requirements);
@@ -229,7 +230,16 @@ namespace CON.Machines
 
         public void ChangeVersion()
         {
-            
+
+        }
+
+        public void SaveHash(string hash)
+        {
+            this.hash = hash;
+        }
+        public string GetHash()
+        {
+            return hash;
         }
         public GameObject GetGameObject()
         {

@@ -14,6 +14,8 @@ namespace CON.Machines
         public void FullyPlaced(Builder player);
         public void ChangeVersion();
         public GameObject GetGameObject();
+        public void SaveHash(string hash);
+        public string GetHash();
         public object GetInformationToSave();
         public void LoadSavedInformation(object savedInformation);
     }

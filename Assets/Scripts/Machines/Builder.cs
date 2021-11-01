@@ -5,7 +5,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 using CON.Core;
 using UnityEngine.EventSystems;
 
@@ -13,9 +12,13 @@ namespace CON.Machines
 {
     public class Builder : MonoBehaviour, ISaveable
     {
+        [SerializeField] GameObject[] placeableObjectsPrefabs;
+        [Header("References")]
+        [SerializeField] BuildingGridMesh buildingGridMesh;
+        [SerializeField] GameObject coreGameObject;
         [SerializeField] AudioSource audioSource;
         [SerializeField] Transform buildObjectsParent;
-        [SerializeField] GameObject[] placeableObjectsPrefabs;
+        [Header("Smoothing Parameters")]
         [SerializeField] float rotationTime = .2f;
         [SerializeField] float maxSmoothMove = 2f;
         [SerializeField] float distanceDivider = 10f;
@@ -34,8 +37,7 @@ namespace CON.Machines
         public event Action<bool> onDemolishModeChange;
         public event Action<bool> onBuildModeChange;
 
-        BuildingGridManager grid;
-        BuildingGridMesh gridMesh;
+        BuildingGridManager buildingGrid;
 
         bool isDemolishMode = false;
         bool isBuildMode = false;
@@ -49,10 +51,10 @@ namespace CON.Machines
         IPlaceable currentPlaceable;
         Vector2Int[] takenGridPositions;
         Vector3 currentMoveGoal;
-        Dictionary<SerializableVector3,SavedPlaceable> builtObjects = new Dictionary<SerializableVector3, SavedPlaceable>();
+        Dictionary<string,SavedPlaceable> builtObjects = new Dictionary<string, SavedPlaceable>();
 
         Inventory inventory;
-        CloseButtonManager escManager;
+        CloseButtonManager closeButtonManager;
         SettingsManager settingsManager;
         InputAllowance inputAllowance;
 
@@ -65,33 +67,19 @@ namespace CON.Machines
         private void Awake()
         {
             inventory = GetComponent<Inventory>();
-            gridMesh = FindObjectOfType<BuildingGridMesh>();
-            escManager = FindObjectOfType<CloseButtonManager>();
             settingsManager = FindObjectOfType<SettingsManager>();
-            inputAllowance = FindObjectOfType<InputAllowance>();
+            closeButtonManager = coreGameObject.GetComponent<CloseButtonManager>();
+            inputAllowance = coreGameObject.GetComponent<InputAllowance>();
 
             settingsManager.OnInputButtonsChanged += UpdateButtonMapping;
         }
 
         private void Start()
         {
-            if (grid == null)
-            {
-                Texture2D texture = GetDefault2DTexture();
-                grid = new BuildingGridManager(BuildingGridAssetManager.GetGrid(), texture);
-                gridMesh.InitiatePlane(texture);
-            }
-            if(onBuildModeChange != null) onBuildModeChange(false);
+            if (buildingGrid == null) BuildDefaultBuildingGrid();
+            if (onBuildModeChange != null) onBuildModeChange(false);
         }
 
-        private void UpdateButtonMapping()
-        {
-            deactivatePlacementButton = settingsManager.GetKey(deactivatePlacementButtonName);
-            changeVersionButton = settingsManager.GetKey(changeVersionButtonName);
-            toggleDemolishModeButton = settingsManager.GetKey(toggleDemolishModeButtonName);
-            rotateLeftButton = settingsManager.GetKey(rotateLeftButtonName);
-            rotateRightButton = settingsManager.GetKey(rotateRightButtonName);
-        }
 
         private void Update()
         {
@@ -136,7 +124,7 @@ namespace CON.Machines
             if (currentMachine != null) Destroy(currentMachine);
             if (isDemolishMode) SetActiveDemolishMode(false);
 
-            escManager.AddFunction(DeactivatePlacementModeDestruction, "placement");
+            closeButtonManager.AddFunction(DeactivatePlacementModeDestruction, "placement");
 
             isPlacementMode = true;
             currentMachinePrefab = machine;
@@ -166,7 +154,7 @@ namespace CON.Machines
         {
             if(onBuildModeChange != null) onBuildModeChange(isBuildMode);
             inputAllowance.SetActiveZoom(isBuildMode);
-            gridMesh.SetActiveMesh(isBuildMode);
+            buildingGridMesh.SetActiveMesh(isBuildMode);
 
             if (isDemolishMode) SetActiveDemolishMode(isBuildMode);
             if (isPlacementMode) DeactivatePlacementModeDestruction();
@@ -179,17 +167,13 @@ namespace CON.Machines
         {
             if (isActive)
             {
-                escManager.AddFunction(() => SetActiveDemolishMode(false), this.GetHashCode().ToString());
+                closeButtonManager.AddFunction(() => SetActiveDemolishMode(false), this.GetHashCode().ToString());
                 DeactivatePlacementModeDestruction();
             }
-            else escManager.RemoveFunction(this.GetHashCode().ToString());
+            else closeButtonManager.RemoveFunction(this.GetHashCode().ToString());
 
             isDemolishMode = isActive;
             onDemolishModeChange(isActive);
-        }
-        public BuildingGridMesh GetGridMesh()
-        {
-            return gridMesh;
         }
         
         public bool IsDemolishMode()
@@ -205,9 +189,9 @@ namespace CON.Machines
             {
                 int x;
                 int y;
-                grid.GetGridPosition(raycastHit.point, out x, out y);
+                buildingGrid.GetGridPosition(raycastHit.point, out x, out y);
 
-                if (Input.GetMouseButtonDown(0) && grid.IsObstructed(x, y) && !EventSystem.current.IsPointerOverGameObject())
+                if (Input.GetMouseButtonDown(0) && buildingGrid.IsObstructed(x, y) && !EventSystem.current.IsPointerOverGameObject())
                 {
                    
                     IPlaceable placedMachine = raycastHit.collider.GetComponentInParent<IPlaceable>();
@@ -216,24 +200,15 @@ namespace CON.Machines
 
                     foreach (Vector2Int takenGridPosition in placedMachine.GetTakenGridPositions())
                     {
-                        grid.SetObstructed(placedMachine.GetOrigin().x + takenGridPosition.x, placedMachine.GetOrigin().y + takenGridPosition.y, false);
+                        buildingGrid.SetObstructed(placedMachine.GetOrigin().x + takenGridPosition.x, placedMachine.GetOrigin().y + takenGridPosition.y, false);
                     }
                     foreach (InventoryItem inventoryItem in placedMachine.GetNeededBuildingElements())
                     {
                         inventory.EquipItem(inventoryItem);
                     }
-                    gridMesh.UpdateTexture(grid.GetBuildingGridTexture());
+                    buildingGridMesh.UpdateTexture(buildingGrid.GetBuildingGridTexture());
 
-                    //TODO: Optimization when there are a lot of keyvaluepairs to go through
-                    foreach(KeyValuePair<SerializableVector3,SavedPlaceable> keyValuePair in builtObjects)
-                    {
-                        if (Vector3.Distance(keyValuePair.Key.ToVector(), raycastHit.collider.transform.position) < 1f)
-                        {
-                            builtObjects.Remove(keyValuePair.Key);
-                            break;
-                        }
-                    }
-
+                    builtObjects.Remove(placedMachine.GetHash());
                     Destroy(placedMachine.GetGameObject());
                     audioSource.PlayOneShot(demolishSounds[GetRandomArrayIndex(demolishSounds)]);
                 }
@@ -260,12 +235,12 @@ namespace CON.Machines
             {
                 int x;
                 int y;
-                grid.GetGridPosition(raycastHit.point, out x, out y);
+                buildingGrid.GetGridPosition(raycastHit.point, out x, out y);
 
                 
                 if (IsObstructedAll(x, y)) return;
 
-                currentMoveGoal = grid.GetWorldPositionCenter(x, y);
+                currentMoveGoal = buildingGrid.GetWorldPositionCenter(x, y);
                 
                 
                 if (Input.GetMouseButton(0) || Input.GetMouseButtonDown(0))
@@ -285,7 +260,7 @@ namespace CON.Machines
             bool isObstructed = false;
             foreach (Vector2Int takenGridPosition in takenGridPositions)
             {
-                isObstructed = grid.IsObstructed(x + takenGridPosition.x, y + takenGridPosition.y);
+                isObstructed = buildingGrid.IsObstructed(x + takenGridPosition.x, y + takenGridPosition.y);
                 if (isObstructed) return isObstructed;
             }
             return isObstructed;
@@ -299,7 +274,7 @@ namespace CON.Machines
 
             foreach (Vector2Int takenGridPosition in takenGridPositions)
             {
-                grid.SetObstructed(x + takenGridPosition.x, y + takenGridPosition.y, true);
+                buildingGrid.SetObstructed(x + takenGridPosition.x, y + takenGridPosition.y, true);
             }
 
             currentMachine.transform.position = currentMoveGoal;
@@ -307,7 +282,8 @@ namespace CON.Machines
             isRotating = false;
             currentPlaceable.SetOrigin(new Vector2Int(x, y));
             currentPlaceable.FullyPlaced(this);
-            builtObjects.Add(new SerializableVector3(currentMachine.transform.position),new SavedPlaceable(GetPlaceableObjectsID(currentMachinePrefab), currentMachine.transform.eulerAngles, new Vector2Int(x,y),takenGridPositions, currentPlaceable));
+            currentPlaceable.SaveHash(currentPlaceable.GetHashCode().ToString());
+            builtObjects.Add(currentPlaceable.GetHash(),new SavedPlaceable(GetPlaceableObjectsID(currentMachinePrefab), currentMachine.transform.position, currentMachine.transform.eulerAngles, new Vector2Int(x,y),takenGridPositions, currentPlaceable));
             audioSource.PlayOneShot(placementSounds[GetRandomArrayIndex(placementSounds)]);
 
             ReenablePlacementMode();
@@ -321,7 +297,7 @@ namespace CON.Machines
 
             if (!AreEnoughElements()) return false;
             
-            if (currentPlaceable.GetElementPlacementRequirement() != null &&!grid.HasElement(x, y, currentPlaceable.GetElementPlacementRequirement())) return false;
+            if (currentPlaceable.GetElementPlacementRequirement() != null &&!buildingGrid.HasElement(x, y, currentPlaceable.GetElementPlacementRequirement())) return false;
 
             
 
@@ -348,7 +324,7 @@ namespace CON.Machines
         }
         private void DeactivatePlacementModeDestruction()
         {
-            escManager.RemoveFunction("placement");
+            closeButtonManager.RemoveFunction("placement");
             Destroy(currentMachine);
             isPlacementMode = false;
             currentMachine = null;
@@ -357,7 +333,6 @@ namespace CON.Machines
         }
         private void ReenablePlacementMode()
         {
-            
             isPlacementMode = false;
             int toRotate = (int)currentMachine.transform.localEulerAngles.y / 90;
             currentMachine = null;
@@ -428,6 +403,21 @@ namespace CON.Machines
             isRotating = false;
         }
 
+        private void BuildDefaultBuildingGrid()
+        {
+            Texture2D texture = GetDefault2DTexture();
+            buildingGrid = new BuildingGridManager(BuildingGridAssetManager.GetGrid(), texture);
+            buildingGridMesh.InitiatePlane(texture);
+        }
+
+        private void UpdateButtonMapping()
+        {
+            deactivatePlacementButton = settingsManager.GetKey(deactivatePlacementButtonName);
+            changeVersionButton = settingsManager.GetKey(changeVersionButtonName);
+            toggleDemolishModeButton = settingsManager.GetKey(toggleDemolishModeButtonName);
+            rotateLeftButton = settingsManager.GetKey(rotateLeftButtonName);
+            rotateRightButton = settingsManager.GetKey(rotateRightButtonName);
+        }
         private int GetRandomArrayIndex(Array array)
         {
             return UnityEngine.Random.Range(0, array.Length);
@@ -445,15 +435,15 @@ namespace CON.Machines
             {
                 for (int y = 0; y < gridSettings.height; y++)
                 {
-                    obstructedList[x, y] = grid.gridArray[x, y].obstructed;
+                    obstructedList[x, y] = buildingGrid.gridArray[x, y].obstructed;
                 }
             }
 
-            Dictionary<SerializableVector3, SavedPlaceable> newBuiltObjects = new Dictionary<SerializableVector3, SavedPlaceable>();
+            Dictionary<string, SavedPlaceable> newBuiltObjects = new Dictionary<string, SavedPlaceable>();
 
-            foreach(KeyValuePair<SerializableVector3,SavedPlaceable> keyValuePair in builtObjects)
+            foreach(KeyValuePair<string, SavedPlaceable> keyValuePair in builtObjects)
             {
-                newBuiltObjects.Add(keyValuePair.Key, new SavedPlaceable(keyValuePair.Value.id, keyValuePair.Value.eulerRotation.ToVector(), keyValuePair.Value.origin.ToVector(), keyValuePair.Value.GetTakenGridPositions(), ((IPlaceable)keyValuePair.Value.variableInformation).GetInformationToSave()));
+                newBuiltObjects.Add(keyValuePair.Key, new SavedPlaceable(keyValuePair.Value.id, keyValuePair.Value.worldPosition.ToVector(), keyValuePair.Value.eulerRotation.ToVector(), keyValuePair.Value.origin.ToVector(), keyValuePair.Value.GetTakenGridPositions(), ((IPlaceable)keyValuePair.Value.variableInformation).GetInformationToSave()));
             }
 
             return new SaveData(obstructedList, newBuiltObjects);
@@ -486,20 +476,19 @@ namespace CON.Machines
             }
             gridTexture.Apply();
 
-            gridMesh = FindObjectOfType<BuildingGridMesh>();
-            gridMesh.InitiatePlane(gridTexture);
-            grid = new BuildingGridManager(gridArray,gridTexture);
+            buildingGridMesh.InitiatePlane(gridTexture);
+            buildingGrid = new BuildingGridManager(gridArray,gridTexture);
 
-            foreach (KeyValuePair<SerializableVector3,SavedPlaceable> keyValuePair in saveData.builtPlaceables)
+            foreach (KeyValuePair<string, SavedPlaceable> keyValuePair in saveData.builtPlaceables)
             {
-                
-                IPlaceable placeable = Instantiate(placeableObjectsPrefabs[keyValuePair.Value.id], keyValuePair.Key.ToVector(), Quaternion.Euler(keyValuePair.Value.eulerRotation.ToVector()), buildObjectsParent).GetComponent<IPlaceable>();
+                IPlaceable placeable = Instantiate(placeableObjectsPrefabs[keyValuePair.Value.id], keyValuePair.Value.worldPosition.ToVector(), Quaternion.Euler(keyValuePair.Value.eulerRotation.ToVector()), buildObjectsParent).GetComponent<IPlaceable>();
                 placeable.FullyPlaced(this);
                 placeable.SetOrigin(keyValuePair.Value.origin.ToVector());
                 placeable.SetTakenGridPositions(keyValuePair.Value.GetTakenGridPositions());
                 placeable.LoadSavedInformation(keyValuePair.Value.variableInformation);
+                placeable.SaveHash(keyValuePair.Key);
 
-                builtObjects.Add(keyValuePair.Key, new SavedPlaceable(keyValuePair.Value.id,keyValuePair.Value.eulerRotation.ToVector(),keyValuePair.Value.origin.ToVector(),keyValuePair.Value.GetTakenGridPositions(), placeable));
+                builtObjects.Add(keyValuePair.Key, new SavedPlaceable(keyValuePair.Value.id,keyValuePair.Value.worldPosition.ToVector(),keyValuePair.Value.eulerRotation.ToVector(),keyValuePair.Value.origin.ToVector(),keyValuePair.Value.GetTakenGridPositions(), placeable));
             }
 
         }
@@ -508,8 +497,8 @@ namespace CON.Machines
         private class SaveData
         {
             public bool[,] obstructedList;
-            public Dictionary<SerializableVector3, SavedPlaceable> builtPlaceables;
-            public SaveData(bool[,] obstructedList, Dictionary<SerializableVector3, SavedPlaceable> builtPlaceables)
+            public Dictionary<string, SavedPlaceable> builtPlaceables;
+            public SaveData(bool[,] obstructedList, Dictionary<string, SavedPlaceable> builtPlaceables)
             {
                 this.obstructedList = obstructedList;
                 this.builtPlaceables = builtPlaceables;
@@ -520,14 +509,16 @@ namespace CON.Machines
         private class SavedPlaceable
         {
             public int id;
+            public SerializableVector3 worldPosition;
             public SerializableVector3 eulerRotation;
             public SerializableVector2Int origin;
             public SerializableVector2Int[] takenGridPositions;
             public object variableInformation;
 
-            public SavedPlaceable(int id, Vector3 eulerRotation, Vector2Int origin, Vector2Int[] takenGridPositions, object variableInformation)
+            public SavedPlaceable(int id, Vector3 worldPosition, Vector3 eulerRotation, Vector2Int origin, Vector2Int[] takenGridPositions, object variableInformation)
             {
                 this.id = id;
+                this.worldPosition = new SerializableVector3(worldPosition);
                 this.eulerRotation = new SerializableVector3(eulerRotation);
                 this.origin = new SerializableVector2Int(origin);
                 this.variableInformation = variableInformation;
@@ -551,7 +542,7 @@ namespace CON.Machines
 
             public SavedPlaceable Copy()
             {
-                return new SavedPlaceable(id, eulerRotation.ToVector(), origin.ToVector(), GetTakenGridPositions(),variableInformation);
+                return new SavedPlaceable(id, worldPosition.ToVector(), eulerRotation.ToVector(), origin.ToVector(), GetTakenGridPositions(),variableInformation);
             }
         }
     }

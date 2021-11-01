@@ -19,6 +19,7 @@ namespace CON.Machines
         [SerializeField] AudioClip[] conveyorSounds;
 
         Vector2Int gridOrigin;
+        string hash;
         Builder player;
         AudioSourceManager audioLoop;
 
@@ -107,6 +108,14 @@ namespace CON.Machines
         public GameObject GetGameObject()
         {
             return gameObject;
+        }
+        public void SaveHash(string hash)
+        {
+            this.hash = hash;
+        }
+        public string GetHash()
+        {
+            return hash;
         }
         public object GetInformationToSave()
         {

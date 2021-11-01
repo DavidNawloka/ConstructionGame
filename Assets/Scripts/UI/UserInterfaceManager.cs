@@ -48,7 +48,7 @@ namespace CON.UI
             if (inputDisabled) return;
             for (int typeIndex = 0; typeIndex < UITypes.Length; typeIndex++)
             {
-                if (UITypes[typeIndex].keyToToggleName == "") continue;
+                if (UITypes[typeIndex].keyToToggleName == "" || tempClosedUITypes.Contains(UITypes[typeIndex])) continue; // TODO: fix bug when progression open input no listen only to input of progress and esc
 
                 if (Input.GetKeyDown(UITypes[typeIndex].keyToToggle))
                 {
@@ -94,7 +94,7 @@ namespace CON.UI
                 {
                     if (!UIType.isEnabled) continue;
 
-                    SetActiveUserInterfaceType(UIType, false, true);
+                    SetActiveUserInterfaceType(UIType, false, false);
                     tempClosedUITypes.Add(UIType);
                 }
 

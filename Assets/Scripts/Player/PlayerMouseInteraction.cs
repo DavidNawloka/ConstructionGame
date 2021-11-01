@@ -1,20 +1,18 @@
 using CON.Core;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Cinemachine;
-using CON.Machines;
 
 namespace CON.Player
 {
     public class PlayerMouseInteraction : MonoBehaviour
     {
+        [SerializeField] CinemachineVirtualCamera followCamera;
         [SerializeField] float maxCameraDistance = 25;
         [SerializeField] float minCameraDistance = 5;
+
+
         PlayerMovement playerMovement;
-        CinemachineVirtualCamera followCamera;
 
 
         bool isZoomDisabled = false;
@@ -23,7 +21,6 @@ namespace CON.Player
         private void Awake()
         {
             playerMovement = GetComponent<PlayerMovement>();
-            followCamera = GameObject.FindGameObjectWithTag("FollowCamera").GetComponent<CinemachineVirtualCamera>();
         }
         private void Update()
         {
@@ -31,8 +28,13 @@ namespace CON.Player
 
             if(!isZoomDisabled) ManageCameraZoom();
             if (UIInteraction()) return;
-            if (WorldInteraction()) return;
-            if (MovementInteraction()) return;
+
+            
+            RaycastHit raycastHit;
+            if (!GetCameraRaycastHit(out raycastHit)) return;
+
+            if (WorldInteraction(raycastHit)) return;
+            if (MovementInteraction(raycastHit)) return;
         }
 
         public void OnZoomDeactivationChange(bool isDisabled) // Input Allowance Class Event
@@ -46,19 +48,20 @@ namespace CON.Player
         private void ManageCameraZoom()
         {
             int factor = 0;
-            if(Input.mouseScrollDelta.y > 0)
+            if (Input.mouseScrollDelta.y > 0)
             {
                 factor = -1;
             }
-            if(Input.mouseScrollDelta.y < 0)
+            else if (Input.mouseScrollDelta.y < 0)
             {
                 factor = 1;
             }
+            else return;
 
             CinemachineComponentBase componentBase = followCamera.GetCinemachineComponent(CinemachineCore.Stage.Body);
             if (componentBase is CinemachineFramingTransposer)
             {
-                (componentBase as CinemachineFramingTransposer).m_CameraDistance = Mathf.Clamp((componentBase as CinemachineFramingTransposer).m_CameraDistance + 2 * factor,minCameraDistance,maxCameraDistance);
+                (componentBase as CinemachineFramingTransposer).m_CameraDistance = Mathf.Clamp((componentBase as CinemachineFramingTransposer).m_CameraDistance + 2 * factor, minCameraDistance, maxCameraDistance);
             }
         }
 
@@ -67,35 +70,36 @@ namespace CON.Player
             if (EventSystem.current.IsPointerOverGameObject()) return true;
             return false;
         }
-        private bool WorldInteraction()
+        private bool WorldInteraction(RaycastHit raycastHit)
         {
             bool status = false;
-            Ray cameraRay = GetCameraRay();
-            RaycastHit raycastHit;
-            if (Physics.Raycast(cameraRay, out raycastHit))
+
+            IMouseClickable interactable = raycastHit.transform.GetComponent<IMouseClickable>();
+            if (interactable == null) return status;
+
+
+            if (Input.GetMouseButtonDown(0))
             {
-                IMouseClickable interactable = raycastHit.transform.GetComponent<IMouseClickable>();
-                if (interactable == null) return status;
-
-
-                if (Input.GetMouseButtonDown(0))
-                {
-                    status = interactable.HandleInteractionClick(transform);
-                }
+                status = interactable.HandleInteractionClick(transform);
             }
+
             return status;
         }
 
-        private bool MovementInteraction()
+        private bool MovementInteraction(RaycastHit raycastHit)
         {
             if (!Input.GetMouseButton(1)) return false;
-            Ray cameraRay = GetCameraRay();
-            return playerMovement.MoveTo(cameraRay);
+            return playerMovement.MoveTo(raycastHit);
         }
 
-        private static Ray GetCameraRay()
+        private bool GetCameraRaycastHit(out RaycastHit raycastHit)
         {
-            return Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray cameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(cameraRay, out raycastHit))
+            {
+                return true;
+            }
+            return false;
         }
 
     }

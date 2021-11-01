@@ -23,7 +23,6 @@ namespace CON.Progression
 
         private void Start()
         {
-            OnMachineProducedElement.Invoke(inventory);
             foreach (Unlockable placeable in startingPlaceables)
             {
                 UnlockPlaceable(placeable);

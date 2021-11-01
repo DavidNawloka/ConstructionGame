@@ -27,6 +27,7 @@ namespace CON.Core
         [SerializeField] float toggleTime = .25f;
         [SerializeField] KeyMapping[] defaultKeyMappings;
         [SerializeField] KeyVisual[] possibleKeys;
+        [SerializeField] bool isMainMenu = false;
 
         [HideInInspector] public event Action OnInputButtonsChanged;
 
@@ -55,7 +56,7 @@ namespace CON.Core
         private void Start()
         {
             Load();
-            OnInputButtonsChanged();
+            if(OnInputButtonsChanged != null)OnInputButtonsChanged();
             Application.quitting += Save;
         }
 
@@ -249,7 +250,7 @@ namespace CON.Core
 
         private IEnumerator ListenForInput(string buttonName)
         {
-            closeButtonManager.SetBlockInput(true);
+            if(!isMainMenu) closeButtonManager.SetBlockInput(true);
             yield return StartCoroutine(SetActiveCanvasGroup(listenForInputOverlay, true));
             Array allKeyCodes = Enum.GetValues(typeof(KeyCode));
 
@@ -272,7 +273,8 @@ namespace CON.Core
                 yield return null;
             }
             yield return StartCoroutine(SetActiveCanvasGroup(listenForInputOverlay, false));
-            closeButtonManager.SetBlockInput(false);
+
+            if (!isMainMenu) closeButtonManager.SetBlockInput(false);
         }
 
         private IEnumerator SetActiveCanvasGroup(CanvasGroup canvasGroup, bool isActive)

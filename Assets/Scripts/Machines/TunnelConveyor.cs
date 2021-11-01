@@ -21,6 +21,7 @@ namespace CON.Machines
         [SerializeField] AudioClip[] conveyorSounds;
 
         Vector2Int gridOrigin;
+        string hash;
         Builder player;
         AudioSourceManager audioLoop;
         bool isFullyPlaced = false;
@@ -108,7 +109,15 @@ namespace CON.Machines
             tunnelAdditionalBlocks++;
             if (tunnelAdditionalBlocks == maxTunnelBlocks) tunnelAdditionalBlocks = 0;
             UpdateExitLocation();
-            
+
+        }
+        public void SaveHash(string hash)
+        {
+            this.hash = hash;
+        }
+        public string GetHash()
+        {
+            return hash;
         }
         public GameObject GetGameObject()
         {

@@ -21,9 +21,8 @@ namespace Astutos.Saving
             if (state.ContainsKey(buildIndexKey))
             {
                 lastSceneIndex = (int)state[buildIndexKey];
-                
             }
-            yield return SceneManager.LoadSceneAsync(0); // All Awake Methods of the new scene have been called after continueing this code block
+            yield return SceneManager.LoadSceneAsync(lastSceneIndex); // All Awake Methods of the new scene have been called after continueing this code block
             RestoreState(state);
         }
 

@@ -44,7 +44,7 @@ namespace CON.UI
             if (placeable.GetElementPlacementRequirement() == null) elementPlacementIndicator.color = Color.white;
             else elementPlacementIndicator.color = placeable.GetElementPlacementRequirement().colorRepresentation;
 
-            UpdateRequirementsVisualisation(player.GetComponent<Inventory>());
+            //UpdateRequirementsVisualisation(player.GetComponent<Inventory>());
 
             button.onClick.AddListener(OnClick);
             player.GetComponent<Inventory>().OnInventoryChange.AddListener(UpdateRequirementsVisualisation);

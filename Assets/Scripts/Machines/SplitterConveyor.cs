@@ -20,6 +20,7 @@ namespace CON.Machines
         [SerializeField] float forceToApplySide;
         [SerializeField] GameObject[] directionArrows;
         [SerializeField] Transform hook;
+        [SerializeField] Transform hookPosition;
         [SerializeField] Animation hookAnimation; // TODO: Speed up animation
         [SerializeField] AudioClip[] conveyorSounds;
 
@@ -29,6 +30,7 @@ namespace CON.Machines
         int elementRatio = 2;
         int elementCounter = 1;
         Vector2Int gridOrigin;
+        string hash;
         Builder player;
         AudioSourceManager audioLoop;
         bool isFullyPlaced = false;
@@ -97,6 +99,7 @@ namespace CON.Machines
                 elementCounter = 1;
                 rigidbody.isKinematic = true;
                 rigidbody.transform.parent = hook;
+                rigidbody.transform.position = hookPosition.position;
 
                 if(isRightToLeft) hookAnimation.Play("Seperator_Conveyor_Right");
                 else hookAnimation.Play("Seperator_Conveyor_Left");
@@ -179,6 +182,14 @@ namespace CON.Machines
         public void ChangeVersion()
         {
             ToggleHookPosition();
+        }
+        public void SaveHash(string hash)
+        {
+            this.hash = hash;
+        }
+        public string GetHash()
+        {
+            return hash;
         }
         public GameObject GetGameObject()
         {

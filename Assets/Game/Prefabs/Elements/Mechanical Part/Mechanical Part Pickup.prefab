@@ -71,7 +71,7 @@ PrefabInstance:
     - target: {fileID: 3748639824923191293, guid: 9d2c687c172b30c43904151266229d3a, type: 3}
       propertyPath: itemToEuqip.element
       value: 
-      objectReference: {fileID: 11400000, guid: aa830a0922b0a9542b3953ccd6712b7e, type: 2}
+      objectReference: {fileID: 11400000, guid: 48ffc0a461edf6c42b48e2b710958c18, type: 2}
     - target: {fileID: 7933118706207350873, guid: 9d2c687c172b30c43904151266229d3a, type: 3}
       propertyPath: m_RootOrder
       value: 0

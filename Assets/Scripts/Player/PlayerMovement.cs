@@ -12,8 +12,11 @@ namespace CON.Player
     {
         [SerializeField] FootstepSoundMapping[] footstepSoundMappings;
         [SerializeField] Terrain mainTerrain;
+        [SerializeField] float minVelocityForSound = .2f;
 
-        AudioSourceManager audioLooper;
+        Dictionary<int, AudioClip[]> footstepSoundsLookup = new Dictionary<int, AudioClip[]>();
+
+        AudioSourceManager audioSourceManager;
         NavMeshAgent navMeshAgent;
         Animator animator;
 
@@ -21,10 +24,13 @@ namespace CON.Player
 
         private void Awake()
         {
-            audioLooper = GetComponent<AudioSourceManager>();
+            audioSourceManager = GetComponent<AudioSourceManager>();
             animator = GetComponent<Animator>();
             navMeshAgent = GetComponent<NavMeshAgent>();
+
+            BuildFootstepSoundsLookupDictionary();
         }
+
         private void Update()
         {
             animator.SetFloat(SPEED_PARAMETER, navMeshAgent.velocity.magnitude);
@@ -33,13 +39,13 @@ namespace CON.Player
 
         private void HandleFootsteps()
         {
-            if(navMeshAgent.velocity.magnitude > .2f)
+            if(navMeshAgent.velocity.magnitude > minVelocityForSound)
             {
-                audioLooper.StartLooping(GetFootstepSounds());
+                audioSourceManager.StartLooping(GetFootstepSounds());
             }
             else
             {
-                audioLooper.EndLoopingImmediate();
+                audioSourceManager.EndLoopingImmediate();
             }
         }
 
@@ -49,23 +55,16 @@ namespace CON.Player
 
             float[,,] alphaMap = mainTerrain.terrainData.GetAlphamaps(alphaMapPos.x, alphaMapPos.y, 1, 1);
             float[] textureValues = new float[mainTerrain.terrainData.terrainLayers.Length];
-            textureValues[0] = alphaMap[0, 0, 0];
-            textureValues[1] = alphaMap[0, 0, 1];
-            textureValues[2] = alphaMap[0, 0, 2];
-            textureValues[3] = alphaMap[0, 0, 3];
 
-            foreach(FootstepSoundMapping soundMapping in footstepSoundMappings)
+            int biggestIndex = 0;
+            for (int layerIndex = 0; layerIndex < textureValues.Length; layerIndex++)
             {
-                foreach(int index in soundMapping.terrainLayerIndices)
-                {
-                    if (textureValues[index] > 0)
-                    {
-                        return soundMapping.footstepSounds;
-                    }
-                }
+                textureValues[layerIndex] = alphaMap[0, 0, layerIndex];
+
+                if (textureValues[biggestIndex] < textureValues[layerIndex]) biggestIndex = layerIndex;
             }
 
-            return null;
+            return footstepSoundsLookup[biggestIndex];
         }
 
         private Vector2Int GetCurrentAlphaMapPosition()
@@ -82,24 +81,46 @@ namespace CON.Player
             return new Vector2Int(posX, posZ);
         }
 
-        public bool MoveTo(Ray cameraRay)
+        public bool MoveTo(RaycastHit raycastHit)
         {
-            RaycastHit raycastHit;
-            if (Physics.Raycast(cameraRay, out raycastHit))
+            NavMeshPath navMeshPath = new NavMeshPath();
+            navMeshAgent.CalculatePath(raycastHit.point, navMeshPath);
+
+            if (navMeshPath.status == NavMeshPathStatus.PathComplete)
             {
+                navMeshAgent.SetPath(navMeshPath);
+                return true;
+            }
 
-                NavMeshPath navMeshPath = new NavMeshPath();
-                navMeshAgent.CalculatePath(raycastHit.point, navMeshPath);
+            return false;
+        }
 
-                if (navMeshPath.status == NavMeshPathStatus.PathComplete)
+
+        private void BuildFootstepSoundsLookupDictionary()
+        {
+            for (int layerIndexTerrain = 0; layerIndexTerrain < mainTerrain.terrainData.terrainLayers.Length; layerIndexTerrain++)
+            {
+                foreach (FootstepSoundMapping soundMapping in footstepSoundMappings)
                 {
-                    navMeshAgent.SetPath(navMeshPath);
+                    if (isCorrectSoundMapping(soundMapping, layerIndexTerrain)) break;
+                }
+            }
+
+            
+        }
+
+        private bool isCorrectSoundMapping(FootstepSoundMapping soundMapping, int layerIndexTerrain)
+        {
+            foreach (int layerIndexSoundMapping in soundMapping.terrainLayerIndices)
+            {
+                if (layerIndexSoundMapping == layerIndexTerrain)
+                {
+                    footstepSoundsLookup[layerIndexTerrain] = soundMapping.footstepSounds;
                     return true;
                 }
             }
             return false;
         }
-
         public object CaptureState()
         {
             return new SerializableVector3(transform.position);
