@@ -16,6 +16,7 @@ namespace CON.UI
         SettingsManager settingsManager;
 
         List<UserInterfaceType> tempClosedUITypes = new List<UserInterfaceType>();
+        int onlyInputUITypeIndex = -1;
 
         bool inputDisabled = false;
 
@@ -26,6 +27,7 @@ namespace CON.UI
             settingsManager = FindObjectOfType<SettingsManager>();
 
             settingsManager.OnInputButtonsChanged += UpdateInputMapping;
+            
         }
         private void Start()
         {
@@ -46,9 +48,14 @@ namespace CON.UI
         private void Update()
         {
             if (inputDisabled) return;
+            HandleInput();
+        }
+
+        private void HandleInput()
+        {
             for (int typeIndex = 0; typeIndex < UITypes.Length; typeIndex++)
             {
-                if (UITypes[typeIndex].keyToToggleName == "" || tempClosedUITypes.Contains(UITypes[typeIndex])) continue; // TODO: fix bug when progression open input no listen only to input of progress and esc
+                if (UITypes[typeIndex].keyToToggleName == "" || (onlyInputUITypeIndex != -1 && onlyInputUITypeIndex != typeIndex)) continue;
 
                 if (Input.GetKeyDown(UITypes[typeIndex].keyToToggle))
                 {
@@ -56,6 +63,7 @@ namespace CON.UI
                 }
             }
         }
+
         public void OnInputDeactivationChange(bool isDisabled) // Input Allowance Class Event
         {
             inputDisabled = isDisabled;
@@ -77,28 +85,7 @@ namespace CON.UI
         {
             UserInterfaceType userInterfaceType = UITypes[typeIndex];
 
-            if (!isActive) SetActiveUserInterfaceType(userInterfaceType, isActive, true);
-
-            if (!isActive && userInterfaceType.shouldBeShownAlone && tempClosedUITypes.Count != 0)
-            {
-                foreach (UserInterfaceType UIType in tempClosedUITypes)
-                {
-                    SetActiveUserInterfaceType(UIType, true, false);
-                }
-                tempClosedUITypes.Clear();
-            }
-
-            if (isActive && userInterfaceType.shouldBeShownAlone)
-            {
-                foreach (UserInterfaceType UIType in UITypes)
-                {
-                    if (!UIType.isEnabled) continue;
-
-                    SetActiveUserInterfaceType(UIType, false, false);
-                    tempClosedUITypes.Add(UIType);
-                }
-
-            }
+            SetActiveUserInterfaceType(userInterfaceType, isActive, true);
 
             if (userInterfaceType.closedByEsc)
             {
@@ -106,7 +93,32 @@ namespace CON.UI
                 else escManager.RemoveFunction(userInterfaceType.GetHashCode().ToString());
             }
 
-            if(isActive) SetActiveUserInterfaceType(userInterfaceType, isActive, true);
+            if (userInterfaceType.shouldBeShownAlone) HandleShownAloneUIType(typeIndex, isActive, userInterfaceType);
+
+        }
+
+        private void HandleShownAloneUIType(int typeIndex, bool isActive, UserInterfaceType userInterfaceType)
+        {
+            if (isActive)
+            {
+                onlyInputUITypeIndex = typeIndex;
+                foreach (UserInterfaceType UIType in UITypes)
+                {
+                    if (!UIType.isEnabled || UIType == userInterfaceType) continue;
+
+                    SetActiveUserInterfaceType(UIType, false, false);
+                    tempClosedUITypes.Add(UIType);
+                }
+            }
+            else
+            {
+                foreach (UserInterfaceType UIType in tempClosedUITypes)
+                {
+                    SetActiveUserInterfaceType(UIType, true, false);
+                }
+                tempClosedUITypes.Clear();
+                onlyInputUITypeIndex = -1;
+            }
         }
 
         private void SetActiveUserInterfaceType(UserInterfaceType UIType, bool isActive, bool shouldPlaySound)

@@ -109,6 +109,7 @@ namespace CON.BuildingGrid
                 }
 
             }
+            //Debug.Log(x.ToString() + "|" + y.ToString() + ": " + foundGround);
             if (foundMountain)
             {
                 gridArray[x, y] = new GridCell(true, null);
