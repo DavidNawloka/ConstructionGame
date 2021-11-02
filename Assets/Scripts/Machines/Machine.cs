@@ -14,9 +14,7 @@ namespace CON.Machines
     public class Machine : MonoBehaviour, IPlaceable
     {
         [Header("Placement")]
-        [SerializeField] Vector2Int[] takenGridPositions;
-        [SerializeField] Element elementPlacementRequirement;
-        [SerializeField] InventoryItem[] elementBuildingRequirements;
+        [SerializeField] PlaceableInformation placeableInformation;
         [Header("Production")]
         [SerializeField] Instruction[] possibleInstructions;
         [SerializeField] Transform elementExitPoint;
@@ -188,38 +186,12 @@ namespace CON.Machines
         // Interface implementations
 
 
-        public Element GetElementPlacementRequirement()
-        {
-            return elementPlacementRequirement;
-        }
-        public Vector2Int[] GetTakenGridPositions()
-        {
-            return takenGridPositions;
-        }
-        public void SetTakenGridPositions(Vector2Int[] takenGridPositions)
-        {
-            this.takenGridPositions = takenGridPositions;
-        }
         public void FullyPlaced(Builder player)
         {
             GetComponent<NavMeshObstacle>().enabled = true;
             builder = player;
             fullyPlaced = true;
             playerInventory = player.GetComponent<Inventory>();
-        }
-
-        public InventoryItem[] GetNeededBuildingElements()
-        {
-            return elementBuildingRequirements;
-        }
-        public void SetOrigin(Vector2Int gridOrigin)
-        {
-            this.gridOrigin = gridOrigin;
-        }
-
-        public Vector2Int GetOrigin()
-        {
-            return gridOrigin;
         }
         private void OnMouseDown()
         {
@@ -232,18 +204,13 @@ namespace CON.Machines
         {
 
         }
-
-        public void SaveHash(string hash)
-        {
-            this.hash = hash;
-        }
-        public string GetHash()
-        {
-            return hash;
-        }
         public GameObject GetGameObject()
         {
             return gameObject;
+        }
+        public PlaceableInformation GetPlaceableInformation()
+        {
+            return placeableInformation;
         }
         public object GetInformationToSave()
         {

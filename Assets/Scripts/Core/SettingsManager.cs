@@ -240,6 +240,7 @@ namespace CON.Core
         public void ResetControlsSettings()
         {
             BuildDefaultKeyMappingDictionary();
+            if (OnInputButtonsChanged != null) OnInputButtonsChanged();
             Save();
         }
 

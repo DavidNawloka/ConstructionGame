@@ -5,18 +5,21 @@ namespace CON.Machines
 {
     public interface IPlaceable
     {
-        public Vector2Int[] GetTakenGridPositions();
-        public void SetTakenGridPositions(Vector2Int[] takenGridPositions);
-        public InventoryItem[] GetNeededBuildingElements();
-        public Element GetElementPlacementRequirement();
-        public void SetOrigin(Vector2Int gridOrigin);
-        public Vector2Int GetOrigin();
+        public PlaceableInformation GetPlaceableInformation();
         public void FullyPlaced(Builder player);
         public void ChangeVersion();
         public GameObject GetGameObject();
-        public void SaveHash(string hash);
-        public string GetHash();
         public object GetInformationToSave();
         public void LoadSavedInformation(object savedInformation);
+    }
+
+    [System.Serializable]
+    public class PlaceableInformation
+    {
+        public Vector2Int[] takenGridPositions;
+        public InventoryItem[] buildingRequirements;
+        public Element placementRequirement;
+        public Vector2Int buildingGridOrigin;
+        public string uniqueIdentifier;
     }
 }

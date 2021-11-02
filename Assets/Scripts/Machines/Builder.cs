@@ -49,7 +49,7 @@ namespace CON.Machines
         GameObject currentMachinePrefab;
         GameObject currentMachine;
         IPlaceable currentPlaceable;
-        Vector2Int[] takenGridPositions;
+        PlaceableInformation currentPlaceableInformation;
         Vector3 currentMoveGoal;
         Dictionary<string,SavedPlaceable> builtObjects = new Dictionary<string, SavedPlaceable>();
 
@@ -130,7 +130,7 @@ namespace CON.Machines
             currentMachinePrefab = machine;
             currentMachine = Instantiate(machine);
             currentPlaceable = currentMachine.GetComponent<IPlaceable>();
-            takenGridPositions = currentPlaceable.GetTakenGridPositions();
+            currentPlaceableInformation = currentPlaceable.GetPlaceableInformation();
             currentMachine.transform.position = GetNewMachinePosition();
             currentMachine.transform.parent = buildObjectsParent;
         }
@@ -198,17 +198,19 @@ namespace CON.Machines
 
                     if (placedMachine == null) return;
 
-                    foreach (Vector2Int takenGridPosition in placedMachine.GetTakenGridPositions())
+                    PlaceableInformation placeableInformation = placedMachine.GetPlaceableInformation();
+
+                    foreach (Vector2Int takenGridPosition in placeableInformation.takenGridPositions)
                     {
-                        buildingGrid.SetObstructed(placedMachine.GetOrigin().x + takenGridPosition.x, placedMachine.GetOrigin().y + takenGridPosition.y, false);
+                        buildingGrid.SetObstructed(placeableInformation.buildingGridOrigin.x + takenGridPosition.x, placeableInformation.buildingGridOrigin.y + takenGridPosition.y, false);
                     }
-                    foreach (InventoryItem inventoryItem in placedMachine.GetNeededBuildingElements())
+                    foreach (InventoryItem inventoryItem in placeableInformation.buildingRequirements)
                     {
                         inventory.EquipItem(inventoryItem);
                     }
                     buildingGridMesh.UpdateTexture(buildingGrid.GetBuildingGridTexture());
 
-                    builtObjects.Remove(placedMachine.GetHash());
+                    builtObjects.Remove(placeableInformation.uniqueIdentifier);
                     Destroy(placedMachine.GetGameObject());
                     audioSource.PlayOneShot(demolishSounds[GetRandomArrayIndex(demolishSounds)]);
                 }
@@ -245,7 +247,6 @@ namespace CON.Machines
                 
                 if (Input.GetMouseButton(0) || Input.GetMouseButtonDown(0))
                 {
-                    
                     Placement(x, y);
                 }
             }
@@ -258,7 +259,7 @@ namespace CON.Machines
         private bool IsObstructedAll(int x, int y)
         {
             bool isObstructed = false;
-            foreach (Vector2Int takenGridPosition in takenGridPositions)
+            foreach (Vector2Int takenGridPosition in currentPlaceableInformation.takenGridPositions)
             {
                 isObstructed = buildingGrid.IsObstructed(x + takenGridPosition.x, y + takenGridPosition.y);
                 if (isObstructed) return isObstructed;
@@ -272,7 +273,7 @@ namespace CON.Machines
             
             RemoveElements(currentPlaceable);
 
-            foreach (Vector2Int takenGridPosition in takenGridPositions)
+            foreach (Vector2Int takenGridPosition in currentPlaceableInformation.takenGridPositions)
             {
                 buildingGrid.SetObstructed(x + takenGridPosition.x, y + takenGridPosition.y, true);
             }
@@ -280,10 +281,10 @@ namespace CON.Machines
             currentMachine.transform.position = currentMoveGoal;
             currentMachine.transform.rotation = currentRotationGoal;
             isRotating = false;
-            currentPlaceable.SetOrigin(new Vector2Int(x, y));
+            currentPlaceableInformation.buildingGridOrigin = new Vector2Int(x, y);
             currentPlaceable.FullyPlaced(this);
-            currentPlaceable.SaveHash(currentPlaceable.GetHashCode().ToString());
-            builtObjects.Add(currentPlaceable.GetHash(),new SavedPlaceable(GetPlaceableObjectsID(currentMachinePrefab), currentMachine.transform.position, currentMachine.transform.eulerAngles, new Vector2Int(x,y),takenGridPositions, currentPlaceable));
+            currentPlaceableInformation.uniqueIdentifier = currentPlaceable.GetHashCode().ToString();
+            builtObjects.Add(currentPlaceableInformation.uniqueIdentifier, new SavedPlaceable(GetPlaceableObjectsID(currentMachinePrefab), currentMachine.transform.position, currentMachine.transform.eulerAngles, new Vector2Int(x,y),currentPlaceableInformation.takenGridPositions, currentPlaceable));
             audioSource.PlayOneShot(placementSounds[GetRandomArrayIndex(placementSounds)]);
 
             ReenablePlacementMode();
@@ -297,7 +298,7 @@ namespace CON.Machines
 
             if (!AreEnoughElements()) return false;
             
-            if (currentPlaceable.GetElementPlacementRequirement() != null &&!buildingGrid.HasElement(x, y, currentPlaceable.GetElementPlacementRequirement())) return false;
+            if (currentPlaceableInformation.placementRequirement != null &&!buildingGrid.HasElement(x, y, currentPlaceableInformation.placementRequirement)) return false;
 
             
 
@@ -307,7 +308,7 @@ namespace CON.Machines
         private bool AreEnoughElements()
         {
             bool enough = true;
-            foreach (InventoryItem inventoryItem in currentPlaceable.GetNeededBuildingElements())
+            foreach (InventoryItem inventoryItem in currentPlaceableInformation.buildingRequirements)
             {
                 enough = inventory.HasItem(inventoryItem);
                 if (!enough) return enough;
@@ -317,7 +318,7 @@ namespace CON.Machines
 
         private void RemoveElements(IPlaceable currentPlaceable)
         {
-            foreach (InventoryItem inventoryItem in currentPlaceable.GetNeededBuildingElements())
+            foreach (InventoryItem inventoryItem in currentPlaceableInformation.buildingRequirements)
             {
                 inventory.RemoveItem(inventoryItem);
             }
@@ -337,6 +338,7 @@ namespace CON.Machines
             int toRotate = (int)currentMachine.transform.localEulerAngles.y / 90;
             currentMachine = null;
             currentPlaceable = null;
+            currentPlaceableInformation = null;
             ActivatePlacementMode(currentMachinePrefab);
             for (int i = 0; i < toRotate; i++)
             {
@@ -366,22 +368,22 @@ namespace CON.Machines
         // TODO: Refactor Rotation
         private void RotateLeft()
         {
-            for (int index = 0; index < takenGridPositions.Length; index++)
+            for (int index = 0; index < currentPlaceableInformation.takenGridPositions.Length; index++)
             {
-                int x = takenGridPositions[index].x;
-                int y = takenGridPositions[index].y * -1;
-                takenGridPositions[index] = new Vector2Int(y, x);
+                int x = currentPlaceableInformation.takenGridPositions[index].x;
+                int y = currentPlaceableInformation.takenGridPositions[index].y * -1;
+                currentPlaceableInformation.takenGridPositions[index] = new Vector2Int(y, x);
             }
             currentRotationGoal = Quaternion.Euler(new Vector3(0, currentMachine.transform.localEulerAngles.y - 90, 0));
             StartCoroutine(StartRotation(currentRotationGoal));
         }
         private void RotateRight(bool isSmoothed)
         {
-            for (int index = 0; index < takenGridPositions.Length; index++)
+            for (int index = 0; index < currentPlaceableInformation.takenGridPositions.Length; index++)
             {
-                int x = takenGridPositions[index].x * -1;
-                int y = takenGridPositions[index].y ;
-                takenGridPositions[index] = new Vector2Int(y, x);
+                int x = currentPlaceableInformation.takenGridPositions[index].x * -1;
+                int y = currentPlaceableInformation.takenGridPositions[index].y ;
+                currentPlaceableInformation.takenGridPositions[index] = new Vector2Int(y, x);
             }
             currentRotationGoal = Quaternion.Euler(new Vector3(0, currentMachine.transform.localEulerAngles.y + 90, 0));
             if (isSmoothed) StartCoroutine(StartRotation(currentRotationGoal));
@@ -482,11 +484,15 @@ namespace CON.Machines
             foreach (KeyValuePair<string, SavedPlaceable> keyValuePair in saveData.builtPlaceables)
             {
                 IPlaceable placeable = Instantiate(placeableObjectsPrefabs[keyValuePair.Value.id], keyValuePair.Value.worldPosition.ToVector(), Quaternion.Euler(keyValuePair.Value.eulerRotation.ToVector()), buildObjectsParent).GetComponent<IPlaceable>();
-                placeable.FullyPlaced(this);
-                placeable.SetOrigin(keyValuePair.Value.origin.ToVector());
-                placeable.SetTakenGridPositions(keyValuePair.Value.GetTakenGridPositions());
+                
+                PlaceableInformation placeableInformation = placeable.GetPlaceableInformation();
+
+                placeableInformation.buildingGridOrigin = keyValuePair.Value.origin.ToVector();
+                placeableInformation.takenGridPositions = keyValuePair.Value.GetTakenGridPositions();
+                placeableInformation.uniqueIdentifier = keyValuePair.Key;
+
                 placeable.LoadSavedInformation(keyValuePair.Value.variableInformation);
-                placeable.SaveHash(keyValuePair.Key);
+                placeable.FullyPlaced(this);
 
                 builtObjects.Add(keyValuePair.Key, new SavedPlaceable(keyValuePair.Value.id,keyValuePair.Value.worldPosition.ToVector(),keyValuePair.Value.eulerRotation.ToVector(),keyValuePair.Value.origin.ToVector(),keyValuePair.Value.GetTakenGridPositions(), placeable));
             }

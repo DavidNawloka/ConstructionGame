@@ -477,6 +477,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 711d854d8074a7041aeec84c2d715502, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  placeableInformation:
+    takenGridPositions:
+    - {x: 0, y: 0}
+    - {x: 0, y: -1}
+    buildingRequirements:
+    - element: {fileID: 11400000, guid: c2f82b61e121f29408d0cfa36fd30d2e, type: 2}
+      amount: 3
+    - element: {fileID: 11400000, guid: 90af84c016779b64abdbae59aa56cd21, type: 2}
+      amount: 5
+    placementRequirement: {fileID: 11400000, guid: c2f82b61e121f29408d0cfa36fd30d2e, type: 2}
+    buildingGridOrigin: {x: 0, y: 0}
+    uniqueIdentifier: 
   takenGridPositions:
   - {x: 0, y: 0}
   - {x: 0, y: -1}
@@ -488,7 +500,6 @@ MonoBehaviour:
     amount: 5
   possibleInstructions:
   - {fileID: 11400000, guid: 61520b4e0e1e2db40a69a3d73c8d8991, type: 2}
-  productionIntervall: 4
   elementExitPoint: {fileID: 2967090024268532651}
   elementTriggers:
   - {fileID: 2391391374680844171}
@@ -505,7 +516,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventorySlots: 2
-  inventory: []
   OnInventoryChange:
     m_PersistentCalls:
       m_Calls:

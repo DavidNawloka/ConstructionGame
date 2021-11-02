@@ -23,7 +23,7 @@ namespace CON.UI
 
         Transform player;
         Button button;
-        IPlaceable placeable;
+        PlaceableInformation placeableInformation;
         AudioSourceManager audioSourceManager;
 
         private void Awake()
@@ -39,12 +39,12 @@ namespace CON.UI
             placeableName.text = newPlaceable.name;
             placeableImage.sprite = newPlaceable.sprite;
 
-            placeable = placeablePrefab.GetComponent<IPlaceable>();
+            placeableInformation = placeablePrefab.GetComponent<IPlaceable>().GetPlaceableInformation();
 
-            if (placeable.GetElementPlacementRequirement() == null) elementPlacementIndicator.color = Color.white;
-            else elementPlacementIndicator.color = placeable.GetElementPlacementRequirement().colorRepresentation;
+            if (placeableInformation.placementRequirement == null) elementPlacementIndicator.color = Color.white;
+            else elementPlacementIndicator.color = placeableInformation.placementRequirement.colorRepresentation;
 
-            //UpdateRequirementsVisualisation(player.GetComponent<Inventory>());
+            UpdateRequirementsVisualisation(player.GetComponent<Inventory>());
 
             button.onClick.AddListener(OnClick);
             player.GetComponent<Inventory>().OnInventoryChange.AddListener(UpdateRequirementsVisualisation);
@@ -52,7 +52,7 @@ namespace CON.UI
 
         private void UpdateRequirementsVisualisation(Inventory playerInventory)
         {
-            InventoryItem[] requirements = placeable.GetNeededBuildingElements();
+            InventoryItem[] requirements = placeableInformation.buildingRequirements;
 
             bool hasAllItems = true;
 

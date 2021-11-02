@@ -81,6 +81,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 711d854d8074a7041aeec84c2d715502, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  placeableInformation:
+    takenGridPositions:
+    - {x: 0, y: 0}
+    - {x: 0, y: -1}
+    buildingRequirements:
+    - element: {fileID: 11400000, guid: 5d9ca0baebc0b5040b1ace9cebd67708, type: 2}
+      amount: 1
+    - element: {fileID: 11400000, guid: 890674b207473d3479e48248b3f5eba6, type: 2}
+      amount: 2
+    placementRequirement: {fileID: 11400000, guid: aa830a0922b0a9542b3953ccd6712b7e, type: 2}
+    buildingGridOrigin: {x: 0, y: 0}
+    uniqueIdentifier: 
   takenGridPositions:
   - {x: 0, y: 0}
   - {x: 0, y: -1}
@@ -108,7 +120,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventorySlots: 2
-  inventory: []
   OnInventoryChange:
     m_PersistentCalls:
       m_Calls:

@@ -12,15 +12,11 @@ namespace CON.Machines
     public class SplitterConveyor : MonoBehaviour, IPlaceable
     {
         public bool isRightToLeft = true;
-        [SerializeField] Vector2Int[] takenGridPositions;
-        [SerializeField] InventoryItem[] elementBuildingRequirements;
-        [SerializeField] Element elementPlacementRequirement;
+        [SerializeField] PlaceableInformation placeableInformation;
         [SerializeField] Transform[] pathOfElement;
         [SerializeField] float forceToApplyForward;
-        [SerializeField] float forceToApplySide;
         [SerializeField] GameObject[] directionArrows;
         [SerializeField] Transform hook;
-        [SerializeField] Transform hookPosition;
         [SerializeField] Animation hookAnimation; // TODO: Speed up animation
         [SerializeField] AudioClip[] conveyorSounds;
 
@@ -59,11 +55,11 @@ namespace CON.Machines
         {
             if (!isRightToLeft)
             {
-                hook.localPosition = new Vector3(hook.localPosition.x, hook.localPosition.y, 6.5f);
+                hook.parent.localPosition = new Vector3(hook.parent.localPosition.x, hook.parent.localPosition.y, 6.5f);
             }
             else
             {
-                hook.localPosition = new Vector3(hook.localPosition.x, hook.localPosition.y, 8);
+                hook.parent.localPosition = new Vector3(hook.parent.localPosition.x, hook.parent.localPosition.y, 8);
             }
         }
         public void UpdateElementRatio(int afterHowManyElements)
@@ -99,7 +95,7 @@ namespace CON.Machines
                 elementCounter = 1;
                 rigidbody.isKinematic = true;
                 rigidbody.transform.parent = hook;
-                rigidbody.transform.position = hookPosition.position;
+                rigidbody.transform.localPosition = Vector3.zero;
 
                 if(isRightToLeft) hookAnimation.Play("Seperator_Conveyor_Right");
                 else hookAnimation.Play("Seperator_Conveyor_Left");
@@ -152,48 +148,18 @@ namespace CON.Machines
             OnFullyPlaced();
             player.onBuildModeChange += OnBuildModeChange;
         }
-
-        public InventoryItem[] GetNeededBuildingElements()
-        {
-            return elementBuildingRequirements;
-        }
-        public Element GetElementPlacementRequirement()
-        {
-            return elementPlacementRequirement;
-        }
-        public Vector2Int GetOrigin()
-        {
-            return gridOrigin;
-        }
-
-        public Vector2Int[] GetTakenGridPositions()
-        {
-            return takenGridPositions;
-        }
-        public void SetTakenGridPositions(Vector2Int[] takenGridPositions)
-        {
-            this.takenGridPositions = takenGridPositions;
-        }
-
-        public void SetOrigin(Vector2Int gridOrigin)
-        {
-            this.gridOrigin = gridOrigin;
-        }
         public void ChangeVersion()
         {
             ToggleHookPosition();
         }
-        public void SaveHash(string hash)
-        {
-            this.hash = hash;
-        }
-        public string GetHash()
-        {
-            return hash;
-        }
         public GameObject GetGameObject()
         {
             return gameObject;
+        }
+
+        public PlaceableInformation GetPlaceableInformation()
+        {
+            return placeableInformation;
         }
         public object GetInformationToSave()
         {
@@ -203,21 +169,13 @@ namespace CON.Machines
         public void LoadSavedInformation(object savedInformation)
         {
             if (savedInformation == null) return;
-            try // TODO: Remove Try Catch block after V0.7
-            {
-                SavedSeperatorConveyor savedSeperatorConveyor = (SavedSeperatorConveyor)savedInformation;
+            SavedSeperatorConveyor savedSeperatorConveyor = (SavedSeperatorConveyor)savedInformation;
 
-                isRightToLeft = savedSeperatorConveyor.isRightToLeft;
-                elementCounter = savedSeperatorConveyor.elementCounter;
-                elementRatio = savedSeperatorConveyor.elementRatio;
+            isRightToLeft = savedSeperatorConveyor.isRightToLeft;
+            elementCounter = savedSeperatorConveyor.elementCounter;
+            elementRatio = savedSeperatorConveyor.elementRatio;
 
-                UpdateHookPosition();
-            }
-            catch (InvalidCastException)
-            {
-                Debug.LogWarning("The loaded save is old (Splitter Hook placements might be invalid) and will cause errors after alpha version 0.7. Save manually again and delete this save!");
-            }
-            
+            UpdateHookPosition();
         }
 
         [System.Serializable]

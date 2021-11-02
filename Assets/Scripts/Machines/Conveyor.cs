@@ -9,9 +9,7 @@ namespace CON.Machines
 {
     public class Conveyor : MonoBehaviour, IPlaceable
     {
-        [SerializeField] Vector2Int[] takenGridPositions;
-        [SerializeField] InventoryItem[] elementBuildingRequirements;
-        [SerializeField] Element elementPlacementRequirement;
+        [SerializeField] PlaceableInformation placeableInformation;
         [SerializeField] Transform[] pathOfElement;
         [SerializeField] float forceToApplyForward;
         [SerializeField] float forceToApplySide;
@@ -67,14 +65,6 @@ namespace CON.Machines
         }
 
         // Interface implementations
-        public Vector2Int[] GetTakenGridPositions()
-        {
-            return takenGridPositions;
-        }
-        public void SetTakenGridPositions(Vector2Int[] takenGridPositions)
-        {
-            this.takenGridPositions = takenGridPositions;
-        }
         public void FullyPlaced(Builder player)
         {
             //GetComponent<NavMeshObstacle>().enabled = true; TODO: Check if other possibility for more walkability
@@ -82,24 +72,6 @@ namespace CON.Machines
             this.player = player;
             audioLoop.StartLooping(conveyorSounds);
             player.onBuildModeChange += OnBuildModeChange;
-        }
-
-        public InventoryItem[] GetNeededBuildingElements()
-        {
-            return elementBuildingRequirements;
-        }
-        public Element GetElementPlacementRequirement()
-        {
-            return elementPlacementRequirement;
-        }
-        public void SetOrigin(Vector2Int gridOrigin)
-        {
-            this.gridOrigin = gridOrigin;
-        }
-
-        public Vector2Int GetOrigin()
-        {
-            return gridOrigin;
         }
         public void ChangeVersion()
         {
@@ -109,13 +81,9 @@ namespace CON.Machines
         {
             return gameObject;
         }
-        public void SaveHash(string hash)
+        public PlaceableInformation GetPlaceableInformation()
         {
-            this.hash = hash;
-        }
-        public string GetHash()
-        {
-            return hash;
+            return placeableInformation;
         }
         public object GetInformationToSave()
         {
