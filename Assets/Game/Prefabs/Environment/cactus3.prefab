@@ -94,9 +94,10 @@ GameObject:
   - component: {fileID: 1551803131178069360}
   - component: {fileID: 1551803131177035766}
   - component: {fileID: 1194618152131650048}
+  - component: {fileID: 3964784874499997289}
   m_Layer: 0
   m_Name: cactus3
-  m_TagString: Untagged
+  m_TagString: Mountain
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -186,3 +187,17 @@ LODGroup:
     - renderer: {fileID: 1551803131176850728}
     - renderer: {fileID: 1551803131177035766}
   m_Enabled: 1
+--- !u!136 &3964784874499997289
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1551803131175092594}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.81
+  m_Height: 1.1720929
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.58834016, z: 0.0000002682209}
