@@ -381,7 +381,7 @@ MonoBehaviour:
   directionArrows:
   - {fileID: 1059367859118014759}
   - {fileID: 1059367860700740904}
-  hook: {fileID: 7659515882232695705}
+  hook: {fileID: 6278379303689491617}
   hookAnimation: {fileID: 3019501361082360775}
   conveyorSounds:
   - {fileID: 8300000, guid: 9917d43904733844b98be553473e73d6, type: 3}

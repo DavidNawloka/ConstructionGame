@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 5019282605047161751}
   - component: {fileID: 5741617086973740514}
   m_Layer: 0
-  m_Name: Iron Ore
-  m_TagString: Untagged
+  m_Name: Iron Ore Element
+  m_TagString: Mountain
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

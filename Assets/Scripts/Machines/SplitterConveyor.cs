@@ -25,8 +25,6 @@ namespace CON.Machines
 
         int elementRatio = 2;
         int elementCounter = 1;
-        Vector2Int gridOrigin;
-        string hash;
         Builder player;
         AudioSourceManager audioLoop;
         bool isFullyPlaced = false;

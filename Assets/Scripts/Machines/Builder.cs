@@ -94,7 +94,7 @@ namespace CON.Machines
 
             if (isPlacementMode && Input.GetKeyDown(deactivatePlacementButton))
             {
-                DeactivatePlacementModeDestruction();
+                DeactivatePlacementModeDestruction(true);
             }
             if(isPlacementMode && Input.GetKeyDown(changeVersionButton))
             {
@@ -114,8 +114,8 @@ namespace CON.Machines
             if (isPlacementMode)
             {
                 HandleRotation();
-                PlacementMode();
                 SmoothMovePlaceable();
+                PlacementMode();
             }
         }
 
@@ -124,7 +124,7 @@ namespace CON.Machines
             if (currentMachine != null) Destroy(currentMachine);
             if (isDemolishMode) SetActiveDemolishMode(false);
 
-            closeButtonManager.AddFunction(DeactivatePlacementModeDestruction, "placement");
+            closeButtonManager.AddFunction(() => DeactivatePlacementModeDestruction(true), "placement");
 
             isPlacementMode = true;
             currentMachinePrefab = machine;
@@ -157,7 +157,7 @@ namespace CON.Machines
             buildingGridMesh.SetActiveMesh(isBuildMode);
 
             if (isDemolishMode) SetActiveDemolishMode(isBuildMode);
-            if (isPlacementMode) DeactivatePlacementModeDestruction();
+            if (isPlacementMode) DeactivatePlacementModeDestruction(true);
         }
         public void ToggleDemolishMode()
         {
@@ -168,7 +168,7 @@ namespace CON.Machines
             if (isActive)
             {
                 closeButtonManager.AddFunction(() => SetActiveDemolishMode(false), this.GetHashCode().ToString());
-                DeactivatePlacementModeDestruction();
+                DeactivatePlacementModeDestruction(true);
             }
             else closeButtonManager.RemoveFunction(this.GetHashCode().ToString());
 
@@ -287,7 +287,8 @@ namespace CON.Machines
             builtObjects.Add(currentPlaceableInformation.uniqueIdentifier, new SavedPlaceable(GetPlaceableObjectsID(currentMachinePrefab), currentMachine.transform.position, currentMachine.transform.eulerAngles, new Vector2Int(x,y),currentPlaceableInformation.takenGridPositions, currentPlaceable));
             audioSource.PlayOneShot(placementSounds[GetRandomArrayIndex(placementSounds)]);
 
-            ReenablePlacementMode();
+            if (AreEnoughElements()) ReenablePlacementMode();
+            else DeactivatePlacementModeDestruction(false);
         }
 
 
@@ -323,14 +324,14 @@ namespace CON.Machines
                 inventory.RemoveItem(inventoryItem);
             }
         }
-        private void DeactivatePlacementModeDestruction()
+        private void DeactivatePlacementModeDestruction(bool shouldDestroyPlaceable)
         {
             closeButtonManager.RemoveFunction("placement");
-            Destroy(currentMachine);
+            if(shouldDestroyPlaceable) Destroy(currentMachine);
             isPlacementMode = false;
             currentMachine = null;
             currentPlaceable = null;
-            currentRotationGoal = Quaternion.Euler(Vector3.one);
+            currentRotationGoal = Quaternion.Euler(Vector3.zero);
         }
         private void ReenablePlacementMode()
         {

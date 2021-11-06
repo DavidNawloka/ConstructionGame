@@ -12,6 +12,7 @@ namespace CON.Player
     {
         [SerializeField] FootstepSoundMapping[] footstepSoundMappings;
         [SerializeField] Terrain mainTerrain;
+        [SerializeField] Terrain terrainBelow;
         [SerializeField] float minVelocityForSound = .2f;
 
         Dictionary<int, AudioClip[]> footstepSoundsLookup = new Dictionary<int, AudioClip[]>();
@@ -19,6 +20,7 @@ namespace CON.Player
         AudioSourceManager audioSourceManager;
         NavMeshAgent navMeshAgent;
         Animator animator;
+        Terrain currentTerrain;
 
         static string SPEED_PARAMETER = "speed";
 
@@ -27,6 +29,7 @@ namespace CON.Player
             audioSourceManager = GetComponent<AudioSourceManager>();
             animator = GetComponent<Animator>();
             navMeshAgent = GetComponent<NavMeshAgent>();
+            currentTerrain = mainTerrain;
 
             BuildFootstepSoundsLookupDictionary();
         }
@@ -51,10 +54,10 @@ namespace CON.Player
 
         private AudioClip[] GetFootstepSounds()
         {
-            Vector2Int alphaMapPos = GetCurrentAlphaMapPosition();
+            Vector2Int alphaMapPos = GetCurrentAlphaMapPosition(true);
 
-            float[,,] alphaMap = mainTerrain.terrainData.GetAlphamaps(alphaMapPos.x, alphaMapPos.y, 1, 1);
-            float[] textureValues = new float[mainTerrain.terrainData.terrainLayers.Length];
+            float[,,] alphaMap = currentTerrain.terrainData.GetAlphamaps(alphaMapPos.x, alphaMapPos.y, 1, 1);
+            float[] textureValues = new float[currentTerrain.terrainData.terrainLayers.Length];
 
             int biggestIndex = 0;
             for (int layerIndex = 0; layerIndex < textureValues.Length; layerIndex++)
@@ -67,16 +70,27 @@ namespace CON.Player
             return footstepSoundsLookup[biggestIndex];
         }
 
-        private Vector2Int GetCurrentAlphaMapPosition()
+        private Vector2Int GetCurrentAlphaMapPosition(bool shouldCheckTerrain)
         {
-            Vector3 terrainPosition = transform.position - mainTerrain.transform.position;
+            Vector3 terrainPosition = transform.position - currentTerrain.transform.position;
 
             Vector3 mapPosition = new Vector3
-            (terrainPosition.x / mainTerrain.terrainData.size.x, 0,
-            terrainPosition.z / mainTerrain.terrainData.size.z);
+            (terrainPosition.x / currentTerrain.terrainData.size.x, 0,
+            terrainPosition.z / currentTerrain.terrainData.size.z);
 
-            int posX = (int)(mapPosition.x * mainTerrain.terrainData.alphamapWidth);
-            int posZ = (int)(mapPosition.z * mainTerrain.terrainData.alphamapHeight);
+            int posX = (int)(mapPosition.x * currentTerrain.terrainData.alphamapWidth);
+            int posZ = (int)(mapPosition.z * currentTerrain.terrainData.alphamapHeight);
+
+            if (shouldCheckTerrain && posZ < 0 && currentTerrain == mainTerrain) // TODO: Merge all terrains into 1
+            {
+                currentTerrain = terrainBelow;
+                return GetCurrentAlphaMapPosition(false);
+            }
+            else if (shouldCheckTerrain && posZ >= currentTerrain.terrainData.alphamapHeight && currentTerrain == terrainBelow)
+            {
+                currentTerrain = mainTerrain;
+                return GetCurrentAlphaMapPosition(false);
+            }
 
             return new Vector2Int(posX, posZ);
         }

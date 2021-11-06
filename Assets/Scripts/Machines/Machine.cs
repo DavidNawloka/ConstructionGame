@@ -32,8 +32,6 @@ namespace CON.Machines
         ProgressionManager progressionManager;
 
         float productionTimer = 0f;
-        Vector2Int gridOrigin;
-        string hash;
 
         void Awake()
         {
