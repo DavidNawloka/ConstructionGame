@@ -22,6 +22,10 @@ namespace CON.Machines
         [SerializeField] float rotationTime = .2f;
         [SerializeField] float maxSmoothMove = 2f;
         [SerializeField] float distanceDivider = 10f;
+        [SerializeField] float timeToBuildPlaceable = 2f;
+        [SerializeField] int differentPositionsRotations= 2;
+        [SerializeField] float startingYPos = -1.5f;
+        [SerializeField] float rotationMaxChange = 10f;
         [Header("Sound Effects")]
         [SerializeField] AudioClip[] placementSounds;
         [SerializeField] AudioClip[] demolishSounds;
@@ -239,12 +243,15 @@ namespace CON.Machines
                 int y;
                 buildingGrid.GetGridPosition(raycastHit.point, out x, out y);
 
-                
-                if (IsObstructedAll(x, y)) return;
-
                 currentMoveGoal = buildingGrid.GetWorldPositionCenter(x, y);
-                
-                
+
+                if (!IsPlacementPossible(x, y))
+                {
+                    currentPlaceable.ChangeColor(Color.red);
+                    return;
+                }
+                else currentPlaceable.ChangeColor(Color.green);
+
                 if (Input.GetMouseButton(0) || Input.GetMouseButtonDown(0))
                 {
                     Placement(x, y);
@@ -256,22 +263,11 @@ namespace CON.Machines
             float distance = Vector3.Distance(currentMachine.transform.position, currentMoveGoal);
             currentMachine.transform.position = Vector3.MoveTowards(currentMachine.transform.position, currentMoveGoal, ((maxSmoothMove*distance)/ distanceDivider) *Time.deltaTime);
         }
-        private bool IsObstructedAll(int x, int y)
-        {
-            bool isObstructed = false;
-            foreach (Vector2Int takenGridPosition in currentPlaceableInformation.takenGridPositions)
-            {
-                isObstructed = buildingGrid.IsObstructed(x + takenGridPosition.x, y + takenGridPosition.y);
-                if (isObstructed) return isObstructed;
-            }
-            return isObstructed;
-        }
         private void Placement(int x, int y)
         {
-            
-            if (!IsPlacementPossible(x, y)) return;
-            
-            RemoveElements(currentPlaceable);
+            currentPlaceable.ChangeColor(Color.white);
+
+            RemoveElements();
 
             foreach (Vector2Int takenGridPosition in currentPlaceableInformation.takenGridPositions)
             {
@@ -280,14 +276,17 @@ namespace CON.Machines
 
             currentMachine.transform.position = currentMoveGoal;
             currentMachine.transform.rotation = currentRotationGoal;
+            int toRotate = (int)currentMachine.transform.localEulerAngles.y / 90;
             isRotating = false;
             currentPlaceableInformation.buildingGridOrigin = new Vector2Int(x, y);
-            currentPlaceable.FullyPlaced(this);
             currentPlaceableInformation.uniqueIdentifier = currentPlaceable.GetHashCode().ToString();
             builtObjects.Add(currentPlaceableInformation.uniqueIdentifier, new SavedPlaceable(GetPlaceableObjectsID(currentMachinePrefab), currentMachine.transform.position, currentMachine.transform.eulerAngles, new Vector2Int(x,y),currentPlaceableInformation.takenGridPositions, currentPlaceable));
-            audioSource.PlayOneShot(placementSounds[GetRandomArrayIndex(placementSounds)]);
 
-            if (AreEnoughElements()) ReenablePlacementMode();
+            currentPlaceable.StartingPlacement(this);
+
+            StartCoroutine(PlacePlaceable(currentPlaceable,currentMachine));
+
+            if (AreEnoughElements()) ReenablePlacementMode(toRotate);
             else DeactivatePlacementModeDestruction(false);
         }
 
@@ -295,17 +294,26 @@ namespace CON.Machines
         
         private bool IsPlacementPossible(int x, int y)
         {
+            if (!IsWorldPlacementPossible(x, y)) return false;
+
             if (EventSystem.current.IsPointerOverGameObject()) return false;
 
             if (!AreEnoughElements()) return false;
             
-            if (currentPlaceableInformation.placementRequirement != null &&!buildingGrid.HasElement(x, y, currentPlaceableInformation.placementRequirement)) return false;
-
-            
-
             return true;
         }
-        
+
+
+        private bool IsWorldPlacementPossible(int x, int y)
+        {
+            foreach (Vector2Int takenGridPosition in currentPlaceableInformation.takenGridPositions)
+            {
+                if(buildingGrid.IsObstructed(x + takenGridPosition.x, y + takenGridPosition.y)) return false;
+
+                if (currentPlaceableInformation.placementRequirement != null && !buildingGrid.HasElement(x + takenGridPosition.x, y + takenGridPosition.y, currentPlaceableInformation.placementRequirement)) return false;
+            }
+            return true;
+        }
         private bool AreEnoughElements()
         {
             bool enough = true;
@@ -317,7 +325,7 @@ namespace CON.Machines
             return enough;
         }
 
-        private void RemoveElements(IPlaceable currentPlaceable)
+        private void RemoveElements()
         {
             foreach (InventoryItem inventoryItem in currentPlaceableInformation.buildingRequirements)
             {
@@ -333,10 +341,9 @@ namespace CON.Machines
             currentPlaceable = null;
             currentRotationGoal = Quaternion.Euler(Vector3.zero);
         }
-        private void ReenablePlacementMode()
+        private void ReenablePlacementMode(int toRotate)
         {
             isPlacementMode = false;
-            int toRotate = (int)currentMachine.transform.localEulerAngles.y / 90;
             currentMachine = null;
             currentPlaceable = null;
             currentPlaceableInformation = null;
@@ -404,6 +411,35 @@ namespace CON.Machines
             }
             if(isRotating) currentMachine.transform.localRotation = goal;
             isRotating = false;
+        }
+
+        IEnumerator PlacePlaceable(IPlaceable placeable, GameObject currentMachine)
+        {
+            Vector3 targetPosition = currentMachine.transform.position;
+            Vector3 targetRotation = currentMachine.transform.localRotation.eulerAngles;
+
+            currentMachine.transform.position = new Vector3(currentMachine.transform.position.x, startingYPos, currentMachine.transform.position.z);
+
+            float yAddition = (buildingGrid.GetOrigin().y - startingYPos) / differentPositionsRotations;
+            float timeBetweenChange = timeToBuildPlaceable / differentPositionsRotations;
+
+            for (int differentPosRot = 0; differentPosRot < differentPositionsRotations; differentPosRot++)
+            {
+                audioSource.PlayOneShot(placementSounds[GetRandomArrayIndex(placementSounds)]);
+                currentMachine.transform.position = new Vector3(currentMachine.transform.position.x, startingYPos + (yAddition * (differentPosRot + 1)), currentMachine.transform.position.z);
+                currentMachine.transform.localRotation = Quaternion.Euler(new Vector3(
+                    UnityEngine.Random.Range(targetRotation.x - rotationMaxChange, targetRotation.x + rotationMaxChange),
+                    UnityEngine.Random.Range(targetRotation.y - rotationMaxChange, targetRotation.y + rotationMaxChange),
+                    UnityEngine.Random.Range(targetRotation.z - rotationMaxChange, targetRotation.z + rotationMaxChange)));
+
+                yield return new WaitForSeconds(timeBetweenChange);
+            }
+
+            audioSource.PlayOneShot(placementSounds[GetRandomArrayIndex(placementSounds)]);
+            currentMachine.transform.position = targetPosition;
+            currentMachine.transform.localRotation = Quaternion.Euler(targetRotation);
+
+            placeable.FullyPlaced(this);
         }
 
         private void BuildDefaultBuildingGrid()

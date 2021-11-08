@@ -16,8 +16,6 @@ namespace CON.Machines
         [SerializeField] GameObject directionArrow;
         [SerializeField] AudioClip[] conveyorSounds;
 
-        Vector2Int gridOrigin;
-        string hash;
         Builder player;
         AudioSourceManager audioLoop;
 
@@ -30,7 +28,6 @@ namespace CON.Machines
         {
             if (player != null) OnBuildModeChange(false);
         }
-
         private void OnDisable()
         {
             if (player == null) return;
@@ -65,17 +62,30 @@ namespace CON.Machines
         }
 
         // Interface implementations
+
+        public void StartingPlacement(Builder player)
+        {
+            player.onBuildModeChange += OnBuildModeChange;
+            this.player = player;
+        }
         public void FullyPlaced(Builder player)
         {
-            //GetComponent<NavMeshObstacle>().enabled = true; TODO: Check if other possibility for more walkability
             GetComponent<BoxCollider>().enabled = true;
-            this.player = player;
             audioLoop.StartLooping(conveyorSounds);
-            player.onBuildModeChange += OnBuildModeChange;
         }
         public void ChangeVersion()
         {
             
+        }
+        public void ChangeColor(Color color)
+        {
+            placeableInformation.normalPlaceable.SetActive(false);
+            placeableInformation.greenPlaceable.SetActive(false);
+            placeableInformation.redPlaceable.SetActive(false);
+
+            if (color == Color.green) placeableInformation.greenPlaceable.SetActive(true);
+            else if (color == Color.red) placeableInformation.redPlaceable.SetActive(true);
+            else placeableInformation.normalPlaceable.SetActive(true);
         }
         public GameObject GetGameObject()
         {

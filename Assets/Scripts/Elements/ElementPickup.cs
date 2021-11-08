@@ -8,7 +8,7 @@ using UnityEngine.UI;
 namespace CON.Elements
 {
 
-    public class ElementPickup : MonoBehaviour,IMouseClickable
+    public class ElementPickup : MonoBehaviour,IRaycastable
     {
         [SerializeField] InventoryItem itemToEuqip;
         [SerializeField] float maxDistance = 2f;
@@ -84,16 +84,22 @@ namespace CON.Elements
 
         // Interface implementations
 
-        public bool HandleInteractionClick(Transform player)
+        public void HandleInteractionClick(Transform player)
         {
-            if(Vector3.Distance(transform.position, player.position) <= maxDistance)
+            StartCoroutine(EquipElement(player));
+        }
+        public bool InRange(Transform player)
+        {
+            if (Vector3.Distance(transform.position, player.position) <= maxDistance)
             {
-                StartCoroutine(EquipElement(player));
                 return true;
             }
             return false;
         }
-        
+        public CursorType GetCursorType()
+        {
+            return CursorType.Pickup;
+        }
     }
 
 }

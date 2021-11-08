@@ -10,7 +10,8 @@ namespace CON.Player
         [SerializeField] CinemachineVirtualCamera followCamera;
         [SerializeField] float maxCameraDistance = 25;
         [SerializeField] float minCameraDistance = 5;
-
+        [Header("Cursor Sprites")]
+        [SerializeField] CursorMapping[] cursorMappings;
 
         PlayerMovement playerMovement;
 
@@ -24,16 +25,20 @@ namespace CON.Player
         }
         private void Update()
         {
-            if (isInputDisabled) return;
-
-            if(!isZoomDisabled) ManageCameraZoom();
             if (UIInteraction()) return;
 
+            if (!isZoomDisabled) ManageCameraZoom();
             
+
             RaycastHit raycastHit;
-            if (!GetCameraRaycastHit(out raycastHit)) return;
+            if (!GetCameraRaycastHit(out raycastHit))
+            {
+                SetCursor(CursorType.None);
+                return;
+            }
 
             if (WorldInteraction(raycastHit)) return;
+
             if (MovementInteraction(raycastHit)) return;
         }
 
@@ -67,29 +72,63 @@ namespace CON.Player
 
         private bool UIInteraction()
         {
-            if (EventSystem.current.IsPointerOverGameObject()) return true;
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
+                SetCursor(CursorType.UI);
+                return true;
+            }
             return false;
         }
         private bool WorldInteraction(RaycastHit raycastHit)
         {
-            bool status = false;
+            IRaycastable interactable = raycastHit.transform.GetComponent<IRaycastable>();
+            if (interactable == null) return false;
 
-            IMouseClickable interactable = raycastHit.transform.GetComponent<IMouseClickable>();
-            if (interactable == null) return status;
-
-
-            if (Input.GetMouseButtonDown(0))
+            if (interactable.InRange(transform))
             {
-                status = interactable.HandleInteractionClick(transform);
+                SetCursor(interactable.GetCursorType());
+
+                if (Input.GetMouseButtonDown(0))
+                {
+                    interactable.HandleInteractionClick(transform);
+                }
+
+                return true;
             }
 
-            return status;
+            return false;
         }
 
         private bool MovementInteraction(RaycastHit raycastHit)
         {
-            if (!Input.GetMouseButton(1)) return false;
-            return playerMovement.MoveTo(raycastHit);
+            if (playerMovement.MoveTo(raycastHit))
+            {
+                SetCursor(CursorType.Movement);
+                return true;
+            }
+            else
+            {
+                SetCursor(CursorType.None);
+                return false;
+            }
+        }
+
+        private void SetCursor(CursorType cursorType)
+        {
+            CursorMapping cursorMapping = GetCursorMapping(cursorType);
+            Cursor.SetCursor(cursorMapping.sprite, cursorMapping.hotspot, CursorMode.Auto);
+        }
+        private CursorMapping GetCursorMapping(CursorType cursorType)
+        {
+            foreach (CursorMapping cursorMapping in cursorMappings)
+            {
+                if (cursorMapping.cursorType == cursorType)
+                {
+                    return cursorMapping;
+                }
+            }
+            Debug.LogError("This cursor type was not found in the 'cursorMappings' array: " + cursorType);
+            return cursorMappings[0];
         }
 
         private bool GetCameraRaycastHit(out RaycastHit raycastHit)
@@ -100,6 +139,14 @@ namespace CON.Player
                 return true;
             }
             return false;
+        }
+
+        [System.Serializable]
+        class CursorMapping
+        {
+            public CursorType cursorType;
+            public Texture2D sprite;
+            public Vector2 hotspot;
         }
 
     }

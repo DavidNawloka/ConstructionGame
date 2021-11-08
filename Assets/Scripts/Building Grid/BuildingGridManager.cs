@@ -69,6 +69,10 @@ namespace CON.BuildingGrid
             GetGridPosition(worldPosition, out x, out y);
             SetObstructed(x, y, obstructed);
         }
+        public Vector3 GetOrigin()
+        {
+            return origin;
+        }
         public bool IsObstructed(int x, int y)
         {
             return gridArray[x, y].obstructed;

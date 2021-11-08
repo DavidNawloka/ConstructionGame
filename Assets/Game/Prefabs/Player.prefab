@@ -258,6 +258,22 @@ MonoBehaviour:
   followCamera: {fileID: 0}
   maxCameraDistance: 25
   minCameraDistance: 5
+  cursorMappings:
+  - cursorType: 0
+    sprite: {fileID: 2800000, guid: 21628736160fcc9488493401da3ef621, type: 3}
+    hotspot: {x: 5, y: 2}
+  - cursorType: 1
+    sprite: {fileID: 2800000, guid: 8859fce41c5d0a148ad0b7eebfca7fe9, type: 3}
+    hotspot: {x: 5, y: 2}
+  - cursorType: 2
+    sprite: {fileID: 2800000, guid: f2e59480af813ad42af2eba175095158, type: 3}
+    hotspot: {x: 5, y: 2}
+  - cursorType: 3
+    sprite: {fileID: 2800000, guid: 2e71a8202d3b4a3448ec85ced5a40265, type: 3}
+    hotspot: {x: 8, y: 5}
+  - cursorType: 4
+    sprite: {fileID: 2800000, guid: f8c873f1e53e83f4aabf342d6be1dfc3, type: 3}
+    hotspot: {x: 5, y: 2}
 --- !u!114 &9164258976479346002
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -310,7 +326,20 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 6259119f201fafa4ca80646eff6b4b1f, type: 3}
     - {fileID: 8300000, guid: b04914b5801123b4dafba88cbcb5bc74, type: 3}
     - {fileID: 8300000, guid: 9a30499e47789df48aa9bdb1ec7b0982, type: 3}
+  - terrainLayerIndices: 04000000
+    footstepSounds:
+    - {fileID: 8300000, guid: 8e001351cd7065543a068386cde4c960, type: 3}
+    - {fileID: 8300000, guid: c41fb169b2991c247a5466e00faa6639, type: 3}
+    - {fileID: 8300000, guid: 76c66b3ae15685a45a334b0628d1edd1, type: 3}
+    - {fileID: 8300000, guid: cb9aa4db4b3a12147bf2fe3d88fee270, type: 3}
+    - {fileID: 8300000, guid: 2e832dbb2c7c9ba4e97fd3005fe850b7, type: 3}
+    - {fileID: 8300000, guid: 3af6e561e364a274aa306461461c386b, type: 3}
+    - {fileID: 8300000, guid: 30668cf6c5cbfef478b0812fc59eb646, type: 3}
+    - {fileID: 8300000, guid: eea9624d96ae191439615ca598fe01fa, type: 3}
+    - {fileID: 8300000, guid: a45bdfd5056ed1d4d8f667cc2498ca12, type: 3}
+    - {fileID: 8300000, guid: ec4bd5988d7de0c41ab2d9959705dd8b, type: 3}
   mainTerrain: {fileID: 0}
+  terrainBelow: {fileID: 0}
   minVelocityForSound: 0.2
 --- !u!114 &-3932610976177162302
 MonoBehaviour:
@@ -372,6 +401,10 @@ MonoBehaviour:
   rotationTime: 0.1
   maxSmoothMove: 5
   distanceDivider: 0.3
+  timeToBuildPlaceable: 1.5
+  differentPositionsRotations: 3
+  startingYPos: -1.5
+  rotationMaxChange: 10
   placementSounds:
   - {fileID: 8300000, guid: c25e609f1550fdc419e6396e7afa6b4f, type: 3}
   - {fileID: 8300000, guid: 34ba75b36f279564cb438a97666cb21c, type: 3}
@@ -563,6 +596,18 @@ PrefabInstance:
     - target: {fileID: 5393697146511760290, guid: eec2f43d2bd178a4c870b251bff8e62e, type: 3}
       propertyPath: m_RootOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5393697146511760290, guid: eec2f43d2bd178a4c870b251bff8e62e, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5393697146511760290, guid: eec2f43d2bd178a4c870b251bff8e62e, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5393697146511760290, guid: eec2f43d2bd178a4c870b251bff8e62e, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 5393697146511760290, guid: eec2f43d2bd178a4c870b251bff8e62e, type: 3}
       propertyPath: m_LocalPosition.x

@@ -7,10 +7,11 @@ using UnityEngine.UI;
 using TMPro;
 using CON.UI;
 using Astutos.Saving;
+using CON.Core;
 
 namespace CON.Machines
 {
-    public class WorldBuilding : MonoBehaviour, ISaveable
+    public class WorldBuilding : MonoBehaviour, ISaveable, IRaycastable
     {
         [SerializeField] UnlockRequirement[] unlockRequirements;
         [SerializeField] MoveableWindow moveableWindow;
@@ -97,12 +98,20 @@ namespace CON.Machines
                 unlockRequirement.requirementImage.gameObject.SetActive(isActive);
             }
         }
+        public CursorType GetCursorType()
+        {
+            return CursorType.Placeable;
+        }
 
-        public void OnMouseDown()
+        public bool InRange(Transform player)
+        {
+            return true;
+        }
+
+        public void HandleInteractionClick(Transform player)
         {
             moveableWindow.ToggleCanvas(moveableWindowConnect);
         }
-
         public object CaptureState()
         {
             return isFixed;

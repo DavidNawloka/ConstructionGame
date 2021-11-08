@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace CON.Machines
 {
@@ -12,14 +13,12 @@ namespace CON.Machines
         [SerializeField] PlaceableInformation placeableInformation;
         [SerializeField] Transform elementExitPoint;
         [SerializeField] float elementExitForce = 2;
-        [SerializeField] Transform elementExitConveyor;
+        [SerializeField] Transform[] elementExitConveyors;
         [SerializeField] Transform elementEntryConveyor;
         [SerializeField] int maxTunnelBlocks = 3;
         [SerializeField] GameObject directionArrow;
         [SerializeField] AudioClip[] conveyorSounds;
 
-        Vector2Int gridOrigin;
-        string hash;
         Builder player;
         AudioSourceManager audioLoop;
         bool isFullyPlaced = false;
@@ -30,7 +29,7 @@ namespace CON.Machines
         private void Awake()
         {
             audioLoop = GetComponent<AudioSourceManager>();
-            initialLocalElementExitLocation = elementExitConveyor.localPosition;
+            initialLocalElementExitLocation = elementExitConveyors[0].localPosition;
         }
         private void Start()
         {
@@ -62,19 +61,29 @@ namespace CON.Machines
 
         private void UpdateExitLocation()
         {
-            elementExitConveyor.localPosition = new Vector3(initialLocalElementExitLocation.x - 1.5f*tunnelAdditionalBlocks, initialLocalElementExitLocation.y, initialLocalElementExitLocation.z);
+            foreach(Transform exitConveyor in elementExitConveyors)
+            {
+                exitConveyor.localPosition = new Vector3(initialLocalElementExitLocation.x - 1.5f * tunnelAdditionalBlocks, initialLocalElementExitLocation.y, initialLocalElementExitLocation.z);
+            }
             placeableInformation.takenGridPositions[1] = Vector2Int.RoundToInt(((Vector2)placeableInformation.takenGridPositions[1]).normalized * (tunnelAdditionalBlocks+2));
-            Vector3 arrowLocation = (elementEntryConveyor.position + elementExitConveyor.position) / 2;
+            Vector3 arrowLocation = (elementEntryConveyor.position + elementExitConveyors[0].position) / 2;
             directionArrow.transform.position = new Vector3(arrowLocation.x,directionArrow.transform.position.y,arrowLocation.z);
         }
 
         // Interface implementations
+        public void StartingPlacement(Builder player)
+        {
+            foreach(NavMeshObstacle obstacle in GetComponentsInChildren<NavMeshObstacle>())
+            {
+                obstacle.enabled = true;
+            }
+            player.onBuildModeChange += OnBuildModeChange;
+            this.player = player;
+        }
         public void FullyPlaced(Builder player)
         {
             isFullyPlaced = true;
-            this.player = player;
             audioLoop.StartLooping(conveyorSounds);
-            player.onBuildModeChange += OnBuildModeChange;
         }
         public void ChangeVersion()
         {
@@ -82,6 +91,16 @@ namespace CON.Machines
             if (tunnelAdditionalBlocks == maxTunnelBlocks) tunnelAdditionalBlocks = 0;
             UpdateExitLocation();
 
+        }
+        public void ChangeColor(Color color)
+        {
+            placeableInformation.normalPlaceable.SetActive(false);
+            placeableInformation.greenPlaceable.SetActive(false);
+            placeableInformation.redPlaceable.SetActive(false);
+
+            if (color == Color.green) placeableInformation.greenPlaceable.SetActive(true);
+            else if (color == Color.red) placeableInformation.redPlaceable.SetActive(true);
+            else placeableInformation.normalPlaceable.SetActive(true);
         }
         public GameObject GetGameObject()
         {

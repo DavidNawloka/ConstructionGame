@@ -9,14 +9,14 @@ using UnityEngine.EventSystems;
 
 namespace CON.Machines
 {
-    public class SplitterConveyor : MonoBehaviour, IPlaceable
+    public class SplitterConveyor : MonoBehaviour, IPlaceable, IRaycastable
     {
         public bool isRightToLeft = true;
         [SerializeField] PlaceableInformation placeableInformation;
         [SerializeField] Transform[] pathOfElement;
         [SerializeField] float forceToApplyForward;
         [SerializeField] GameObject[] directionArrows;
-        [SerializeField] Transform hook;
+        [SerializeField] Transform[] hooks;
         [SerializeField] Animation hookAnimation; // TODO: Speed up animation
         [SerializeField] AudioClip[] conveyorSounds;
 
@@ -53,11 +53,17 @@ namespace CON.Machines
         {
             if (!isRightToLeft)
             {
-                hook.parent.localPosition = new Vector3(hook.parent.localPosition.x, hook.parent.localPosition.y, 6.5f);
+                foreach(Transform hook in hooks)
+                {
+                    hook.parent.localPosition = new Vector3(hook.parent.localPosition.x, hook.parent.localPosition.y, 6.5f);
+                }
             }
             else
             {
-                hook.parent.localPosition = new Vector3(hook.parent.localPosition.x, hook.parent.localPosition.y, 8);
+                foreach(Transform hook in hooks)
+                {
+                    hook.parent.localPosition = new Vector3(hook.parent.localPosition.x, hook.parent.localPosition.y, 8);
+                }
             }
         }
         public void UpdateElementRatio(int afterHowManyElements)
@@ -92,7 +98,7 @@ namespace CON.Machines
             {
                 elementCounter = 1;
                 rigidbody.isKinematic = true;
-                rigidbody.transform.parent = hook;
+                rigidbody.transform.parent = hooks[0];
                 rigidbody.transform.localPosition = Vector3.zero;
 
                 if(isRightToLeft) hookAnimation.Play("Seperator_Conveyor_Right");
@@ -129,26 +135,49 @@ namespace CON.Machines
         }
 
         // Interface Implementations
-        private void OnMouseDown()
+        public CursorType GetCursorType()
         {
-            if (!isFullyPlaced || EventSystem.current.IsPointerOverGameObject() || player.IsDemolishMode()) return;
-
-            if(OnSplitterClicked != null) OnSplitterClicked();
+            return CursorType.Placeable;
         }
 
-        public void FullyPlaced(Builder player)
+        public bool InRange(Transform player)
+        {
+            return true;
+        }
+
+        public void HandleInteractionClick(Transform player)
+        {
+            if (!isFullyPlaced || EventSystem.current.IsPointerOverGameObject() || this.player.IsDemolishMode()) return;
+
+            if (OnSplitterClicked != null) OnSplitterClicked();
+        }
+
+        public void StartingPlacement(Builder player)
         {
             GetComponent<NavMeshObstacle>().enabled = true;
-            GetComponent<BoxCollider>().enabled = true;
+            player.onBuildModeChange += OnBuildModeChange;
             this.player = player;
+        }
+        public void FullyPlaced(Builder player)
+        {
+            GetComponent<BoxCollider>().enabled = true;
             isFullyPlaced = true;
             audioLoop.StartLooping(conveyorSounds);
             OnFullyPlaced();
-            player.onBuildModeChange += OnBuildModeChange;
         }
         public void ChangeVersion()
         {
             ToggleHookPosition();
+        }
+        public void ChangeColor(Color color)
+        {
+            placeableInformation.normalPlaceable.SetActive(false);
+            placeableInformation.greenPlaceable.SetActive(false);
+            placeableInformation.redPlaceable.SetActive(false);
+
+            if (color == Color.green) placeableInformation.greenPlaceable.SetActive(true);
+            else if (color == Color.red) placeableInformation.redPlaceable.SetActive(true);
+            else placeableInformation.normalPlaceable.SetActive(true);
         }
         public GameObject GetGameObject()
         {

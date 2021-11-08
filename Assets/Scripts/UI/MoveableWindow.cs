@@ -18,7 +18,7 @@ namespace CON.UI
         CanvasGroup canvasGroup;
         bool followMouse = false;
         Vector3 initialMousePosition;
-        bool isHidden;
+        bool isHidden = true;
 
         void Awake()
         {
@@ -43,6 +43,7 @@ namespace CON.UI
         public void SetActiveCanvas(bool isActive, Transform connectTo)
         {
             this.connectTo = connectTo;
+
             canvasGroup.interactable = isActive;
             canvasGroup.blocksRaycasts = isActive;
             horizontalConnection.gameObject.SetActive(isActive);
@@ -52,6 +53,7 @@ namespace CON.UI
 
             if (isActive)
             {
+                UpdateConnectionPosition();
                 escManager.AddFunction(() => SetActiveCanvas(false, null), gameObject.GetHashCode().ToString());
                 canvasGroup.alpha = 1;
             }

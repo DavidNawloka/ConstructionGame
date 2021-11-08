@@ -11,7 +11,7 @@ using CON.Progression;
 
 namespace CON.Machines 
 {
-    public class Machine : MonoBehaviour, IPlaceable
+    public class Machine : MonoBehaviour, IPlaceable, IRaycastable
     {
         [Header("Placement")]
         [SerializeField] PlaceableInformation placeableInformation;
@@ -184,18 +184,15 @@ namespace CON.Machines
         // Interface implementations
 
 
-        public void FullyPlaced(Builder player)
+
+        public void StartingPlacement(Builder player)
         {
-            GetComponent<NavMeshObstacle>().enabled = true;
             builder = player;
-            fullyPlaced = true;
             playerInventory = player.GetComponent<Inventory>();
         }
-        private void OnMouseDown()
+        public void FullyPlaced(Builder player)
         {
-            if (!fullyPlaced || EventSystem.current.IsPointerOverGameObject() || builder.IsDemolishMode()) return;
-
-            OnMachineClicked();
+            fullyPlaced = true;
         }
 
         public void ChangeVersion()
@@ -225,6 +222,33 @@ namespace CON.Machines
             SetPause(savedMachine.isPaused);
         }
 
+        public void ChangeColor(Color color)
+        {
+            placeableInformation.normalPlaceable.SetActive(false);
+            placeableInformation.greenPlaceable.SetActive(false);
+            placeableInformation.redPlaceable.SetActive(false);
+
+            if (color == Color.green) placeableInformation.greenPlaceable.SetActive(true);
+            else if (color == Color.red) placeableInformation.redPlaceable.SetActive(true);
+            else placeableInformation.normalPlaceable.SetActive(true);
+        }
+
+        public CursorType GetCursorType()
+        {
+            return CursorType.Placeable;
+        }
+
+        public bool InRange(Transform player)
+        {
+            return true;
+        }
+
+        public void HandleInteractionClick(Transform player)
+        {
+            if (!fullyPlaced || EventSystem.current.IsPointerOverGameObject() || builder.IsDemolishMode()) return;
+
+            OnMachineClicked();
+        }
 
         [System.Serializable]
         private class SavedMachine

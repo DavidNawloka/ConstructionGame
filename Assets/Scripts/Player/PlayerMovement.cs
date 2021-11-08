@@ -102,7 +102,10 @@ namespace CON.Player
 
             if (navMeshPath.status == NavMeshPathStatus.PathComplete)
             {
-                navMeshAgent.SetPath(navMeshPath);
+                if (Input.GetMouseButtonDown(1))
+                {
+                    navMeshAgent.SetPath(navMeshPath);
+                }
                 return true;
             }
 

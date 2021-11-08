@@ -49,7 +49,7 @@ MonoBehaviour:
   itemToEuqip:
     element: {fileID: 0}
     amount: 1
-  maxDistance: 2
+  maxDistance: 4
   maxElementMove: 2500
   spawnedElementImageScale: 0.7
   spawnedElementImageAlpha: 0.6

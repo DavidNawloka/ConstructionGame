@@ -107,7 +107,7 @@ GameObject:
   - component: {fileID: 226306004387362725}
   - component: {fileID: 7808680945589070278}
   m_Layer: 5
-  m_Name: Bar
+  m_Name: Tab Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
