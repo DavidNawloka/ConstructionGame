@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3063155565684930911}
   - component: {fileID: 5564919129134659318}
   - component: {fileID: 8532171369553445523}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Element Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -57,3 +57,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb24418efb1181b41a0d8d537a3af118, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  filter: {fileID: 0}
+  onElementEnterTrigger:
+    m_PersistentCalls:
+      m_Calls: []
+  onElementStayTrigger:
+    m_PersistentCalls:
+      m_Calls: []
+  onElementEnterCollider:
+    m_PersistentCalls:
+      m_Calls: []
+  onElementStayCollider:
+    m_PersistentCalls:
+      m_Calls: []

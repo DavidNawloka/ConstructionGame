@@ -183,25 +183,18 @@ namespace CON.Machines
 
         // Interface implementations
 
-
-
-        public void StartingPlacement(Builder player)
+        public void PlacementStatusChange(Builder player, bool isBeginning)
         {
-            builder = player;
-            playerInventory = player.GetComponent<Inventory>();
+            if (isBeginning)
+            {
+                builder = player;
+                playerInventory = player.GetComponent<Inventory>();
+            }
+            else fullyPlaced = true;
         }
-        public void FullyPlaced(Builder player)
-        {
-            fullyPlaced = true;
-        }
-
         public void ChangeVersion()
         {
 
-        }
-        public GameObject GetGameObject()
-        {
-            return gameObject;
         }
         public PlaceableInformation GetPlaceableInformation()
         {
@@ -222,17 +215,6 @@ namespace CON.Machines
             SetPause(savedMachine.isPaused);
         }
 
-        public void ChangeColor(Color color)
-        {
-            placeableInformation.normalPlaceable.SetActive(false);
-            placeableInformation.greenPlaceable.SetActive(false);
-            placeableInformation.redPlaceable.SetActive(false);
-
-            if (color == Color.green) placeableInformation.greenPlaceable.SetActive(true);
-            else if (color == Color.red) placeableInformation.redPlaceable.SetActive(true);
-            else placeableInformation.normalPlaceable.SetActive(true);
-        }
-
         public CursorType GetCursorType()
         {
             return CursorType.Placeable;
@@ -240,7 +222,7 @@ namespace CON.Machines
 
         public bool InRange(Transform player)
         {
-            return true;
+            return fullyPlaced;
         }
 
         public void HandleInteractionClick(Transform player)

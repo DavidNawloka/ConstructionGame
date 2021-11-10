@@ -482,6 +482,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playedSounds: []
+  customAudioSource: {fileID: 0}
   loopPlayTimerMultiplier: 0.65
   immediateStopTime: 0.1
   shouldChangePitch: 1

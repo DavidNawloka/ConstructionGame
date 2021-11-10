@@ -71,19 +71,22 @@ namespace CON.Machines
         }
 
         // Interface implementations
-        public void StartingPlacement(Builder player)
+        public void PlacementStatusChange(Builder player, bool isBeginning)
         {
-            foreach(NavMeshObstacle obstacle in GetComponentsInChildren<NavMeshObstacle>())
+            if (isBeginning)
             {
-                obstacle.enabled = true;
+                foreach (NavMeshObstacle obstacle in GetComponentsInChildren<NavMeshObstacle>())
+                {
+                    obstacle.enabled = true;
+                }
+                player.onBuildModeChange += OnBuildModeChange;
+                this.player = player;
             }
-            player.onBuildModeChange += OnBuildModeChange;
-            this.player = player;
-        }
-        public void FullyPlaced(Builder player)
-        {
-            isFullyPlaced = true;
-            audioLoop.StartLooping(conveyorSounds);
+            else
+            {
+                isFullyPlaced = true;
+                audioLoop.StartLooping(conveyorSounds);
+            }
         }
         public void ChangeVersion()
         {
@@ -91,20 +94,6 @@ namespace CON.Machines
             if (tunnelAdditionalBlocks == maxTunnelBlocks) tunnelAdditionalBlocks = 0;
             UpdateExitLocation();
 
-        }
-        public void ChangeColor(Color color)
-        {
-            placeableInformation.normalPlaceable.SetActive(false);
-            placeableInformation.greenPlaceable.SetActive(false);
-            placeableInformation.redPlaceable.SetActive(false);
-
-            if (color == Color.green) placeableInformation.greenPlaceable.SetActive(true);
-            else if (color == Color.red) placeableInformation.redPlaceable.SetActive(true);
-            else placeableInformation.normalPlaceable.SetActive(true);
-        }
-        public GameObject GetGameObject()
-        {
-            return gameObject;
         }
         public PlaceableInformation GetPlaceableInformation()
         {

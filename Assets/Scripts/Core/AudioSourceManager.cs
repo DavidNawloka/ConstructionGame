@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace CON.Core 
 {
-    [RequireComponent(typeof(AudioSource))]
     public class AudioSourceManager : MonoBehaviour
     {
         [Tooltip("Will be taken if given AudioClip array is null")][SerializeField] AudioClip[] playedSounds;
+        [SerializeField] AudioSource customAudioSource;
         [SerializeField] float loopPlayTimerMultiplier = 1;
         [SerializeField] float immediateStopTime = .1f;
         [SerializeField] bool shouldChangePitch = false;
@@ -22,7 +22,8 @@ namespace CON.Core
 
         private void Awake()
         {
-            audioSource = GetComponent<AudioSource>();
+            if (customAudioSource == null) audioSource = GetComponent<AudioSource>();
+            else audioSource = customAudioSource;
         }
         private void Update()
         {

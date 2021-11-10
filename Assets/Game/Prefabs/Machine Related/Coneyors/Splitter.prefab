@@ -436,6 +436,13 @@ MonoBehaviour:
     - element: {fileID: 11400000, guid: 90af84c016779b64abdbae59aa56cd21, type: 2}
       amount: 2
     placementRequirement: {fileID: 0}
+    coloredPlaceables:
+    - color: {r: 1, g: 1, b: 1, a: 1}
+      gameObject: {fileID: 3993295381021215517}
+    - color: {r: 0, g: 1, b: 0, a: 1}
+      gameObject: {fileID: 3208338790459118390}
+    - color: {r: 1, g: 0, b: 0, a: 1}
+      gameObject: {fileID: 5678495255867074583}
     greenPlaceable: {fileID: 3208338790459118390}
     redPlaceable: {fileID: 5678495255867074583}
     normalPlaceable: {fileID: 3993295381021215517}
@@ -516,6 +523,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playedSounds: []
+  customAudioSource: {fileID: 0}
   loopPlayTimerMultiplier: 1
   immediateStopTime: 0.1
   shouldChangePitch: 0

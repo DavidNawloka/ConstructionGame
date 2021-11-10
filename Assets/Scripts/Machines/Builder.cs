@@ -26,7 +26,7 @@ namespace CON.Machines
         [SerializeField] int differentPositionsRotations= 2;
         [SerializeField] float startingYPos = -1.5f;
         [SerializeField] float rotationMaxChange = 10f;
-        [Header("Sound Effects")]
+        [Header("Sound Effects")] // TODO: Let placeable play these sounds
         [SerializeField] AudioClip[] placementSounds;
         [SerializeField] AudioClip[] demolishSounds;
         [SerializeField] AudioClip[] rotationSounds;
@@ -98,7 +98,7 @@ namespace CON.Machines
 
             if (isPlacementMode && Input.GetKeyDown(deactivatePlacementButton))
             {
-                DeactivatePlacementModeDestruction(true);
+                DeactivatePlacementMode(true);
             }
             if(isPlacementMode && Input.GetKeyDown(changeVersionButton))
             {
@@ -128,7 +128,7 @@ namespace CON.Machines
             if (currentMachine != null) Destroy(currentMachine);
             if (isDemolishMode) SetActiveDemolishMode(false);
 
-            closeButtonManager.AddFunction(() => DeactivatePlacementModeDestruction(true), "placement");
+            closeButtonManager.AddFunction(() => DeactivatePlacementMode(true), "placement");
 
             isPlacementMode = true;
             currentMachinePrefab = machine;
@@ -161,7 +161,7 @@ namespace CON.Machines
             buildingGridMesh.SetActiveMesh(isBuildMode);
 
             if (isDemolishMode) SetActiveDemolishMode(isBuildMode);
-            if (isPlacementMode) DeactivatePlacementModeDestruction(true);
+            if (isPlacementMode) DeactivatePlacementMode(true);
         }
         public void ToggleDemolishMode()
         {
@@ -172,7 +172,7 @@ namespace CON.Machines
             if (isActive)
             {
                 closeButtonManager.AddFunction(() => SetActiveDemolishMode(false), this.GetHashCode().ToString());
-                DeactivatePlacementModeDestruction(true);
+                DeactivatePlacementMode(true);
             }
             else closeButtonManager.RemoveFunction(this.GetHashCode().ToString());
 
@@ -200,6 +200,8 @@ namespace CON.Machines
                    
                     IPlaceable placedMachine = raycastHit.collider.GetComponentInParent<IPlaceable>();
 
+                    
+
                     if (placedMachine == null) return;
 
                     PlaceableInformation placeableInformation = placedMachine.GetPlaceableInformation();
@@ -208,14 +210,12 @@ namespace CON.Machines
                     {
                         buildingGrid.SetObstructed(placeableInformation.buildingGridOrigin.x + takenGridPosition.x, placeableInformation.buildingGridOrigin.y + takenGridPosition.y, false);
                     }
-                    foreach (InventoryItem inventoryItem in placeableInformation.buildingRequirements)
-                    {
-                        inventory.EquipItem(inventoryItem);
-                    }
+                    inventory.EquipItem(placeableInformation.buildingRequirements);
+
                     buildingGridMesh.UpdateTexture(buildingGrid.GetBuildingGridTexture());
 
                     builtObjects.Remove(placeableInformation.uniqueIdentifier);
-                    Destroy(placedMachine.GetGameObject());
+                    Destroy(raycastHit.collider.gameObject);
                     audioSource.PlayOneShot(demolishSounds[GetRandomArrayIndex(demolishSounds)]);
                 }
             }
@@ -247,10 +247,10 @@ namespace CON.Machines
 
                 if (!IsPlacementPossible(x, y))
                 {
-                    currentPlaceable.ChangeColor(Color.red);
+                    ChangeColorOfPlaceable(Color.red);
                     return;
                 }
-                else currentPlaceable.ChangeColor(Color.green);
+                else ChangeColorOfPlaceable(Color.green);
 
                 if (Input.GetMouseButton(0) || Input.GetMouseButtonDown(0))
                 {
@@ -265,7 +265,7 @@ namespace CON.Machines
         }
         private void Placement(int x, int y)
         {
-            currentPlaceable.ChangeColor(Color.white);
+            ChangeColorOfPlaceable(Color.white);
 
             RemoveElements();
 
@@ -282,12 +282,12 @@ namespace CON.Machines
             currentPlaceableInformation.uniqueIdentifier = currentPlaceable.GetHashCode().ToString();
             builtObjects.Add(currentPlaceableInformation.uniqueIdentifier, new SavedPlaceable(GetPlaceableObjectsID(currentMachinePrefab), currentMachine.transform.position, currentMachine.transform.eulerAngles, new Vector2Int(x,y),currentPlaceableInformation.takenGridPositions, currentPlaceable));
 
-            currentPlaceable.StartingPlacement(this);
+            currentPlaceable.PlacementStatusChange(this, true);
 
             StartCoroutine(PlacePlaceable(currentPlaceable,currentMachine));
 
             if (AreEnoughElements()) ReenablePlacementMode(toRotate);
-            else DeactivatePlacementModeDestruction(false);
+            else DeactivatePlacementMode(false);
         }
 
 
@@ -332,7 +332,7 @@ namespace CON.Machines
                 inventory.RemoveItem(inventoryItem);
             }
         }
-        private void DeactivatePlacementModeDestruction(bool shouldDestroyPlaceable)
+        private void DeactivatePlacementMode(bool shouldDestroyPlaceable)
         {
             closeButtonManager.RemoveFunction("placement");
             if(shouldDestroyPlaceable) Destroy(currentMachine);
@@ -397,6 +397,14 @@ namespace CON.Machines
             if (isSmoothed) StartCoroutine(StartRotation(currentRotationGoal));
             else currentMachine.transform.localRotation = currentRotationGoal;
         }
+        public void ChangeColorOfPlaceable(Color color)
+        {
+            foreach(ColoredPlaceable coloredPlaceable in currentPlaceableInformation.coloredPlaceables)
+            {
+                if (color == coloredPlaceable.color) coloredPlaceable.gameObject.SetActive(true);
+                else coloredPlaceable.gameObject.SetActive(false);
+            }
+        }
         IEnumerator StartRotation(Quaternion goal)
         {
             isRotating = true;
@@ -439,7 +447,7 @@ namespace CON.Machines
             currentMachine.transform.position = targetPosition;
             currentMachine.transform.localRotation = Quaternion.Euler(targetRotation);
 
-            placeable.FullyPlaced(this);
+            placeable.PlacementStatusChange(this, false);
         }
 
         private void BuildDefaultBuildingGrid()
@@ -529,7 +537,7 @@ namespace CON.Machines
                 placeableInformation.uniqueIdentifier = keyValuePair.Key;
 
                 placeable.LoadSavedInformation(keyValuePair.Value.variableInformation);
-                placeable.FullyPlaced(this);
+                placeable.PlacementStatusChange(this,false);
 
                 builtObjects.Add(keyValuePair.Key, new SavedPlaceable(keyValuePair.Value.id,keyValuePair.Value.worldPosition.ToVector(),keyValuePair.Value.eulerRotation.ToVector(),keyValuePair.Value.origin.ToVector(),keyValuePair.Value.GetTakenGridPositions(), placeable));
             }
