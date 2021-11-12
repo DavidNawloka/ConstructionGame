@@ -1,132 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8130735542619333117
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4270758984748080926}
-  - component: {fileID: 1011145032373361653}
-  m_Layer: 0
-  m_Name: Builder Audio Source
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4270758984748080926
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8130735542619333117}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 8732582570562143616}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!82 &1011145032373361653
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8130735542619333117}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 24300002, guid: 91a700d1847d6794e87f4906004ec244, type: 2}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0.8
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!1 &8732582570562143678
 GameObject:
   m_ObjectHideFlags: 0
@@ -168,7 +41,6 @@ Transform:
   m_Children:
   - {fileID: 2870155311507044469}
   - {fileID: 8728092639952987304}
-  - {fileID: 4270758984748080926}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -396,21 +268,20 @@ MonoBehaviour:
   - {fileID: 399632920827051588, guid: ec739a22f4b58bf40911b13a7ea4f0fe, type: 3}
   buildingGridMesh: {fileID: 0}
   coreGameObject: {fileID: 0}
-  audioSource: {fileID: 1011145032373361653}
   buildObjectsParent: {fileID: 0}
   rotationTime: 0.1
   maxSmoothMove: 5
   distanceDivider: 0.3
   timeToBuildPlaceable: 1.5
   differentPositionsRotations: 3
-  startingYPos: -1.5
+  startingYPos: -0.8
   rotationMaxChange: 10
   placementSounds:
-  - {fileID: 8300000, guid: c25e609f1550fdc419e6396e7afa6b4f, type: 3}
-  - {fileID: 8300000, guid: 34ba75b36f279564cb438a97666cb21c, type: 3}
+  - {fileID: 8300000, guid: 619b57570caf4964c9726ced369f0e93, type: 3}
+  - {fileID: 8300000, guid: a7c41b40f85b70f468ffd5927f828b28, type: 3}
   - {fileID: 8300000, guid: a3feec449da461844bd1eb71e5acb913, type: 3}
-  - {fileID: 8300000, guid: f39fc693f0ba95a449d8596ee1fc24fc, type: 3}
-  - {fileID: 8300000, guid: 64e5171576bff73409bee6a0985606c1, type: 3}
+  - {fileID: 8300000, guid: d11c88c9c63e9df4fafa0d2bfa93ae55, type: 3}
+  - {fileID: 8300000, guid: 85d67625f68efc143a51ab6a17812dc0, type: 3}
   demolishSounds:
   - {fileID: 8300000, guid: 012d840d7f55eb4429070eed4b5ecf7d, type: 3}
   - {fileID: 8300000, guid: a015a4728f475a54fa87ce3a03a1aba3, type: 3}
@@ -429,6 +300,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 19b99eddbc6436d489dfbaf6e0010102, type: 3}
   - {fileID: 8300000, guid: e1be6879da07da741a196ed5a74fe8b5, type: 3}
   - {fileID: 8300000, guid: 9b2fb227e4e6a8249b3d60eecc7ab9b8, type: 3}
+  volume: 1
+  spatialBlend: 0.8
   deactivatePlacementButtonName: Deactivate Placement Mode
   changeVersionButtonName: Change Version
   toggleDemolishModeButtonName: Toggle Demolish Mode

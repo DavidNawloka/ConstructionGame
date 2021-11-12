@@ -5313,10 +5313,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: World Building Canvas
       objectReference: {fileID: 0}
-    - target: {fileID: 4157802727986363187, guid: b6743a1c17ba9774da1a4aca3aff3abe, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: -2079167476890162558}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b6743a1c17ba9774da1a4aca3aff3abe, type: 3}
 --- !u!4 &4410224847289895855 stripped

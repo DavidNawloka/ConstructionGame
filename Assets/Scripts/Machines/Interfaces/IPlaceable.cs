@@ -1,3 +1,4 @@
+using CON.Core;
 using CON.Elements;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ namespace CON.Machines
     public interface IPlaceable
     {
         public PlaceableInformation GetPlaceableInformation();
-        public void PlacementStatusChange(Builder player, bool isBeginning);
+        public void PlacementStatusChange(Builder player, PlacementStatus placementStatus);
         public void ChangeVersion();
         public object GetInformationToSave();
         public void LoadSavedInformation(object savedInformation);
@@ -19,6 +20,8 @@ namespace CON.Machines
         public InventoryItem[] buildingRequirements;
         public Element placementRequirement;
         public ColoredPlaceable[] coloredPlaceables;
+        public AudioSourceManager audioSourceManager;
+        public ParticleSystem placementParticles;
         public Vector2Int buildingGridOrigin;
         public string uniqueIdentifier;
     }
@@ -27,5 +30,12 @@ namespace CON.Machines
     {
         public Color color;
         public GameObject gameObject;
+    }
+    public enum PlacementStatus
+    {
+        startingPlacement,
+        endingPlacement,
+        startingDemolishment,
+        endingDemolishment
     }
 }

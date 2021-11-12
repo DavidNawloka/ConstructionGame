@@ -71,21 +71,28 @@ namespace CON.Machines
         }
 
         // Interface implementations
-        public void PlacementStatusChange(Builder player, bool isBeginning)
+        public void PlacementStatusChange(Builder player, PlacementStatus placementStatus)
         {
-            if (isBeginning)
+            switch (placementStatus)
             {
-                foreach (NavMeshObstacle obstacle in GetComponentsInChildren<NavMeshObstacle>())
-                {
-                    obstacle.enabled = true;
-                }
-                player.onBuildModeChange += OnBuildModeChange;
-                this.player = player;
-            }
-            else
-            {
-                isFullyPlaced = true;
-                audioLoop.StartLooping(conveyorSounds);
+                case PlacementStatus.startingPlacement:
+                    foreach (NavMeshObstacle obstacle in GetComponentsInChildren<NavMeshObstacle>())
+                    {
+                        obstacle.enabled = true;
+                    }
+                    player.onBuildModeChange += OnBuildModeChange;
+                    this.player = player;
+                    break;
+                case PlacementStatus.endingPlacement:
+                    isFullyPlaced = true;
+                    audioLoop.StartLooping(conveyorSounds);
+                    break;
+                case PlacementStatus.startingDemolishment:
+                    isFullyPlaced = false;
+                    break;
+                case PlacementStatus.endingDemolishment:
+                    Destroy(gameObject);
+                    break;
             }
         }
         public void ChangeVersion()

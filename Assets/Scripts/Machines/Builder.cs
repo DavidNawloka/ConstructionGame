@@ -16,20 +16,22 @@ namespace CON.Machines
         [Header("References")]
         [SerializeField] BuildingGridMesh buildingGridMesh;
         [SerializeField] GameObject coreGameObject;
-        [SerializeField] AudioSource audioSource;
         [SerializeField] Transform buildObjectsParent;
-        [Header("Smoothing Parameters")]
+        [Header("Movement Smoothing Parameters")]
         [SerializeField] float rotationTime = .2f;
         [SerializeField] float maxSmoothMove = 2f;
         [SerializeField] float distanceDivider = 10f;
-        [SerializeField] float timeToBuildPlaceable = 2f;
-        [SerializeField] int differentPositionsRotations= 2;
-        [SerializeField] float startingYPos = -1.5f;
+        [Header("Placement & Demolishment Smoothing Parameters")]
+        [SerializeField] float timeToBuildPlaceable = 1.5f;
+        [SerializeField] int differentPositionsRotations = 3;
+        [SerializeField] float startingYPos = -.8f;
         [SerializeField] float rotationMaxChange = 10f;
-        [Header("Sound Effects")] // TODO: Let placeable play these sounds
+        [Header("Machine Sound Effects")]
         [SerializeField] AudioClip[] placementSounds;
         [SerializeField] AudioClip[] demolishSounds;
         [SerializeField] AudioClip[] rotationSounds;
+        [SerializeField] float volume = 1f;
+        [SerializeField] float spatialBlend = .8f;
         [Header("Key Mappings")]
         [SerializeField] string deactivatePlacementButtonName;
         [SerializeField] string changeVersionButtonName;
@@ -200,8 +202,6 @@ namespace CON.Machines
                    
                     IPlaceable placedMachine = raycastHit.collider.GetComponentInParent<IPlaceable>();
 
-                    
-
                     if (placedMachine == null) return;
 
                     PlaceableInformation placeableInformation = placedMachine.GetPlaceableInformation();
@@ -215,8 +215,7 @@ namespace CON.Machines
                     buildingGridMesh.UpdateTexture(buildingGrid.GetBuildingGridTexture());
 
                     builtObjects.Remove(placeableInformation.uniqueIdentifier);
-                    Destroy(raycastHit.collider.gameObject);
-                    audioSource.PlayOneShot(demolishSounds[GetRandomArrayIndex(demolishSounds)]);
+                    StartCoroutine(MovePlaceable(placedMachine, placeableInformation.audioSourceManager.gameObject, false, demolishSounds));
                 }
             }
         }
@@ -224,12 +223,12 @@ namespace CON.Machines
         {
             if ((Input.GetKeyDown(rotateLeftButton) || Input.mouseScrollDelta.y >= 1f) && !isRotating)
             {
-                audioSource.PlayOneShot(rotationSounds[GetRandomArrayIndex(rotationSounds)]);
+                currentPlaceableInformation.audioSourceManager.PlayOnceFromMultipleAdjust(rotationSounds,spatialBlend,volume);
                 RotateLeft();
             }
             if ((Input.GetKeyDown(rotateRightButton) || Input.mouseScrollDelta.y <= -1f) && !isRotating)
             {
-                audioSource.PlayOneShot(rotationSounds[GetRandomArrayIndex(rotationSounds)]);
+                currentPlaceableInformation.audioSourceManager.PlayOnceFromMultipleAdjust(rotationSounds, spatialBlend, volume);
                 RotateRight(true);
             }
         }
@@ -247,10 +246,10 @@ namespace CON.Machines
 
                 if (!IsPlacementPossible(x, y))
                 {
-                    ChangeColorOfPlaceable(Color.red);
+                    ChangeColorOfPlaceable(Color.red, currentPlaceableInformation);
                     return;
                 }
-                else ChangeColorOfPlaceable(Color.green);
+                else ChangeColorOfPlaceable(Color.green, currentPlaceableInformation);
 
                 if (Input.GetMouseButton(0) || Input.GetMouseButtonDown(0))
                 {
@@ -265,7 +264,7 @@ namespace CON.Machines
         }
         private void Placement(int x, int y)
         {
-            ChangeColorOfPlaceable(Color.white);
+            ChangeColorOfPlaceable(Color.white,currentPlaceableInformation);
 
             RemoveElements();
 
@@ -281,10 +280,8 @@ namespace CON.Machines
             currentPlaceableInformation.buildingGridOrigin = new Vector2Int(x, y);
             currentPlaceableInformation.uniqueIdentifier = currentPlaceable.GetHashCode().ToString();
             builtObjects.Add(currentPlaceableInformation.uniqueIdentifier, new SavedPlaceable(GetPlaceableObjectsID(currentMachinePrefab), currentMachine.transform.position, currentMachine.transform.eulerAngles, new Vector2Int(x,y),currentPlaceableInformation.takenGridPositions, currentPlaceable));
-
-            currentPlaceable.PlacementStatusChange(this, true);
-
-            StartCoroutine(PlacePlaceable(currentPlaceable,currentMachine));
+            
+            StartCoroutine(MovePlaceable(currentPlaceable,currentMachine,true,placementSounds));
 
             if (AreEnoughElements()) ReenablePlacementMode(toRotate);
             else DeactivatePlacementMode(false);
@@ -397,13 +394,19 @@ namespace CON.Machines
             if (isSmoothed) StartCoroutine(StartRotation(currentRotationGoal));
             else currentMachine.transform.localRotation = currentRotationGoal;
         }
-        public void ChangeColorOfPlaceable(Color color)
+        public GameObject ChangeColorOfPlaceable(Color color, PlaceableInformation placeableInformation)
         {
-            foreach(ColoredPlaceable coloredPlaceable in currentPlaceableInformation.coloredPlaceables)
+            GameObject activatedObject = null;
+            foreach(ColoredPlaceable coloredPlaceable in placeableInformation.coloredPlaceables)
             {
-                if (color == coloredPlaceable.color) coloredPlaceable.gameObject.SetActive(true);
+                if (color == coloredPlaceable.color)
+                {
+                    activatedObject = coloredPlaceable.gameObject;
+                    coloredPlaceable.gameObject.SetActive(true);
+                }
                 else coloredPlaceable.gameObject.SetActive(false);
             }
+            return activatedObject;
         }
         IEnumerator StartRotation(Quaternion goal)
         {
@@ -421,20 +424,33 @@ namespace CON.Machines
             isRotating = false;
         }
 
-        IEnumerator PlacePlaceable(IPlaceable placeable, GameObject currentMachine)
+        IEnumerator MovePlaceable(IPlaceable placeable, GameObject currentMachine1, bool isPlacement, AudioClip[] soundsToPlay)
         {
+            GameObject currentMachine = ChangeColorOfPlaceable(Color.white, placeable.GetPlaceableInformation());
             Vector3 targetPosition = currentMachine.transform.position;
             Vector3 targetRotation = currentMachine.transform.localRotation.eulerAngles;
+            float yChange;
+            placeable.GetPlaceableInformation().placementParticles.Play();
 
-            currentMachine.transform.position = new Vector3(currentMachine.transform.position.x, startingYPos, currentMachine.transform.position.z);
+            if (isPlacement)
+            {
+                yChange = (targetPosition.y - startingYPos) / differentPositionsRotations;
+                placeable.PlacementStatusChange(this, PlacementStatus.startingPlacement);
+                currentMachine.transform.position = new Vector3(currentMachine.transform.position.x, startingYPos, currentMachine.transform.position.z);
+            }
+            else
+            {
+                placeable.PlacementStatusChange(this, PlacementStatus.startingDemolishment);
+                placeable.GetPlaceableInformation().audioSourceManager.EndLoopingImmediate();
+                yChange = Mathf.Abs(startingYPos) / differentPositionsRotations * -1;
+            }
 
-            float yAddition = (buildingGrid.GetOrigin().y - startingYPos) / differentPositionsRotations;
             float timeBetweenChange = timeToBuildPlaceable / differentPositionsRotations;
 
             for (int differentPosRot = 0; differentPosRot < differentPositionsRotations; differentPosRot++)
             {
-                audioSource.PlayOneShot(placementSounds[GetRandomArrayIndex(placementSounds)]);
-                currentMachine.transform.position = new Vector3(currentMachine.transform.position.x, startingYPos + (yAddition * (differentPosRot + 1)), currentMachine.transform.position.z);
+                placeable.GetPlaceableInformation().audioSourceManager.PlayOnceFromMultipleAdjust(soundsToPlay, spatialBlend, volume);
+                currentMachine.transform.position = new Vector3(currentMachine.transform.position.x, currentMachine.transform.position.y + yChange , currentMachine.transform.position.z);
                 currentMachine.transform.localRotation = Quaternion.Euler(new Vector3(
                     UnityEngine.Random.Range(targetRotation.x - rotationMaxChange, targetRotation.x + rotationMaxChange),
                     UnityEngine.Random.Range(targetRotation.y - rotationMaxChange, targetRotation.y + rotationMaxChange),
@@ -442,12 +458,15 @@ namespace CON.Machines
 
                 yield return new WaitForSeconds(timeBetweenChange);
             }
-
-            audioSource.PlayOneShot(placementSounds[GetRandomArrayIndex(placementSounds)]);
-            currentMachine.transform.position = targetPosition;
+            placeable.GetPlaceableInformation().audioSourceManager.PlayOnceFromMultipleAdjust(soundsToPlay, spatialBlend, volume);
+            if(isPlacement) currentMachine.transform.position = targetPosition;
             currentMachine.transform.localRotation = Quaternion.Euler(targetRotation);
 
-            placeable.PlacementStatusChange(this, false);
+            yield return new WaitForSeconds(0.2f);
+
+            placeable.GetPlaceableInformation().audioSourceManager.ResetAudioSourceParameters();
+            if (isPlacement) placeable.PlacementStatusChange(this, PlacementStatus.endingPlacement);
+            else placeable.PlacementStatusChange(this, PlacementStatus.endingDemolishment);
         }
 
         private void BuildDefaultBuildingGrid()
@@ -464,10 +483,6 @@ namespace CON.Machines
             toggleDemolishModeButton = settingsManager.GetKey(toggleDemolishModeButtonName);
             rotateLeftButton = settingsManager.GetKey(rotateLeftButtonName);
             rotateRightButton = settingsManager.GetKey(rotateRightButtonName);
-        }
-        private int GetRandomArrayIndex(Array array)
-        {
-            return UnityEngine.Random.Range(0, array.Length);
         }
 
         // Interface Implementations
@@ -537,7 +552,7 @@ namespace CON.Machines
                 placeableInformation.uniqueIdentifier = keyValuePair.Key;
 
                 placeable.LoadSavedInformation(keyValuePair.Value.variableInformation);
-                placeable.PlacementStatusChange(this,false);
+                placeable.PlacementStatusChange(this,PlacementStatus.endingPlacement);
 
                 builtObjects.Add(keyValuePair.Key, new SavedPlaceable(keyValuePair.Value.id,keyValuePair.Value.worldPosition.ToVector(),keyValuePair.Value.eulerRotation.ToVector(),keyValuePair.Value.origin.ToVector(),keyValuePair.Value.GetTakenGridPositions(), placeable));
             }

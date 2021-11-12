@@ -183,14 +183,24 @@ namespace CON.Machines
 
         // Interface implementations
 
-        public void PlacementStatusChange(Builder player, bool isBeginning)
+        public void PlacementStatusChange(Builder player, PlacementStatus placementStatus)
         {
-            if (isBeginning)
+            switch (placementStatus)
             {
-                builder = player;
-                playerInventory = player.GetComponent<Inventory>();
+                case PlacementStatus.startingPlacement:
+                    builder = player;
+                    playerInventory = player.GetComponent<Inventory>();
+                    break;
+                case PlacementStatus.endingPlacement:
+                    fullyPlaced = true;
+                    break;
+                case PlacementStatus.startingDemolishment:
+                    fullyPlaced = false;
+                    break;
+                case PlacementStatus.endingDemolishment:
+                    Destroy(gameObject);
+                    break;
             }
-            else fullyPlaced = true;
         }
         public void ChangeVersion()
         {

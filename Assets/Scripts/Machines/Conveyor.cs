@@ -62,17 +62,24 @@ namespace CON.Machines
         }
 
         // Interface implementations
-        public void PlacementStatusChange(Builder player, bool isBeginning)
+        public void PlacementStatusChange(Builder player, PlacementStatus placementStatus)
         {
-            if (isBeginning)
+            switch (placementStatus)
             {
-                player.onBuildModeChange += OnBuildModeChange;
-                this.player = player;
-            }
-            else
-            {
-                GetComponent<BoxCollider>().enabled = true;
-                audioLoop.StartLooping(conveyorSounds);
+                case PlacementStatus.startingPlacement:
+                    player.onBuildModeChange += OnBuildModeChange;
+                    this.player = player;
+                    break;
+                case PlacementStatus.endingPlacement:
+                    GetComponent<BoxCollider>().enabled = true;
+                    audioLoop.StartLooping(conveyorSounds);
+                    break;
+                case PlacementStatus.startingDemolishment:
+                    GetComponent<BoxCollider>().enabled = false;
+                    break;
+                case PlacementStatus.endingDemolishment:
+                    Destroy(gameObject);
+                    break;
             }
         }
         public void ChangeVersion()

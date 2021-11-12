@@ -48,7 +48,7 @@ namespace CON.Player
             }
             else
             {
-                audioSourceManager.EndLoopingImmediate();
+                audioSourceManager.EndLoopingSmooth();
             }
         }
 

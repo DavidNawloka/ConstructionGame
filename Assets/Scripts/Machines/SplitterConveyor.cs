@@ -116,7 +116,7 @@ namespace CON.Machines
         
         private void OnCollisionStay(Collision collision)
         {
-            if (!IsElementPickup(collision)) return;
+            if (!IsElementPickup(collision) || !isFullyPlaced) return;
 
             Rigidbody rigidbody = collision.transform.GetComponentInParent<Rigidbody>();
             
@@ -151,20 +151,27 @@ namespace CON.Machines
 
             if (OnSplitterClicked != null) OnSplitterClicked();
         }
-        public void PlacementStatusChange(Builder player, bool isBeginning)
+        public void PlacementStatusChange(Builder player, PlacementStatus placementStatus)
         {
-            if (isBeginning)
+            switch (placementStatus)
             {
-                GetComponent<NavMeshObstacle>().enabled = true;
-                player.onBuildModeChange += OnBuildModeChange;
-                this.player = player;
-            }
-            else
-            {
-                GetComponent<BoxCollider>().enabled = true;
-                isFullyPlaced = true;
-                audioLoop.StartLooping(conveyorSounds);
-                OnFullyPlaced();
+                case PlacementStatus.startingPlacement:
+                    GetComponent<NavMeshObstacle>().enabled = true;
+                    player.onBuildModeChange += OnBuildModeChange;
+                    this.player = player;
+                    break;
+                case PlacementStatus.endingPlacement:
+                    GetComponent<BoxCollider>().enabled = true;
+                    isFullyPlaced = true;
+                    audioLoop.StartLooping(conveyorSounds);
+                    OnFullyPlaced();
+                    break;
+                case PlacementStatus.startingDemolishment:
+                    isFullyPlaced = false;
+                    break;
+                case PlacementStatus.endingDemolishment:
+                    Destroy(gameObject);
+                    break;
             }
         }
         public void ChangeVersion()

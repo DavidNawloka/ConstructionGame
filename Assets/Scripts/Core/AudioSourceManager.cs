@@ -11,23 +11,28 @@ namespace CON.Core
         [SerializeField] float loopPlayTimerMultiplier = 1;
         [SerializeField] float immediateStopTime = .1f;
         [SerializeField] bool shouldChangePitch = false;
-        [SerializeField] float pitchRange = 10f;
+        [SerializeField] float pitchRange = .1f;
 
         AudioSource audioSource;
         AudioClip[] currentAudioFilesToLoop;
 
         int currentAudioClipLoopIndex = 0;
-        bool shouldPlay = false;
+        bool shouldLoop = false;
         float playTimer = Mathf.Infinity;
+        float initialSpatialBlend;
+        float initialVolume;
 
         private void Awake()
         {
             if (customAudioSource == null) audioSource = GetComponent<AudioSource>();
             else audioSource = customAudioSource;
+
+            initialSpatialBlend = audioSource.spatialBlend;
+            initialVolume = audioSource.volume;
         }
         private void Update()
         {
-            if (!shouldPlay) return;
+            if (!shouldLoop) return;
 
             playTimer += Time.deltaTime;
             if (playTimer <= currentAudioFilesToLoop[currentAudioClipLoopIndex].length * loopPlayTimerMultiplier) return;
@@ -38,7 +43,13 @@ namespace CON.Core
             currentAudioClipLoopIndex++;
             if (currentAudioClipLoopIndex == currentAudioFilesToLoop.Length) currentAudioClipLoopIndex = GetRandomIndex(currentAudioFilesToLoop);
         }
-        
+        public void PlayOnceFromMultipleAdjust(AudioClip[] audioClipList,float spatialBlend, float volume)
+        {
+            audioSource.spatialBlend = spatialBlend;
+            audioSource.volume = volume;
+            PlayOnce(audioClipList[GetRandomIndex(audioClipList)]);
+        }
+
         public void PlayOnceFromMultiple(AudioClip[] audioClipList)
         {
             PlayOnce(audioClipList[GetRandomIndex(audioClipList)]);
@@ -47,22 +58,24 @@ namespace CON.Core
         public void PlayOnce(AudioClip audioClip = null)
         {
             if (shouldChangePitch) ChangePitch();
+
             if (audioClip == null) audioSource.PlayOneShot(playedSounds[GetRandomIndex(playedSounds)]);
             else audioSource.PlayOneShot(audioClip);
         }
         public void ToggleLooping(AudioClip[] audioFilesToLoop = null)
         {
-            SetActiveLooping(!shouldPlay, audioFilesToLoop);
+            SetActiveLooping(!shouldLoop, audioFilesToLoop);
         }
         public void StartLooping(AudioClip[] audioFilesToLoop)
         {
             SetActiveLooping(true, audioFilesToLoop);
         }
-        public void EndLooping()
+        public void EndLoopingImmediate()
         {
             SetActiveLooping(false,null);
+            audioSource.Stop();
         }
-        public void EndLoopingImmediate()
+        public void EndLoopingSmooth()
         {
             SetActiveLooping(false, null);
             StartCoroutine(StopPlayingImmediate());
@@ -81,8 +94,8 @@ namespace CON.Core
         private void SetActiveLooping(bool isPlaying, AudioClip[] audioFilesToLoop)
         {
             currentAudioFilesToLoop = audioFilesToLoop;
-            shouldPlay = isPlaying;
-            if(isPlaying) currentAudioClipLoopIndex = GetRandomIndex(currentAudioFilesToLoop);
+            shouldLoop = isPlaying;
+            if (isPlaying) currentAudioClipLoopIndex = GetRandomIndex(currentAudioFilesToLoop);
         }
         private int GetRandomIndex(object[] array)
         {
@@ -101,6 +114,12 @@ namespace CON.Core
 
             audioSource.Stop();
             audioSource.volume = defaultVolume;
+        }
+
+        public void ResetAudioSourceParameters()
+        {
+            audioSource.spatialBlend = initialSpatialBlend;
+            audioSource.volume = initialVolume;
         }
 
     }
