@@ -1721,6 +1721,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1203245733232507351}
     m_Modifications:
+    - target: {fileID: 5331771582373448858, guid: 2c649368d76ceca4bb5a314e1cfb3b66, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 5331771582373448858, guid: 2c649368d76ceca4bb5a314e1cfb3b66, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.454
+      objectReference: {fileID: 0}
+    - target: {fileID: 5331771582373448858, guid: 2c649368d76ceca4bb5a314e1cfb3b66, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.64
+      objectReference: {fileID: 0}
     - target: {fileID: 6112960162772497254, guid: 2c649368d76ceca4bb5a314e1cfb3b66, type: 3}
       propertyPath: m_Name
       value: Placement Particle System
@@ -1794,6 +1806,34 @@ PrefabInstance:
       value: 0.67
       objectReference: {fileID: 0}
     - target: {fileID: 6112960163422882260, guid: 2c649368d76ceca4bb5a314e1cfb3b66, type: 3}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8725413596033095330, guid: 2c649368d76ceca4bb5a314e1cfb3b66, type: 3}
+      propertyPath: ShapeModule.type
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8725413596033095330, guid: 2c649368d76ceca4bb5a314e1cfb3b66, type: 3}
+      propertyPath: ShapeModule.m_Scale.x
+      value: 2.91
+      objectReference: {fileID: 0}
+    - target: {fileID: 8725413596033095330, guid: 2c649368d76ceca4bb5a314e1cfb3b66, type: 3}
+      propertyPath: ShapeModule.m_Scale.y
+      value: 2.61
+      objectReference: {fileID: 0}
+    - target: {fileID: 8725413596033095330, guid: 2c649368d76ceca4bb5a314e1cfb3b66, type: 3}
+      propertyPath: ShapeModule.m_Position.x
+      value: 0.67
+      objectReference: {fileID: 0}
+    - target: {fileID: 8725413596033095330, guid: 2c649368d76ceca4bb5a314e1cfb3b66, type: 3}
+      propertyPath: ShapeModule.m_Position.y
+      value: 1.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 8725413596033095330, guid: 2c649368d76ceca4bb5a314e1cfb3b66, type: 3}
+      propertyPath: ShapeModule.m_Position.z
+      value: 0.67
+      objectReference: {fileID: 0}
+    - target: {fileID: 8725413596033095330, guid: 2c649368d76ceca4bb5a314e1cfb3b66, type: 3}
       propertyPath: ShapeModule.radiusThickness
       value: 1
       objectReference: {fileID: 0}

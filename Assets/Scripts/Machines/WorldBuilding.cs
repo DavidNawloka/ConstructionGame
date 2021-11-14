@@ -16,8 +16,7 @@ namespace CON.Machines
         [SerializeField] UnlockRequirement[] unlockRequirements;
         [SerializeField] MoveableWindow moveableWindow;
         [SerializeField] Transform moveableWindowConnect;
-        [SerializeField] GameObject brokenWorldBuilding;
-        [SerializeField] GameObject fixedWorldBuilding;
+        [SerializeField] Animation fixWorldBuildingAnimation;
 
         Inventory inventory;
         Builder builder;
@@ -62,8 +61,7 @@ namespace CON.Machines
         private void ConstructWorldBuilding()
         {
             isFixed = true;
-            brokenWorldBuilding.SetActive(false);
-            fixedWorldBuilding.SetActive(true);
+            fixWorldBuildingAnimation.Play();
         }
         private int GetElementInstructionIndex(Element element)
         {
@@ -121,7 +119,9 @@ namespace CON.Machines
         {
             if (state == null) return;
             isFixed = (bool)state;
-            if (isFixed) ConstructWorldBuilding();
+            if (isFixed) fixWorldBuildingAnimation[fixWorldBuildingAnimation.clip.name].time = 3f;
+            fixWorldBuildingAnimation.Play();
+
         }
     }
 

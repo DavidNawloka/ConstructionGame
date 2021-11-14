@@ -552,6 +552,7 @@ namespace CON.Machines
                 placeableInformation.uniqueIdentifier = keyValuePair.Key;
 
                 placeable.LoadSavedInformation(keyValuePair.Value.variableInformation);
+                placeable.PlacementStatusChange(this,PlacementStatus.startingPlacement);
                 placeable.PlacementStatusChange(this,PlacementStatus.endingPlacement);
 
                 builtObjects.Add(keyValuePair.Key, new SavedPlaceable(keyValuePair.Value.id,keyValuePair.Value.worldPosition.ToVector(),keyValuePair.Value.eulerRotation.ToVector(),keyValuePair.Value.origin.ToVector(),keyValuePair.Value.GetTakenGridPositions(), placeable));

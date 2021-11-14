@@ -8,7 +8,7 @@ namespace CON.Core
     {
         [SerializeField] GameObject persistentGameobjectsSpawnerPrefab;
 
-        static bool hasSpawned;
+        static bool hasSpawned = false;
 
         private void Awake()
         {

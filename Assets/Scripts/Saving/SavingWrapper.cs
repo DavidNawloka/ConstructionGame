@@ -21,6 +21,7 @@ namespace Astutos.Saving
         SavingSystemEncrypted savingSystemEncrypted;
         SavingSystemJson savingSystemJson;
         ScreenCaptureSaving screenCapture;
+        SceneTransitioner sceneTransitioner;
 
         int timePlayedInSeconds;
         int saveFileNum = 0;
@@ -30,9 +31,10 @@ namespace Astutos.Saving
             savingSystemEncrypted = GetComponent<SavingSystemEncrypted>();
             savingSystemJson = GetComponent<SavingSystemJson>();
             screenCapture = FindObjectOfType<ScreenCaptureSaving>();
+            sceneTransitioner = FindObjectOfType<SceneTransitioner>();
 
             saveFileNum = Directory.GetDirectories(Application.persistentDataPath).Length;
-            //Load(defaultSaveFolderName + (saveFileNum).ToString());
+
         }
         
         public void StartSave(string saveName)// Button OnClick Event
@@ -62,12 +64,11 @@ namespace Astutos.Saving
             OnSaveFileChange.Invoke();
         }
 
-        public void Load(string saveFolderName) // Button OnClick Event
+        public void Load(string saveFolderName)
         {
             StartCoroutine(savingSystemEncrypted.LoadLastScene(GetPathWithFolder(saveFolderName, MAIN_SAVE_FILE_NAME)));
-            JsonSavedStatisticData savedData = JsonUtility.FromJson<JsonSavedStatisticData>(savingSystemJson.Load(GetPathWithFolder(saveFolderName, STATISTIC_SAVE_FILE_NAME)));
 
-            Time.timeScale = 1;
+            JsonSavedStatisticData savedData = JsonUtility.FromJson<JsonSavedStatisticData>(savingSystemJson.Load(GetPathWithFolder(saveFolderName, STATISTIC_SAVE_FILE_NAME)));
 
             if (savedData == null) return;
             timePlayedInSeconds = savedData.timePlayedInSeconds;
@@ -76,7 +77,6 @@ namespace Astutos.Saving
         public void LoadLastSave()
         {
             string[] allSaveFolders = GetAllSaveFolders();
-
             Load(allSaveFolders[0]);
         }
 

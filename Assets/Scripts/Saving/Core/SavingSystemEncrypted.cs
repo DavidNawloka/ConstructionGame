@@ -5,6 +5,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using CON.Core;
 
 namespace Astutos.Saving
 {
@@ -14,7 +15,8 @@ namespace Astutos.Saving
         const string filenameExtension = "sav";
 
         public IEnumerator LoadLastScene(string saveFile)
-        {   
+        {
+            yield return FindObjectOfType<SceneTransitioner>().EndScene();
             Dictionary<string, object> state = LoadFile(saveFile);
 
             int lastSceneIndex = SceneManager.GetActiveScene().buildIndex;

@@ -19,6 +19,7 @@ namespace CON.UI
         private void Awake()
         {
             userInterfaceManager = FindObjectOfType<UserInterfaceManager>();
+            Time.timeScale = 1;
         }
 
         public void LoadScene(int sceneIndex)
