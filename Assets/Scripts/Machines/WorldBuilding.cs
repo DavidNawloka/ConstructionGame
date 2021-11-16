@@ -8,6 +8,7 @@ using TMPro;
 using CON.UI;
 using Astutos.Saving;
 using CON.Core;
+using CON.Player;
 
 namespace CON.Machines
 {

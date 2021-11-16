@@ -8,6 +8,7 @@ using System;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using CON.Progression;
+using CON.Player;
 
 namespace CON.Machines 
 {
