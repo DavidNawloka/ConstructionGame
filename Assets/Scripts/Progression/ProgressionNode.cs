@@ -17,6 +17,7 @@ namespace CON.Progression
         [SerializeField] InventoryItemVisualisation[] requirementVisualisation;
         [SerializeField] Unlockable unlockable;
         [SerializeField] GameObject nodeConnector;
+        [SerializeField] Transform connectorsParent;
         [Header("Unlockable Visualisation")]
         [SerializeField] TextMeshProUGUI unlockableName;
         [SerializeField] Image unlockableImage;
@@ -29,11 +30,8 @@ namespace CON.Progression
 
         private void Awake()
         {
-            progressionManager = GetComponentInParent<ProgressionManager>();
+            progressionManager = FindObjectOfType<ProgressionManager>();
             unlockButton.onClick.AddListener(OnClick);
-        }
-        private void OnEnable()
-        {
             progressionManager.OnMachineProducedElement.AddListener(CheckIfEnoughElementsProduced);
             progressionManager.OnPlaceableUnlocked.AddListener(CheckUnlockView);
         }
@@ -113,7 +111,7 @@ namespace CON.Progression
             foreach(ProgressionNode parentNode in parentNodes)
             {
                 GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(nodeConnector);
-                instance.transform.SetParent(transform.parent.parent);
+                instance.transform.SetParent(connectorsParent);
                 instance.transform.SetAsFirstSibling();
                 
 

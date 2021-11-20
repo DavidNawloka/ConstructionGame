@@ -11,7 +11,8 @@ namespace CON.Player
         Placeable,
         UI,
         Pickup,
-        Camp
+        Camp,
+        Note
     };
 
 }

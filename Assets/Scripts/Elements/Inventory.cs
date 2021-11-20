@@ -15,9 +15,12 @@ namespace CON.Elements
 
         public UnityEvent<Inventory> OnInventoryChange;
 
-        private void Start()
+        private void Awake()
         {
             if (inventory == null) BuildEmptyInventory();
+        }
+        private void Start()
+        {
             OnInventoryChange.Invoke(this);
         }
         public InventoryItem[] GetInventoryArray()

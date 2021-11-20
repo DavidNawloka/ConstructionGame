@@ -9,6 +9,8 @@ namespace CON.Progression
     public class ProgressionManager : MonoBehaviour
     {
         [SerializeField] List<Unlockable> startingPlaceables;
+        [SerializeField] Transform connectorsParent;
+        [SerializeField] Transform nodesParent;
 
         List<Unlockable> unlockedPlaceables = new List<Unlockable>();
 
@@ -51,7 +53,7 @@ namespace CON.Progression
         public void InstantiateConnectors()
         {
             DeleteConnectors();
-            foreach (Transform node in transform)
+            foreach (Transform node in nodesParent)
             {
                 node.GetComponent<ProgressionNode>().InstantiateConnectors();
                 node.GetComponent<ProgressionNode>().UpdateUnlockableVisualisation();
@@ -61,12 +63,10 @@ namespace CON.Progression
 
         public void DeleteConnectors()
         {
-            GameObject[] gameObjectsToDestroy = new GameObject[transform.parent.childCount];
-            for (int childIndex = 0; childIndex < transform.parent.childCount; childIndex++)
+            GameObject[] gameObjectsToDestroy = new GameObject[connectorsParent.childCount];
+            for (int childIndex = 0; childIndex < connectorsParent.childCount; childIndex++)
             {
-                ProgressionManager progressionManager = transform.parent.GetChild(childIndex).GetComponent<ProgressionManager>();
-                if (progressionManager != null) continue;
-                gameObjectsToDestroy[childIndex] = transform.parent.GetChild(childIndex).gameObject;
+                gameObjectsToDestroy[childIndex] = connectorsParent.GetChild(childIndex).gameObject;
             }
             foreach(GameObject nodeConnector in gameObjectsToDestroy)
             {
