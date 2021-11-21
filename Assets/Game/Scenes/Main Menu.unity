@@ -279,7 +279,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 3
+  m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!224 &2740840
 RectTransform:
@@ -9412,6 +9412,107 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8577553812810692272, guid: faea8532f062c03498b3505cb38ad5d0, type: 3}
   m_PrefabInstance: {fileID: 339706455}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &340714617
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1367113821660939369, guid: 7b8f138d6e7efef4f8bfdb969340e400, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3022780352626009424, guid: 7b8f138d6e7efef4f8bfdb969340e400, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3022780352626009424, guid: 7b8f138d6e7efef4f8bfdb969340e400, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3022780352626009424, guid: 7b8f138d6e7efef4f8bfdb969340e400, type: 3}
+      propertyPath: m_RootOrder
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3022780352626009424, guid: 7b8f138d6e7efef4f8bfdb969340e400, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3022780352626009424, guid: 7b8f138d6e7efef4f8bfdb969340e400, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3022780352626009424, guid: 7b8f138d6e7efef4f8bfdb969340e400, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3022780352626009424, guid: 7b8f138d6e7efef4f8bfdb969340e400, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3022780352626009424, guid: 7b8f138d6e7efef4f8bfdb969340e400, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3022780352626009424, guid: 7b8f138d6e7efef4f8bfdb969340e400, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3022780352626009424, guid: 7b8f138d6e7efef4f8bfdb969340e400, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3022780352626009424, guid: 7b8f138d6e7efef4f8bfdb969340e400, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3022780352626009424, guid: 7b8f138d6e7efef4f8bfdb969340e400, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3022780352626009424, guid: 7b8f138d6e7efef4f8bfdb969340e400, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3022780352626009424, guid: 7b8f138d6e7efef4f8bfdb969340e400, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3022780352626009424, guid: 7b8f138d6e7efef4f8bfdb969340e400, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3022780352626009424, guid: 7b8f138d6e7efef4f8bfdb969340e400, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3022780352626009424, guid: 7b8f138d6e7efef4f8bfdb969340e400, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3022780352626009424, guid: 7b8f138d6e7efef4f8bfdb969340e400, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3022780352626009424, guid: 7b8f138d6e7efef4f8bfdb969340e400, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3022780352626009424, guid: 7b8f138d6e7efef4f8bfdb969340e400, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3022780352626009424, guid: 7b8f138d6e7efef4f8bfdb969340e400, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8509007731462278560, guid: 7b8f138d6e7efef4f8bfdb969340e400, type: 3}
+      propertyPath: m_Name
+      value: Scene Loader Canvas
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7b8f138d6e7efef4f8bfdb969340e400, type: 3}
 --- !u!1 &348079390
 GameObject:
   m_ObjectHideFlags: 0
@@ -16655,7 +16756,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &602608852
 PrefabInstance:
@@ -26364,7 +26465,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &942241772
 MonoBehaviour:
@@ -49646,7 +49747,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1693959717
 PrefabInstance:
@@ -51326,7 +51427,7 @@ Transform:
   - {fileID: 647443603}
   - {fileID: 229939327}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1745202023
 PrefabInstance:
@@ -56668,7 +56769,7 @@ MonoBehaviour:
   m_TargetMovementOnly: 1
   m_ScreenX: 0.5
   m_ScreenY: 0.5
-  m_CameraDistance: 23
+  m_CameraDistance: 15
   m_DeadZoneWidth: 0.1
   m_DeadZoneHeight: 0.1
   m_DeadZoneDepth: 0

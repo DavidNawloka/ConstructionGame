@@ -1,3 +1,4 @@
+using Astutos.Saving;
 using CON.Core;
 using CON.Player;
 using System.Collections;
@@ -6,7 +7,7 @@ using UnityEngine;
 
 namespace CON.Progression
 {
-    public class FindableNotePickup : MonoBehaviour,IRaycastable
+    public class FindableNotePickup : MonoBehaviour,IRaycastable, ISaveable
     {
         [SerializeField] FindableNote findableNote;
         [SerializeField] float pickupClickRadius;
@@ -54,5 +55,15 @@ namespace CON.Progression
             return Vector3.Distance(player.position, transform.position) <= pickupClickRadius && !hasEquipped;
         }
 
+        public object CaptureState()
+        {
+            return hasEquipped;
+        }
+
+        public void RestoreState(object state)
+        {
+            if (state == null) return;
+            if ((bool)state) EquipNote(false);
+        }
     }
 }

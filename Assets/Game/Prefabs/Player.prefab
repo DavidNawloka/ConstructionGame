@@ -146,6 +146,12 @@ MonoBehaviour:
   - cursorType: 4
     sprite: {fileID: 2800000, guid: f8c873f1e53e83f4aabf342d6be1dfc3, type: 3}
     hotspot: {x: 5, y: 2}
+  - cursorType: 5
+    sprite: {fileID: 2800000, guid: 7d4a349e204be984cbd483b7ba288543, type: 3}
+    hotspot: {x: 5, y: 2}
+  - cursorType: 6
+    sprite: {fileID: 2800000, guid: cecad95c851b97f40b105b30b0bfede3, type: 3}
+    hotspot: {x: 5, y: 2}
 --- !u!114 &9164258976479346002
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -266,6 +272,7 @@ MonoBehaviour:
   - {fileID: 399632920827051588, guid: c7ee451bd1a8c5f499435823273368e3, type: 3}
   - {fileID: 399632920827051588, guid: 36ce3007136b7e24fb29069f17f5b802, type: 3}
   - {fileID: 399632920827051588, guid: ec739a22f4b58bf40911b13a7ea4f0fe, type: 3}
+  - {fileID: 4711383423666340968, guid: 80b1002165c029541b1f304034239df3, type: 3}
   buildingGridMesh: {fileID: 0}
   coreGameObject: {fileID: 0}
   buildObjectsParent: {fileID: 0}
@@ -274,8 +281,8 @@ MonoBehaviour:
   distanceDivider: 0.3
   timeToBuildPlaceable: 1.5
   differentPositionsRotations: 3
-  startingYPos: -0.8
-  rotationMaxChange: 10
+  startingYPos: -1.1
+  rotationMaxChange: 12
   placementSounds:
   - {fileID: 8300000, guid: 619b57570caf4964c9726ced369f0e93, type: 3}
   - {fileID: 8300000, guid: a7c41b40f85b70f468ffd5927f828b28, type: 3}
@@ -473,15 +480,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5393697146511760290, guid: eec2f43d2bd178a4c870b251bff8e62e, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.8
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 5393697146511760290, guid: eec2f43d2bd178a4c870b251bff8e62e, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.8
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 5393697146511760290, guid: eec2f43d2bd178a4c870b251bff8e62e, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.8
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 5393697146511760290, guid: eec2f43d2bd178a4c870b251bff8e62e, type: 3}
       propertyPath: m_LocalPosition.x

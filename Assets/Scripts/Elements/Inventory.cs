@@ -98,6 +98,7 @@ namespace CON.Elements
         }
         public bool EquipItem(InventoryItem inventoryItemToEquip)
         {
+            int indexToEquip = -1;
             for (int inventoryIndex = 0; inventoryIndex < inventory.Length; inventoryIndex++)
             {
                 if (inventory[inventoryIndex].element == inventoryItemToEquip.element)
@@ -108,11 +109,16 @@ namespace CON.Elements
                 }
                 if(inventory[inventoryIndex].element == null)
                 {
-                    inventory[inventoryIndex].element = inventoryItemToEquip.element;
-                    inventory[inventoryIndex].amount = inventoryItemToEquip.amount;
-                    OnInventoryChange.Invoke(this);
-                    return true;
+                    if(indexToEquip == -1) indexToEquip = inventoryIndex;
                 }
+            }
+
+            if(indexToEquip != -1)
+            {
+                inventory[indexToEquip].amount = inventoryItemToEquip.amount;
+                inventory[indexToEquip].element = inventoryItemToEquip.element;
+                OnInventoryChange.Invoke(this);
+                return true;
             }
 
             return false;
