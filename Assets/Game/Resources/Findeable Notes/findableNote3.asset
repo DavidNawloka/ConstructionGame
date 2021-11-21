@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5717558f7bf8f054fade4bbf630bcc86, type: 3}
+  m_Name: findableNote3
+  m_EditorClassIdentifier: 
+  text: '<space=-10px>Day 12<br><space=10px>What started like a <br><space=30px>relaxing
+    day got quite <br><space=30px>frustrating! I just <br><space=30px>can''t figure
+    out how to cut down this damn tree. I <br><space=-50px>even went as far as building
+    a <br><space=-60px>well to get some fresh water <br><space=-50px>but still -
+    no success.... <br><space=-50px>I am starting to question my <br><space=-30px>ability
+    to do much of anything. Wait, could <br><space=30px>there be an exit?<br><space=130px>-James '
+  background: {fileID: 21300000, guid: c9be388097d270b41bddf0e2beabca60, type: 3}

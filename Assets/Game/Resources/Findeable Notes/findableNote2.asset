@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5717558f7bf8f054fade4bbf630bcc86, type: 3}
+  m_Name: findableNote2
+  m_EditorClassIdentifier: 
+  text: <space=20px>Day 4<br>Today I tried to build<br><space=-30px> conveyors and
+    was kindly<br><space=-40px> surprised - they run without <br><space=-30px> an
+    energy source! An invisible electric field <br><space= 25px>maybe? What is strange<br><space=44px>about
+    this place is that<br><space=40px>   there is nobody here, <br><space=35px> not
+    a single living soul. <br><space=7px>I'm starting to feel very <br><space=40px>
+    lonely.<br><space=55px>- James
+  background: {fileID: 21300000, guid: e8e65e2fd037d5f42957b82ac9b9f318, type: 3}
