@@ -335,7 +335,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4716ab4b42550924b9b7606cb375ce6f, type: 2}
   - {fileID: 11400000, guid: 29e8ec23b0ff67a469d47ce2e53d680f, type: 2}
   - {fileID: 11400000, guid: a35805ee368754843b90503e5b115e1d, type: 2}
-  - {fileID: 11400000, guid: e01fb2551ae21ee409cff65aad8017b6, type: 2}
+  - {fileID: 11400000, guid: 1c48f3f7e44482543a647ba5912fab26, type: 2}
+  notesToUnlock:
+  - {fileID: 11400000, guid: d033f54470dfb3444844088cefeac353, type: 2}
+  - {fileID: 11400000, guid: d37d1d6745b2cbb46a827a7a6a4a57db, type: 2}
+  - {fileID: 11400000, guid: 396168ea0a1074b40ade7c526b3f03db, type: 2}
+  - {fileID: 11400000, guid: 16d3ee762280b254c8f848fe10ab4f65, type: 2}
 --- !u!114 &242470760144233005
 MonoBehaviour:
   m_ObjectHideFlags: 0

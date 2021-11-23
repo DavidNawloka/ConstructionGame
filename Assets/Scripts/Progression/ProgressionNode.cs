@@ -38,6 +38,7 @@ namespace CON.Progression
         private void Start()
         {
             UpdateUnlockableVisualisation();
+            progressionManager.OnMachineProducedElement.Invoke(progressionManager.GetInventory());
         }
         public void UpdateUnlockableVisualisation()
         {
@@ -60,7 +61,7 @@ namespace CON.Progression
             }
         }
 
-        private void CheckIfEnoughElementsProduced(Inventory inventory)
+        private void CheckIfEnoughElementsProduced(Inventory inventory) // TODO Check if bug fixed
         {
             if(!unlocked) unlockButton.interactable = inventory.HasItem(unlockable.elementRequirements);
             for (int index = 0; index < requirementVisualisation.Length; index++)
@@ -108,7 +109,8 @@ namespace CON.Progression
 #if UNITY_EDITOR
         public void InstantiateConnectors()
         {
-            foreach(ProgressionNode parentNode in parentNodes)
+            CheckUnlockView(null);
+            foreach (ProgressionNode parentNode in parentNodes)
             {
                 GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(nodeConnector);
                 instance.transform.SetParent(connectorsParent);

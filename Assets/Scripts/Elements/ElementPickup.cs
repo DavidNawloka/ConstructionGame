@@ -24,6 +24,10 @@ namespace CON.Elements
         {
             return itemToEuqip;
         }
+        public void UpdateAmoutToEquip(int amount)
+        {
+            itemToEuqip.amount = amount;
+        }
         private void OnTriggerEnter(Collider other)
         {
             if (other.transform.tag == "Water") Destroy(gameObject);

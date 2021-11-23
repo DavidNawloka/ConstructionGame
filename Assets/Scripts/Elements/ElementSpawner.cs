@@ -12,6 +12,8 @@ namespace CON.Elements
     {
         [SerializeField] Element[] resources;
         [SerializeField] int amountOfResources;
+        [SerializeField] int minPickupAmount = 1;
+        [SerializeField] int maxPickupAmount = 3;
         [Header("Spawn Location")]
         [SerializeField] float minX;
         [SerializeField] float maxX;
@@ -58,6 +60,7 @@ namespace CON.Elements
             instance.transform.localScale = scale;
             instance.tag = "Pickup";
             instance.transform.parent = transform;
+            instance.GetComponent<ElementPickup>().UpdateAmoutToEquip(UnityEngine.Random.Range(minPickupAmount, maxPickupAmount + 1));
 #endif
         }
 
