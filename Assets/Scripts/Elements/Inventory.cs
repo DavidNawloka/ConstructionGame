@@ -160,6 +160,11 @@ namespace CON.Elements
             }
             return 0;
         }
+        public void ResetInventory()
+        {
+            BuildEmptyInventory();
+            OnInventoryChange.Invoke(this);
+        }
         private void BuildEmptyInventory()
         {
             inventory = new InventoryItem[inventorySlots];

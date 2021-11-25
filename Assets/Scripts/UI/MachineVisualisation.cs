@@ -157,13 +157,13 @@ namespace CON.UI
         {
             Instruction machineInstruction = machine.GetCurrentInstruction();
 
-            bool isNeeded = machineInstruction.requirements.Length >= 2;
-            inventoryRequirmentVisualiser[1].image.enabled = isNeeded;
-            inventoryRequirmentVisualiser[1].tmPro.enabled = isNeeded;
+            //bool isNeeded = machineInstruction.requirements.Length >= 2;
+            //inventoryRequirmentVisualiser[1].image.enabled = isNeeded;
+            //inventoryRequirmentVisualiser[1].tmPro.enabled = isNeeded;
 
-            isNeeded = machineInstruction.requirements.Length >= 3;
-            inventoryRequirmentVisualiser[2].image.enabled = isNeeded;
-            inventoryRequirmentVisualiser[2].tmPro.enabled = isNeeded;
+            //isNeeded = machineInstruction.requirements.Length >= 3;
+            //inventoryRequirmentVisualiser[2].image.enabled = isNeeded;
+            //inventoryRequirmentVisualiser[2].tmPro.enabled = isNeeded;
 
             for (int inventoryIndex = 0; inventoryIndex < machineInstruction.requirements.Length; inventoryIndex++)
             {

@@ -110,6 +110,7 @@ namespace CON.Machines
         }
         public void SetCurrentInstruction(int instructionIndex)
         {
+            if (possibleInstructions[instructionIndex] != currentInstruction) inventory.ResetInventory(); //TODO: Look at options instead of removing all elements in machine
             currentInstruction = possibleInstructions[instructionIndex];
             UpdateElementTriggers();
         }
@@ -191,6 +192,7 @@ namespace CON.Machines
                 case PlacementStatus.startingPlacement:
                     builder = player;
                     playerInventory = player.GetComponent<Inventory>();
+                    GetComponent<NavMeshObstacle>().enabled = true;
                     break;
                 case PlacementStatus.endingPlacement:
                     fullyPlaced = true;
