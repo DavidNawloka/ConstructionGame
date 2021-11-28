@@ -27,7 +27,6 @@ namespace Astutos.Saving
             }
             yield return SceneManager.LoadSceneAsync(lastSceneIndex); // All Awake Methods of the new scene have been called after continueing this code block
             time = Time.time - time;
-            print(time);
             RestoreState(state);
         }
 

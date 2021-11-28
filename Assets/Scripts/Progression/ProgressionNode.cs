@@ -61,7 +61,7 @@ namespace CON.Progression
             }
         }
 
-        private void CheckIfEnoughElementsProduced(Inventory inventory) // TODO Check if bug fixed
+        private void CheckIfEnoughElementsProduced(Inventory inventory)
         {
             if(!unlocked) unlockButton.interactable = inventory.HasItem(unlockable.elementRequirements);
             for (int index = 0; index < requirementVisualisation.Length; index++)

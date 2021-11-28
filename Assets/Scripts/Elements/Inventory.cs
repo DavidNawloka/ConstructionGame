@@ -46,6 +46,17 @@ namespace CON.Elements
             }
             return true;
         }
+        public bool HasAnyItems()
+        {
+            foreach (InventoryItem inventoryItem in inventory)
+            {
+                if (inventoryItem.element != null)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
         public bool RemoveItem(InventoryItem inventoryItemToRemove)
         {
             bool status = false;

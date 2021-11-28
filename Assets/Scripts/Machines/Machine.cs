@@ -78,7 +78,7 @@ namespace CON.Machines
         }
         public void AddEnergyElement(ElementPickup elementToAdd) // Event for when Elements enter
         {
-            if (!CheckIfElementIsNeeded(elementToAdd)) return;
+            if (!CheckIfElementIsNeeded(elementToAdd) || !fullyPlaced) return;
             Destroy(elementToAdd.gameObject);
 
             inventory.EquipItemAt(elementToAdd.GetItemToEquip(), GetElementInstructionIndex(elementToAdd.GetItemToEquip().element));
@@ -193,6 +193,7 @@ namespace CON.Machines
                     builder = player;
                     playerInventory = player.GetComponent<Inventory>();
                     GetComponent<NavMeshObstacle>().enabled = true;
+                    GetComponent<BoxCollider>().enabled = true;
                     break;
                 case PlacementStatus.endingPlacement:
                     fullyPlaced = true;

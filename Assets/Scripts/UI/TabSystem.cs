@@ -8,8 +8,7 @@ namespace CON.UI
     {
         [Tooltip("If null, no tab will be shown")] [SerializeField] GameObject defaultTabToShow;
         [Tooltip("If null, all children will be taken as tabs")][SerializeField] GameObject[] tabs;
-        [Tooltip("If false tab will appear instantly")][SerializeField] bool shouldSlideInFromLeft = false;
-        [Tooltip("Can be ignored if bool above false")][SerializeField] float timeToShowTab;
+        [SerializeField] bool areCanvasGroups = false;
 
 
         GameObject oldTab;
@@ -24,8 +23,8 @@ namespace CON.UI
         {
             if (oldTab != null)
             {
-                oldTab.SetActive(false);
-                if (shouldSlideInFromLeft) oldTab.transform.localScale = Vector3.zero;
+                if (areCanvasGroups) SetActiveCanvasGroup(oldTab.GetComponent<CanvasGroup>(), false);
+                else oldTab.SetActive(false);
             }
             oldTab = null;
             return;
@@ -35,15 +34,19 @@ namespace CON.UI
             if (newTab == oldTab) return;
             if (oldTab != null) CloseTab();
 
-
-            if (!shouldSlideInFromLeft)
-            {
-                newTab.transform.localScale = Vector3.one;
-                newTab.SetActive(true);
-            }
-            else StartCoroutine(SlideLeft(newTab.transform));
+            if (areCanvasGroups) SetActiveCanvasGroup(newTab.GetComponent<CanvasGroup>(), true);
+            else newTab.SetActive(true);
             oldTab = newTab;
             
+        }
+
+        private void SetActiveCanvasGroup(CanvasGroup canvasGroup, bool isActive)
+        {
+            if (isActive) canvasGroup.alpha = 1;
+            else canvasGroup.alpha = 0;
+
+            canvasGroup.interactable = isActive;
+            canvasGroup.blocksRaycasts = isActive;
         }
 
         private void CloseAllTabs()
@@ -52,32 +55,18 @@ namespace CON.UI
             {
                 foreach (Transform child in transform)
                 {
-                    child.gameObject.SetActive(false);
-                    if (shouldSlideInFromLeft) child.localScale = Vector3.zero;
+                    if (areCanvasGroups) SetActiveCanvasGroup(child.GetComponent<CanvasGroup>(), false);
+                    else child.gameObject.SetActive(false);
                 }
             }
             else
             {
                 foreach (GameObject tab in tabs)
                 {
-                    tab.SetActive(false);
-                    if (shouldSlideInFromLeft) tab.transform.localScale = Vector3.zero;
+                    if (areCanvasGroups) SetActiveCanvasGroup(tab.GetComponent<CanvasGroup>(), false);
+                    else tab.SetActive(false);
                 }
             }
-        }
-
-        private IEnumerator SlideLeft(Transform tab)
-        {
-            float timer = 0;
-
-            tab.gameObject.SetActive(true);
-            while (timer < timeToShowTab)
-            {
-                tab.localScale = new Vector3(timer / timeToShowTab, 1, 1);
-                timer += Time.unscaledDeltaTime;
-                yield return null;
-            }
-            tab.localScale = Vector3.one;
         }
     }
 }

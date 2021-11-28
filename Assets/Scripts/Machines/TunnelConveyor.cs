@@ -81,6 +81,10 @@ namespace CON.Machines
                         obstacle.enabled = true;
                     }
                     player.onBuildModeChange += OnBuildModeChange;
+                    foreach(BoxCollider boxCollider in GetComponents<BoxCollider>())
+                    {
+                        boxCollider.enabled = true;
+                    }
                     this.player = player;
                     break;
                 case PlacementStatus.endingPlacement:

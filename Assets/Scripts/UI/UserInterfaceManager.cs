@@ -63,7 +63,10 @@ namespace CON.UI
                 }
             }
         }
-
+        public bool IsUserInterfaceTypeActive(int typeIndex)
+        {
+            return UITypes[typeIndex].isEnabled;
+        }
         public void OnInputDeactivationChange(bool isDisabled) // Input Allowance Class Event
         {
             inputDisabled = isDisabled;
