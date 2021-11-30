@@ -22,7 +22,10 @@ namespace CON.Machines
             userInterfaceManager = FindObjectOfType<UserInterfaceManager>();
         }
 
-
+        public bool IsFullyPlaced()
+        {
+            return fullyPlaced;
+        }
         public PlaceableInformation GetPlaceableInformation()
         {
             return placeableInformation;

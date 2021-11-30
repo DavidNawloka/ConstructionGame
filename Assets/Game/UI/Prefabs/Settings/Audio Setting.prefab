@@ -69,8 +69,8 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c2be32329399f2a46ba5bb2b38a7cd6e, type: 2}
+  m_sharedMaterial: {fileID: -6373115414791462537, guid: c2be32329399f2a46ba5bb2b38a7cd6e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -368,7 +368,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8915910779492721182}
   m_Layer: 5
-  m_Name: Audio Settings
+  m_Name: Audio Setting
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

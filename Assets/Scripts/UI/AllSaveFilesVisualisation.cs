@@ -18,14 +18,12 @@ namespace CON.UI
 
         private void Awake()
         {
-            savingWrapper = FindObjectOfType<SavingWrapper>();
             shownSaves = defaultShownSaves;
-            UpdateSaveFilesVisualisation();
-            
-            
         }
         private void Start()
         {
+            savingWrapper = FindObjectOfType<SavingWrapper>();
+            UpdateSaveFilesVisualisation();
             savingWrapper.OnSaveFileChange.AddListener(UpdateSaveFilesVisualisation);
         }
         private void OnEnable()
