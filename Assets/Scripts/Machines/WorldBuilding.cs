@@ -120,8 +120,12 @@ namespace CON.Machines
         {
             if (state == null) return;
             isFixed = (bool)state;
-            if (isFixed) fixWorldBuildingAnimation[fixWorldBuildingAnimation.clip.name].time = 3f;
-            fixWorldBuildingAnimation.Play();
+            if (isFixed)
+            {
+                fixWorldBuildingAnimation[fixWorldBuildingAnimation.clip.name].time = 3f;
+                fixWorldBuildingAnimation.Play();
+            }
+            
 
         }
     }

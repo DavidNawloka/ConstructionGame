@@ -322,6 +322,7 @@ public class TutorialManager : MonoBehaviour, ISaveable
         for (int sectionIndex = 0; sectionIndex < currentTutorialSectionIndex; sectionIndex++)
         {
             tutorialSections[sectionIndex].completed = true;
+            ActivateSectionGameObjects(tutorialSections[sectionIndex]);
         }
         if(currentTutorialSectionIndex == tutorialSections.Length)
         {

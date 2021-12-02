@@ -1,3 +1,4 @@
+using CON.Core;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,16 +16,18 @@ namespace CON.UI
         bool isPaused = false;
 
         UserInterfaceManager userInterfaceManager;
+        SceneTransitioner sceneTransitioner;
 
         private void Awake()
         {
             userInterfaceManager = FindObjectOfType<UserInterfaceManager>();
+            sceneTransitioner = FindObjectOfType<SceneTransitioner>();
             Time.timeScale = 1;
         }
 
         public void LoadScene(int sceneIndex)
         {
-            SceneManager.LoadScene(sceneIndex);
+            StartCoroutine(sceneTransitioner.LoadSceneDelayed(sceneIndex));
         }
 
         public void TogglePauseMenu()

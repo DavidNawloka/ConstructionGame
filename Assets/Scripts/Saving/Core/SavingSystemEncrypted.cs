@@ -16,8 +16,8 @@ namespace Astutos.Saving
 
         public IEnumerator LoadLastScene(string saveFile)
         {
-            yield return FindObjectOfType<SceneTransitioner>().EndScene();
-            float time = Time.time;
+            yield return StartCoroutine(FindObjectOfType<SceneTransitioner>().EndScene());
+
             Dictionary<string, object> state = LoadFile(saveFile);
 
             int lastSceneIndex = SceneManager.GetActiveScene().buildIndex;
@@ -26,7 +26,8 @@ namespace Astutos.Saving
                 lastSceneIndex = (int)state[buildIndexKey];
             }
             yield return SceneManager.LoadSceneAsync(lastSceneIndex); // All Awake Methods of the new scene have been called after continueing this code block
-            time = Time.time - time;
+
+            
             RestoreState(state);
         }
 
