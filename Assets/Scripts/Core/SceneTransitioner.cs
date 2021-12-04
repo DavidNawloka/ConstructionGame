@@ -16,7 +16,9 @@ namespace CON.Core
         [SerializeField] float startingTime = .5f;
         [SerializeField] Image screenshotImage;
         [SerializeField] TextMeshProUGUI tipTMPro;
+
         Animator animator;
+        BackgroundMusicManager backgroundMusicManager;
 
         static int tipIndex;
         static int screenshotIndex;
@@ -24,6 +26,7 @@ namespace CON.Core
         private void Awake()
         {
             animator = GetComponent<Animator>();
+            backgroundMusicManager = FindObjectOfType<BackgroundMusicManager>();
         }
         private void Start()
         {
@@ -41,11 +44,13 @@ namespace CON.Core
         }
         public IEnumerator EndScene()
         {
+            
             tipIndex = GetRandomIndex(tips);
             screenshotIndex = GetRandomIndex(screenshots);
             UpdateScreenshotAndTip();
 
             animator.SetTrigger("endScene");
+            yield return StartCoroutine(backgroundMusicManager.MuteMusic());
             yield return new WaitForSecondsRealtime(animationTime);
         }
         public IEnumerator StartScene()

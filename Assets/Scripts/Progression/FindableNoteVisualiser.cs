@@ -38,7 +38,6 @@ namespace CON.Progression
         {
             if (eventData.pointerCurrentRaycast.gameObject != null)
             {
-                print("hello");
                 followMouse = true;
                 initialMousePosition = transform.position - Input.mousePosition;
             }

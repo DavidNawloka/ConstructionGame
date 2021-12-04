@@ -47416,6 +47416,91 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5654965403737991119, guid: 5b0a4a668785c4749bca292ef2a54e2f, type: 3}
   m_PrefabInstance: {fileID: 1612904571}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1614556810
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 7196673227609462662, guid: 229d8ab80d7352241a858ebd93a81fd8, type: 3}
+      propertyPath: timeToStop
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7196673227609462662, guid: 229d8ab80d7352241a858ebd93a81fd8, type: 3}
+      propertyPath: backgroundTracks.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 981a59712090bc248bb28aa1d0b2abb7, type: 3}
+    - target: {fileID: 7196673227609462662, guid: 229d8ab80d7352241a858ebd93a81fd8, type: 3}
+      propertyPath: relaxingBackgroundTracks.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7196673227609462662, guid: 229d8ab80d7352241a858ebd93a81fd8, type: 3}
+      propertyPath: suspensfulBackgroundTracks.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7196673227609462662, guid: 229d8ab80d7352241a858ebd93a81fd8, type: 3}
+      propertyPath: relaxingBackgroundTracks.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7196673227609462662, guid: 229d8ab80d7352241a858ebd93a81fd8, type: 3}
+      propertyPath: suspensfulBackgroundTracks.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 981a59712090bc248bb28aa1d0b2abb7, type: 3}
+    - target: {fileID: 7196673227609462663, guid: 229d8ab80d7352241a858ebd93a81fd8, type: 3}
+      propertyPath: m_Name
+      value: Background Music
+      objectReference: {fileID: 0}
+    - target: {fileID: 7196673227609462680, guid: 229d8ab80d7352241a858ebd93a81fd8, type: 3}
+      propertyPath: m_RootOrder
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 7196673227609462680, guid: 229d8ab80d7352241a858ebd93a81fd8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7196673227609462680, guid: 229d8ab80d7352241a858ebd93a81fd8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7196673227609462680, guid: 229d8ab80d7352241a858ebd93a81fd8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7196673227609462680, guid: 229d8ab80d7352241a858ebd93a81fd8, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7196673227609462680, guid: 229d8ab80d7352241a858ebd93a81fd8, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7196673227609462680, guid: 229d8ab80d7352241a858ebd93a81fd8, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7196673227609462680, guid: 229d8ab80d7352241a858ebd93a81fd8, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7196673227609462680, guid: 229d8ab80d7352241a858ebd93a81fd8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7196673227609462680, guid: 229d8ab80d7352241a858ebd93a81fd8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7196673227609462680, guid: 229d8ab80d7352241a858ebd93a81fd8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7196673227609462681, guid: 229d8ab80d7352241a858ebd93a81fd8, type: 3}
+      propertyPath: m_Volume
+      value: 0.05
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 229d8ab80d7352241a858ebd93a81fd8, type: 3}
 --- !u!1001 &1615130336
 PrefabInstance:
   m_ObjectHideFlags: 0

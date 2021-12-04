@@ -108,7 +108,7 @@ namespace CON.Core
             while (timer > 0)
             {
                 audioSource.volume = (timer / immediateStopTime) * defaultVolume;
-                timer += Time.deltaTime;
+                timer += Time.unscaledDeltaTime;
                 yield return null;
             }
 
