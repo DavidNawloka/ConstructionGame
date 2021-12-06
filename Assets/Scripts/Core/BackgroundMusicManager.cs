@@ -25,7 +25,7 @@ namespace CON.Core
         private void Awake()
         {
             currentBackgroundMusicClipIndex = startingTrackIndex;
-            currentBackgroundTracks = relaxingBackgroundTracks;
+            currentBackgroundTracks = suspensfulBackgroundTracks;
             audioSource = GetComponent<AudioSource>();
             StartCoroutine(LoopMusic());
         }
