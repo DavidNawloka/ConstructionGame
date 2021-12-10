@@ -58337,8 +58337,6 @@ MonoBehaviour:
     key: 27
   - name: Toggle Inventory
     key: 105
-  - name: Toggle Progression Overlay
-    key: 112
   - name: Toggle Build Mode
     key: 98
   - name: Toggle Demolish Mode
