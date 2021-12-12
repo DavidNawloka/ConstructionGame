@@ -117819,6 +117819,7 @@ GameObject:
   - component: {fileID: 3540542795551177665}
   - component: {fileID: 3540542795551177666}
   - component: {fileID: 3540542795551177664}
+  - component: {fileID: 3333176660167453187}
   m_Layer: 0
   m_Name: Hanging Bridge Building
   m_TagString: Mountain
@@ -117924,6 +117925,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uniqueIdentifier: e04424ef-7d9d-46b4-9f74-97b9916731f3
+--- !u!320 &3333176660167453187
+PlayableDirector:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3908363428467779676}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_PlayableAsset: {fileID: 11400000, guid: fceed31133ac32e43ae33e58bdb9bec4, type: 2}
+  m_InitialState: 1
+  m_WrapMode: 2
+  m_DirectorUpdateMode: 1
+  m_InitialTime: 0
+  m_SceneBindings:
+  - key: {fileID: 8305814341106336390, guid: fceed31133ac32e43ae33e58bdb9bec4, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: -4209726772994821280, guid: fceed31133ac32e43ae33e58bdb9bec4, type: 2}
+    value: {fileID: 0}
+  m_ExposedReferences:
+    m_References: []
 --- !u!1 &4402534582259358785
 GameObject:
   m_ObjectHideFlags: 0
@@ -118324,11 +118346,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b6743a1c17ba9774da1a4aca3aff3abe, type: 3}
---- !u!4 &4410224847289895855 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3041874180886367653, guid: b6743a1c17ba9774da1a4aca3aff3abe, type: 3}
+--- !u!114 &7425670028382305555 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8074931999598918425, guid: b6743a1c17ba9774da1a4aca3aff3abe, type: 3}
   m_PrefabInstance: {fileID: 1658077083856455178}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd6155f83244b15469e918015eb5fb01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &3076978519466019051 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4445391462925684449, guid: b6743a1c17ba9774da1a4aca3aff3abe, type: 3}
@@ -118362,14 +118390,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7425670028382305555 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8074931999598918425, guid: b6743a1c17ba9774da1a4aca3aff3abe, type: 3}
+--- !u!4 &4410224847289895855 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3041874180886367653, guid: b6743a1c17ba9774da1a4aca3aff3abe, type: 3}
   m_PrefabInstance: {fileID: 1658077083856455178}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd6155f83244b15469e918015eb5fb01, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

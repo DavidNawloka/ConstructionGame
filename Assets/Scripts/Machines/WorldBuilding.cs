@@ -9,6 +9,7 @@ using CON.UI;
 using Astutos.Saving;
 using CON.Core;
 using CON.Player;
+using UnityEngine.Playables;
 
 namespace CON.Machines
 {
@@ -56,13 +57,17 @@ namespace CON.Machines
             {
                 if (!inventory.HasItem(unlockRequirement.inventoryItem)) return;
             }
-            ConstructWorldBuilding();
+            StartCoroutine(ConstructWorldBuilding());
         }
 
-        private void ConstructWorldBuilding()
+        private IEnumerator ConstructWorldBuilding()
         {
+            FindObjectOfType<UserInterfaceManager>().ActivateUI(5);
             isFixed = true;
             fixWorldBuildingAnimation.Play();
+            GetComponent<PlayableDirector>().Play();
+            yield return new WaitForSeconds(fixWorldBuildingAnimation.clip.length);
+            FindObjectOfType<UserInterfaceManager>().DeactiveUI(5);
         }
         private int GetElementInstructionIndex(Element element)
         {

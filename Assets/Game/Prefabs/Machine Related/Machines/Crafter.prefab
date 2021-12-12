@@ -167,6 +167,7 @@ MonoBehaviour:
     uniqueIdentifier: 
   possibleInstructions:
   - {fileID: 11400000, guid: 3d83e2ff2f4a325458c89e1cdf54f7b7, type: 2}
+  - {fileID: 11400000, guid: 991c9898ad325044c8b6f4b5ac8e10e0, type: 2}
   - {fileID: 11400000, guid: 9c736b2ae9d399f4b8c669e24b4835a0, type: 2}
   elementExitPoint: {fileID: 1203245734015262061}
   elementTriggers:
