@@ -195,7 +195,7 @@ public class TutorialManager : MonoBehaviour, ISaveable
     private bool ObjectiveCompleted(int sectionIndex, int objectiveIndex)
     {
         tutorialSections[sectionIndex].objectives[objectiveIndex].completed = true;
-        UpdateCurrentObjectiveColoring(objectiveIndex);
+        if(sectionIndex == currentTutorialSectionIndex) UpdateCurrentObjectiveColoring(objectiveIndex);
         
         if (AllObjectiveComplete(sectionIndex))
         {

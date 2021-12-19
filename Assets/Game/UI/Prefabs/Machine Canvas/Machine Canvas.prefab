@@ -311,6 +311,7 @@ MonoBehaviour:
   sliderForeground: {fileID: 5939285099800507125}
   requirementImages: []
   outcomeImage: {fileID: 0}
+  outcomeIndicatorSprite: {fileID: 0}
   instructionDropdown: {fileID: 5896309941192616561}
   instructionIndicatorSprites:
   - {fileID: 6598004987240726620}
@@ -336,6 +337,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   horizontalConnection: {fileID: 1361637262}
   verticalConnection: {fileID: 5953011860258777254}
+  windowWidth: 410
+  windowHeight: 330
 --- !u!114 &2747819698469584060
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1590,6 +1593,10 @@ PrefabInstance:
       propertyPath: m_text
       value: ' Instruction'
       objectReference: {fileID: 0}
+    - target: {fileID: 550436038688166746, guid: 6b301428f8d12644ba1a731050e2cb19, type: 3}
+      propertyPath: defaultTabToShow
+      value: 
+      objectReference: {fileID: 8631644474991765214}
     - target: {fileID: 650886033030508047, guid: 6b301428f8d12644ba1a731050e2cb19, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 19.300003

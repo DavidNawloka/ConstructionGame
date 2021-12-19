@@ -19,6 +19,7 @@ namespace CON.UI
         [Header("Machine specific")]
         [SerializeField] Image[] requirementImages;
         [SerializeField] Image outcomeImage;
+        [SerializeField] Image outcomeIndicatorSprite;
         [Header("Instruction related")]
         [SerializeField] TMP_Dropdown instructionDropdown;
         [SerializeField] Image[] instructionIndicatorSprites;
@@ -26,7 +27,6 @@ namespace CON.UI
         [SerializeField] Image instructionIndicatorOutcomeSprite;
         [SerializeField] TextMeshProUGUI instructionIndicatorOutcomeTMPro;
 
-        
         Machine machine;
         MoveableWindow moveableWindow;
 
@@ -51,7 +51,7 @@ namespace CON.UI
             machine.OnMachineClicked -= MachineClicked;
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             if (player == null) return;
-            player.GetComponent<Builder>().onBuildModeChange -= SetActiveElementIndicators;
+            player.GetComponent<Builder>().onBuildModeChange -= SetActiveIndicators;
         }
         private void Update()
         {
@@ -100,19 +100,20 @@ namespace CON.UI
 
         public void MachineClicked() // Event from Machine Class function
         {
-            transform.position = Camera.main.WorldToScreenPoint(machine.transform.position);
+            transform.position = Camera.main.WorldToScreenPoint(machine.transform.position) + new Vector3(Screen.width * .3f, Screen.height * .2f, 0);
             moveableWindow.ToggleCanvas(machine.transform);
         }
 
         
 
-        private void SetActiveElementIndicators(bool isActive)
+        private void SetActiveIndicators(bool isActive)
         {
             foreach (Image requirementImage in requirementImages)
             {
                 requirementImage.enabled = isActive;
             }
             outcomeImage.enabled = isActive;
+            outcomeIndicatorSprite.enabled = isActive;
         }
 
         private void UpdateInstructionIndicator()
@@ -188,9 +189,9 @@ namespace CON.UI
 
             instructionDropdown.value = machine.GetCurrentInstructionIndex();
 
-            if (!machine.GetFullyPlacedStatus()) SetActiveElementIndicators(true);
+            if (!machine.GetFullyPlacedStatus()) SetActiveIndicators(true);
 
-            GameObject.FindGameObjectWithTag("Player").GetComponent<Builder>().onBuildModeChange += SetActiveElementIndicators;
+            GameObject.FindGameObjectWithTag("Player").GetComponent<Builder>().onBuildModeChange += SetActiveIndicators;
         }
 
         

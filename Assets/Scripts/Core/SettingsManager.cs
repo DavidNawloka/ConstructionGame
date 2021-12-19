@@ -15,7 +15,7 @@ namespace CON.Core
         [SerializeField] AudioSetting gUIAudio;
         [SerializeField] AudioSetting playerAudio;
         [SerializeField] AudioSetting machineAudio;
-        [SerializeField] AudioSetting specialAudio;
+        [SerializeField] AudioSetting cutsceneAudio;
         [SerializeField] AudioSetting backgroundMusicAudio;
         [Header("Video")]
         [SerializeField] TMP_Dropdown graphicsQualityDropdown;
@@ -72,13 +72,13 @@ namespace CON.Core
              float playerVolume;
              float machineVolume;
              float backgroundVolume;
-             float specialVolume;
+             float cutsceneVolume;
 
             gUIAudio.audioMixer.GetFloat("volume", out guiVolume);
             playerAudio.audioMixer.GetFloat("volume", out playerVolume);
             machineAudio.audioMixer.GetFloat("volume", out machineVolume);
             backgroundMusicAudio.audioMixer.GetFloat("volume", out backgroundVolume);
-            specialAudio.audioMixer.GetFloat("volume", out specialVolume);
+            cutsceneAudio.audioMixer.GetFloat("volume", out cutsceneVolume);
 
 
             SerializeableKeyMapping[] serializeableKeyMappings = new SerializeableKeyMapping[currentKeyMapping.Count];
@@ -90,7 +90,7 @@ namespace CON.Core
                 index++;
             }
 
-            SavedSettings savedSettings = new SavedSettings(guiVolume, playerVolume, machineVolume, backgroundVolume, specialVolume, graphicsQualityDropdown.value, resolutionDropdown.value, screenModeDropdown.value, serializeableKeyMappings);
+            SavedSettings savedSettings = new SavedSettings(guiVolume, playerVolume, machineVolume, backgroundVolume, cutsceneVolume, graphicsQualityDropdown.value, resolutionDropdown.value, screenModeDropdown.value, serializeableKeyMappings);
             if (jsonSaving == null) jsonSaving = FindObjectOfType<SavingSystemJson>();
             jsonSaving.Save(settingsFileName, savedSettings);
         }
@@ -122,8 +122,8 @@ namespace CON.Core
             ChangeBackgroundVolume(savedSettings.backgroundVolumeChange);
             backgroundMusicAudio.audioSlider.value = savedSettings.backgroundVolumeChange;
 
-            ChangeSpecialAudioVolume(savedSettings.specialVolumeChange);
-            specialAudio.audioSlider.value = savedSettings.specialVolumeChange;
+            ChangeSpecialAudioVolume(savedSettings.cutsceneVolumeChange);
+            cutsceneAudio.audioSlider.value = savedSettings.cutsceneVolumeChange;
 
             graphicsQualityDropdown.value = savedSettings.qualityIndex;
             graphicsQualityDropdown.RefreshShownValue();
@@ -166,7 +166,7 @@ namespace CON.Core
             backgroundMusicAudio.audioSlider.value = 0;
 
             ChangeSpecialAudioVolume(0);
-            specialAudio.audioSlider.value = 0;
+            cutsceneAudio.audioSlider.value = 0;
         }
 
         public void ChangeGUIVolume(float volume)
@@ -187,7 +187,7 @@ namespace CON.Core
         }
         public void ChangeSpecialAudioVolume(float volume)
         {
-            ChangeVolume(specialAudio, volume);
+            ChangeVolume(cutsceneAudio, volume);
         }
         private void ChangeVolume(AudioSetting audioMixer, float volume)
         {
@@ -420,7 +420,7 @@ namespace CON.Core
             public float playerVolumeChange;
             public float machineVolumeChange;
             public float backgroundVolumeChange;
-            public float specialVolumeChange;
+            public float cutsceneVolumeChange;
 
             public int qualityIndex;
             public int resolutionIndex;
@@ -428,13 +428,13 @@ namespace CON.Core
 
             public SerializeableKeyMapping[] serializeableKeyMappings;
 
-            public SavedSettings(float guiVolumeChange, float playerVolumeChange, float machineVolumeChange, float backgroundVolumeChange, float specialVolumeChange, int qualityIndex, int resolutionIndex, int screenModeIndex, SerializeableKeyMapping[] serializeableKeyMappings)
+            public SavedSettings(float guiVolumeChange, float playerVolumeChange, float machineVolumeChange, float backgroundVolumeChange, float cutsceneVolumeChange, int qualityIndex, int resolutionIndex, int screenModeIndex, SerializeableKeyMapping[] serializeableKeyMappings)
             {
                 this.guiVolumeChange = guiVolumeChange;
                 this.playerVolumeChange = playerVolumeChange;
                 this.machineVolumeChange = machineVolumeChange;
                 this.backgroundVolumeChange = backgroundVolumeChange;
-                this.specialVolumeChange = specialVolumeChange;
+                this.cutsceneVolumeChange = cutsceneVolumeChange;
 
                 this.qualityIndex = qualityIndex;
                 this.resolutionIndex = resolutionIndex;

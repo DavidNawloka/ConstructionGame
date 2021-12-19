@@ -58322,7 +58322,7 @@ MonoBehaviour:
   machineAudio:
     audioMixer: {fileID: 24100000, guid: 91a700d1847d6794e87f4906004ec244, type: 2}
     audioSlider: {fileID: 688416704}
-  specialAudio:
+  cutsceneAudio:
     audioMixer: {fileID: 24100000, guid: eaab1592baf54b04793b1d7c5765a43a, type: 2}
     audioSlider: {fileID: 5778301391603449770}
   backgroundMusicAudio:

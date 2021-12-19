@@ -12,6 +12,9 @@ namespace CON.UI
         [Header("Connectors")]
         [SerializeField] RectTransform horizontalConnection;
         [SerializeField] RectTransform verticalConnection;
+        [Header("Window")]
+        [SerializeField] float windowWidth;
+        [SerializeField] float windowHeight;
 
         CloseButtonManager escManager;
         Transform connectTo;
@@ -68,8 +71,8 @@ namespace CON.UI
             if (followMouse)
             {
                 transform.position = new Vector3(
-                    Mathf.Clamp(Input.mousePosition.x + initialMousePosition.x, 0, Screen.currentResolution.width),
-                    Mathf.Clamp(Input.mousePosition.y + initialMousePosition.y, 0, Screen.currentResolution.height),
+                    Mathf.Clamp(Input.mousePosition.x + initialMousePosition.x, windowWidth/2, Screen.currentResolution.width-windowWidth/2),
+                    Mathf.Clamp(Input.mousePosition.y + initialMousePosition.y, windowHeight/2, Screen.currentResolution.height-windowHeight/2),
                     0);
             }
         }
@@ -99,10 +102,7 @@ namespace CON.UI
 
         public void OnPointerUp(PointerEventData eventData)
         {
-            if (eventData.pointerCurrentRaycast.gameObject != null)
-            {
-                followMouse = false;
-            }
+            followMouse = false;
         }
     }
 

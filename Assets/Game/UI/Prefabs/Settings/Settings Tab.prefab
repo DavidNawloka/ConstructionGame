@@ -2018,7 +2018,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 386785241241957158, guid: bd2656d3f0926b840a9849ef21406408, type: 3}
       propertyPath: m_text
-      value: 'Special Audio:'
+      value: 'Cutscene Audio:'
       objectReference: {fileID: 0}
     - target: {fileID: 1083966753059884188, guid: bd2656d3f0926b840a9849ef21406408, type: 3}
       propertyPath: m_AnchorMax.x
