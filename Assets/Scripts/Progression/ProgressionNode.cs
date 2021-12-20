@@ -7,6 +7,7 @@ using TMPro;
 using UnityEditor;
 using System;
 using Astutos.Saving;
+using CON.Machines;
 
 namespace CON.Progression
 {
@@ -25,6 +26,7 @@ namespace CON.Progression
         [SerializeField] Button unlockButton;
         [SerializeField] GameObject lockedView;
         [SerializeField] Color unlockedBackgroundColor;
+        [SerializeField] Image[] produceableElementImages;
 
         ProgressionManager progressionManager;
 
@@ -46,7 +48,9 @@ namespace CON.Progression
             unlockableImage.sprite = unlockable.sprite;
             unlockableDescription.text = unlockable.description;
             UpdateRequirements();
+            UpdatedProduceableElements();
         }
+
         private void UpdateRequirements()
         {
             for (int index = 0; index < requirementVisualisation.Length; index++)
@@ -61,6 +65,19 @@ namespace CON.Progression
             }
         }
 
+        private void UpdatedProduceableElements()
+        {
+            if (unlockable.prefab == null) return;
+            Machine machine = unlockable.prefab.GetComponent<Machine>();
+
+            if (machine == null) return;
+
+            for (int index = 0; index < machine.GetPossibleInstructions().Length; index++)
+            {
+                produceableElementImages[index].gameObject.SetActive(true);
+                produceableElementImages[index].sprite = machine.GetPossibleInstructions()[index].outcome.element.sprite;
+            }
+        }
         private void CheckIfEnoughElementsProduced(Inventory inventory)
         {
             if(!unlocked) unlockButton.interactable = inventory.HasItem(unlockable.elementRequirements);

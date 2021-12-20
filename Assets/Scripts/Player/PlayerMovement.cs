@@ -95,14 +95,29 @@ namespace CON.Player
             return new Vector2Int(posX, posZ);
         }
 
-        public bool MoveTo(RaycastHit raycastHit)
+        public bool MoveTo(RaycastHit[] raycastHits)
         {
+            int raycastHitIndex = -1;
+
+            for (int raycastIndex = 0; raycastIndex < raycastHits.Length; raycastIndex++)
+            {
+                NavMeshHit navMeshHit;
+                
+                if (NavMesh.SamplePosition(raycastHits[raycastIndex].point, out navMeshHit, 15, -1)) // TODO: Cannot walk on bridge, figure out why and fix
+                {
+                    raycastHitIndex = raycastIndex;
+                    break;
+                }
+            }
+
+            if (raycastHitIndex == -1) return false;
+
             NavMeshPath navMeshPath = new NavMeshPath();
-            navMeshAgent.CalculatePath(raycastHit.point, navMeshPath);
+            navMeshAgent.CalculatePath(raycastHits[raycastHitIndex].point, navMeshPath);
 
             if (navMeshPath.status == NavMeshPathStatus.PathComplete)
             {
-                if (Input.GetMouseButtonDown(1))
+                if (Input.GetMouseButtonDown(1) || Input.GetMouseButton(1))
                 {
                     navMeshAgent.SetPath(navMeshPath);
                 }

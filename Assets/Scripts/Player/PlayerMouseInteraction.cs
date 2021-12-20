@@ -30,16 +30,16 @@ namespace CON.Player
             if (!isZoomDisabled) ManageCameraZoom();
             
 
-            RaycastHit raycastHit;
-            if (!GetCameraRaycastHit(out raycastHit))
+            RaycastHit[] raycastHits;
+            if (!GetCameraRaycastHit(out raycastHits))
             {
                 SetCursor(CursorType.None);
                 return;
             }
 
-            if (WorldInteraction(raycastHit)) return;
+            if (WorldInteraction(raycastHits)) return;
 
-            if (MovementInteraction(raycastHit)) return;
+            if (MovementInteraction(raycastHits)) return;
         }
 
         public void OnZoomDeactivationChange(bool isDisabled) // Input Allowance Class Event
@@ -79,9 +79,14 @@ namespace CON.Player
             }
             return false;
         }
-        private bool WorldInteraction(RaycastHit raycastHit)
+        private bool WorldInteraction(RaycastHit[] raycastHits)
         {
-            IRaycastable interactable = raycastHit.transform.GetComponent<IRaycastable>();
+            IRaycastable interactable = null;
+            foreach (RaycastHit raycastHit in raycastHits)
+            {
+                interactable = raycastHit.transform.GetComponent<IRaycastable>();
+                if (interactable != null) break;
+            }
             if (interactable == null) return false;
 
             if (interactable.InRange(transform))
@@ -99,9 +104,9 @@ namespace CON.Player
             return false;
         }
 
-        private bool MovementInteraction(RaycastHit raycastHit)
+        private bool MovementInteraction(RaycastHit[] raycastHits)
         {
-            if (playerMovement.MoveTo(raycastHit))
+            if (playerMovement.MoveTo(raycastHits))
             {
                 SetCursor(CursorType.Movement);
                 return true;
@@ -131,14 +136,15 @@ namespace CON.Player
             return cursorMappings[0];
         }
 
-        private bool GetCameraRaycastHit(out RaycastHit raycastHit)
+        private bool GetCameraRaycastHit(out RaycastHit[] raycastHits)
         {
             Ray cameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(cameraRay, out raycastHit))
+            raycastHits = Physics.RaycastAll(cameraRay);
+            if (raycastHits.Length == 0)
             {
-                return true;
+                return false;
             }
-            return false;
+            return true;
         }
 
         [System.Serializable]
