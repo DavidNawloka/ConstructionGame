@@ -2,6 +2,8 @@ using CON.Core;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Cinemachine;
+using System;
+using System.Collections;
 
 namespace CON.Player
 {
@@ -36,6 +38,7 @@ namespace CON.Player
                 SetCursor(CursorType.None);
                 return;
             }
+            Array.Sort(raycastHits, null, new RaycastHitSorter());
 
             if (WorldInteraction(raycastHits)) return;
 
@@ -145,6 +148,19 @@ namespace CON.Player
                 return false;
             }
             return true;
+        }
+
+        class RaycastHitSorter : IComparer
+        {
+            public int Compare(object x, object y)
+            {
+                RaycastHit hit1 = (RaycastHit)x;
+                RaycastHit hit2 = (RaycastHit)y;
+
+                if (hit1.distance < hit2.distance) return -1;
+                else if (hit1.distance > hit2.distance) return 1;
+                else return 0;
+            }
         }
 
         [System.Serializable]

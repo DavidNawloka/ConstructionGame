@@ -103,8 +103,9 @@ namespace CON.Player
             {
                 NavMeshHit navMeshHit;
                 
-                if (NavMesh.SamplePosition(raycastHits[raycastIndex].point, out navMeshHit, 15, -1)) // TODO: Cannot walk on bridge, figure out why and fix
+                if (NavMesh.SamplePosition(raycastHits[raycastIndex].point, out navMeshHit, 1, -1))
                 {
+                    print(raycastHits[raycastIndex].transform.name);
                     raycastHitIndex = raycastIndex;
                     break;
                 }
