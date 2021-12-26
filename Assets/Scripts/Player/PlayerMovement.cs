@@ -105,7 +105,6 @@ namespace CON.Player
                 
                 if (NavMesh.SamplePosition(raycastHits[raycastIndex].point, out navMeshHit, 1, -1))
                 {
-                    print(raycastHits[raycastIndex].transform.name);
                     raycastHitIndex = raycastIndex;
                     break;
                 }
