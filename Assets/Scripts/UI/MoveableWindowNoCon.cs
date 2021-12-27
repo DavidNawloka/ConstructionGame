@@ -48,10 +48,7 @@ namespace CON.UI
 
         public void OnPointerUp(PointerEventData eventData)
         {
-            if (eventData.pointerCurrentRaycast.gameObject != null)
-            {
-                followMouse = false;
-            }
+            followMouse = false;
         }
     }
 

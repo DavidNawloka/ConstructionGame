@@ -9,7 +9,7 @@ namespace CON.Progression
 {
     public class FindableNotePickup : MonoBehaviour,IRaycastable, ISaveable
     {
-        [SerializeField] FindableNote findableNote;
+        [SerializeField] FindableNoteIdentifier findableNoteIdentifier;
         [SerializeField] float pickupClickRadius;
         [SerializeField] AudioClip[] pickupSounds;
         [SerializeField] Light pointLight;
@@ -30,7 +30,7 @@ namespace CON.Progression
         private void EquipNote(bool playSound)
         {
             if(playSound) audioSourceManager.PlayOnceFromMultiple(pickupSounds);
-            findableNoteManager.EquipNewNote(findableNote);
+            findableNoteManager.EquipNewNote(findableNoteIdentifier,Vector2.zero);
             hasEquipped = true;
             pointLight.gameObject.SetActive(false);
         }
@@ -63,7 +63,7 @@ namespace CON.Progression
         public void RestoreState(object state)
         {
             if (state == null) return;
-            if ((bool)state) EquipNote(false);
+            hasEquipped = (bool)state;
         }
     }
 }

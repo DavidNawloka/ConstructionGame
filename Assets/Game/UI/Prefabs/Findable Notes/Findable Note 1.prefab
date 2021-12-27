@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6900903673474979541}
   - component: {fileID: 7123102671838719880}
   - component: {fileID: 2885554490100478308}
+  - component: {fileID: -6919342965063415166}
   m_Layer: 5
   m_Name: Findable Note 1
   m_TagString: Untagged
@@ -95,6 +96,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5717558f7bf8f054fade4bbf630bcc86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  noteType: 0
+  perfectNoteDistances:
+  - distance: {x: 20, y: -410}
+    noteType: 1
+  - distance: {x: 380, y: 22}
+    noteType: 3
+  - distance: {x: 47, y: 420}
+    noteType: 4
+  - distance: {x: -367, y: 32}
+    noteType: 7
+  maxDistanceDifference: 50
+  OnMovementStatusChange:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!225 &-6919342965063415166
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6900903673474979540}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &6900903674051687150
 GameObject:
   m_ObjectHideFlags: 0

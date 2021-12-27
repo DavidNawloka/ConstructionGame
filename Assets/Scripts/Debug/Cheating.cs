@@ -7,7 +7,7 @@ using UnityEngine;
 public class Cheating : MonoBehaviour
 {
     [SerializeField] Unlockable[] placeableToUnlock;
-    [SerializeField] FindableNote[] notesToUnlock;
+    [SerializeField] FindableNoteIdentifier[] notesToUnlock;
 
     bool f2Pressed = false;
     bool f3Pressed = false;
@@ -38,9 +38,9 @@ public class Cheating : MonoBehaviour
             if (!f3Pressed && Input.GetKeyDown(KeyCode.F3))
             {
                 f3Pressed = true;
-                foreach (FindableNote findableNote in notesToUnlock)
+                foreach (FindableNoteIdentifier findableNote in notesToUnlock)
                 {
-                    FindObjectOfType<FindableNoteManager>().EquipNewNote(findableNote);
+                    FindObjectOfType<FindableNoteManager>().EquipNewNote(findableNote,Vector2.zero);
                 }
             }
         }
