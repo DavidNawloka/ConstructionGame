@@ -235,13 +235,13 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: <space=30px>Day 37?<br>It is not possible, <br><space=15px>it can't be
-    me. I <br><space=30px>need to craft sturdy <br><space=35px>material, but it's
-    just not feasable. All those <br><space=-40px>resources needed - just for <br><space=-50px>that?
-    Why do I even bother <br><space=-45px>with all that, after all, it's not <br><space=-30px>like
-    I need it to stay alive. I'm starting to lose track of time and I also started
-    <br><space=50px>looking for a way <br><space=80px>out of here.<br><space=100px>-
-    James
+  m_text: "<space=30px>Day 37?\n<space=35px>It is just not possible, \n<space=28px>it
+    can't be me. I want to craft  \n<space=15px>sturdy material, but it's just not
+    feasable.  \n<space=-20px>All those resources needed - just for \n<space=-20px>that?
+    Why do I even bother with all \n<space=-15px>that, after all, it's not like I
+    need it to\n<space=-5px> stay alive. I'm starting to lose \n<space=5px>track
+    of time and I also  \n<space=20px>started looking for a  \n<space=30px>way out
+    of here.\n<space=60px>- Kayn"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4e8ccb8c673ee3f4b9f7552a94ebc134, type: 2}
   m_sharedMaterial: {fileID: 2048936197589244905, guid: 4e8ccb8c673ee3f4b9f7552a94ebc134, type: 2}

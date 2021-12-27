@@ -204,8 +204,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 2.2, y: -7.3}
-  m_SizeDelta: {x: 294, y: 338.2}
+  m_AnchoredPosition: {x: 11.1, y: -7.3}
+  m_SizeDelta: {x: 443.4, y: 394.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6900903674579823994
 CanvasRenderer:
@@ -235,11 +235,13 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "<space=20px>Day 1\n<space=20px>I woke up next to a \\n  few trees and
-    rocks. I <space=9px>have ZERO ideas where I am, who I am or why I am here. \nIt
-    looks like a desolate and harsh desert, but for whatever reason I don't feel
-    like drinking or <space=30px>eating - am I dead? \n<space=40px>I can't even remember
-    \\tmy name!\n<space=80px> Let's say\n<space=113px>James"
+  m_text: "<space=40px>1 Year\n<space=7px>After 6 months \n<space=10px>and countless
+    attempts \n<space=5px>I gave up on building my escape. I shall \n<space=10px>accept
+    my faith and will stay here \n<space=8px>forever. I am going to build myself
+    \n<space=4px>some kind of home and the key to\n<space=-8px>will be all my written
+    notes \n<space=-9px>combined forming a hammer. \n<space=-6px>I don't even know
+    why I will be \n<space=12px>locking my home, but I think it \n<space=77px>should
+    only be accessible \n<space=210px>to Nailah and \n<space=260px>me.\n<space=280px>-Kayn"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4e8ccb8c673ee3f4b9f7552a94ebc134, type: 2}
   m_sharedMaterial: {fileID: 2048936197589244905, guid: 4e8ccb8c673ee3f4b9f7552a94ebc134, type: 2}

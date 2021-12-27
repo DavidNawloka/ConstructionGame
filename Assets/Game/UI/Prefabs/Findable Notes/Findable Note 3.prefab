@@ -204,8 +204,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 2.2, y: -7.3}
-  m_SizeDelta: {x: 294, y: 338.2}
+  m_AnchoredPosition: {x: 2.2, y: -14.4}
+  m_SizeDelta: {x: 294, y: 449.37}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6900903674579823994
 CanvasRenderer:
@@ -235,12 +235,13 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '<space=-10px>Day 12<br><space=10px>What started like a <br><space=30px>relaxing
-    day got quite <br><space=30px>frustrating! I just <br><space=30px>can''t figure
-    out how to cut down this damn tree. I <br><space=-50px>even went as far as building
-    a <br><space=-60px>well to get some fresh water <br><space=-50px>but still -
-    no success.... <br><space=-50px>I am starting to question my <br><space=-30px>ability
-    to do much of anything. Wait, could <br><space=30px>there be an exit?<br><space=130px>-James '
+  m_text: "<space=0px>Day 12\n<space=-5px>What started \n<space=5px>like a relaxing
+    day got  \n<space=5px>quite frustrating! I just\n<space=7px>can't figure out
+    how to \n<space=-2px>cut down this damn tree.\n<space=4px>I even went as far
+    as \n<space=15px>building a well to get \n<space=40px>some fresh water, but\n<space=30px>
+    still - no success.... \n<space=30px>I am starting to\n<space=20px> question
+    my ability to\n<space=20px> do much of anything.\n<space=29px>Maybe I should
+    look for \n<space=45px>an exit out of this\n<space=80px> lonely place\n<space=120px>-Kayn "
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4e8ccb8c673ee3f4b9f7552a94ebc134, type: 2}
   m_sharedMaterial: {fileID: 2048936197589244905, guid: 4e8ccb8c673ee3f4b9f7552a94ebc134, type: 2}

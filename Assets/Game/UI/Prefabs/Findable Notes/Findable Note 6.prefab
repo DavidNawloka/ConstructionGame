@@ -160,7 +160,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: b9fe9018cf21d1e419459a056a2b0ec4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 30542475374457845971ff8c8a442e62, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -205,7 +205,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 2.2, y: -7.3}
-  m_SizeDelta: {x: 294, y: 338.2}
+  m_SizeDelta: {x: 492, y: 389.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6900903674579823994
 CanvasRenderer:
@@ -235,11 +235,14 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "<space=20px>Day 1\n<space=20px>I woke up next to a \\n  few trees and
-    rocks. I <space=9px>have ZERO ideas where I am, who I am or why I am here. \nIt
-    looks like a desolate and harsh desert, but for whatever reason I don't feel
-    like drinking or <space=30px>eating - am I dead? \n<space=40px>I can't even remember
-    \\tmy name!\n<space=80px> Let's say\n<space=113px>James"
+  m_text: "<space=15px>2-3 Months\n<space=11px>That was my last\n<space=11px>attempt
+    creating some kind \n<space=55px>of advanced material, I have \n<space=115px>enough!
+    I will keep to simpler \n<space=145px>ones like wood and stone,\n<space=151px>maybe
+    I'll build myself a house \n<space=165px>or something, who knows. \n<space=168px>One
+    thing is for sure though, \n<space=175px>the girl I've been seeing \n<space=155px>speaks!
+    Apparently her name \n<space=125px>is Nailah and I love talking to \n<space=105px>her.
+    It is refreshing to hear a \n<space=105px>voice after such a long period of \n<space=240px>loneliness.
+    -Kayn"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4e8ccb8c673ee3f4b9f7552a94ebc134, type: 2}
   m_sharedMaterial: {fileID: 2048936197589244905, guid: 4e8ccb8c673ee3f4b9f7552a94ebc134, type: 2}
