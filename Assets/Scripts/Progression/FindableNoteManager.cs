@@ -11,6 +11,8 @@ namespace CON.Progression
         [SerializeField] Transform findableNotesParent;
         [SerializeField] int noteAmountForKey = 8;
         [SerializeField] FindableNote[] allFindableNotes;
+        [Header("Last Resort Related")]
+        [SerializeField] CanvasGroup equipKeyCanvasGroup;
 
         List<FindableNote> foundNotes = new List<FindableNote>();
 
@@ -68,8 +70,10 @@ namespace CON.Progression
             GetToPerfectPosition(foundNotesArray, 4, 5);
             GetToPerfectPosition(foundNotesArray, 6, 4);
             GetToPerfectPosition(foundNotesArray, 7, 6);
-        }
 
+            equipKeyCanvasGroup.alpha = 1;
+            equipKeyCanvasGroup.interactable = true;
+        }
         private void GetToPerfectPosition(FindableNote[] foundNotesArray, int noteIndex, int referenceNoteIndex)
         {
             foundNotesArray[noteIndex].GetComponent<RectTransform>().anchoredPosition = foundNotesArray[referenceNoteIndex].GetRectTransform().anchoredPosition + -1 * foundNotesArray[noteIndex].GetPerfectDistanceTo(referenceNoteIndex);

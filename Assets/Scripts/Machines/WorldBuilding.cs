@@ -66,6 +66,7 @@ namespace CON.Machines
             isFixed = true;
             fixWorldBuildingAnimation.Play();
             GetComponent<PlayableDirector>().Play();
+            moveableWindow.SetActiveCanvas(false, moveableWindowConnect);
             yield return new WaitForSeconds(fixWorldBuildingAnimation.clip.length);
             FindObjectOfType<UserInterfaceManager>().DeactiveUI(5);
         }
