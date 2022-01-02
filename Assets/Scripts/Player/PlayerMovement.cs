@@ -42,11 +42,11 @@ namespace CON.Player
 
         private void HandleFootsteps()
         {
-            if(navMeshAgent.velocity.magnitude > minVelocityForSound)
+            if(!audioSourceManager.IsLooping() && navMeshAgent.velocity.magnitude > minVelocityForSound)
             {
                 audioSourceManager.StartLooping(GetFootstepSounds());
             }
-            else
+            else if(audioSourceManager.IsLooping())
             {
                 audioSourceManager.EndLoopingSmooth();
             }

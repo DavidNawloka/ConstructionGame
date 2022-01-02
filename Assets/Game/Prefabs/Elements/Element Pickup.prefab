@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 3748639824923191293}
   - component: {fileID: -7639887753407776485}
   - component: {fileID: -1246829685757900755}
-  - component: {fileID: -4471771127202561699}
   m_Layer: 0
   m_Name: Element Pickup
   m_TagString: Untagged
@@ -55,6 +54,7 @@ MonoBehaviour:
   spawnedElementImageAlpha: 0.6
   pickupSounds:
   - {fileID: 8300000, guid: babb8e7209fdc714e92ae8a0a11227df, type: 3}
+  pitchRange: 0.2
 --- !u!54 &-7639887753407776485
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -167,20 +167,3 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &-4471771127202561699
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1484755242767927716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c96c6991b0872824ba45e862deccd0cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playedSounds: []
-  loopPlayTimerMultiplier: 1
-  immediateStopTime: 0.1
-  shouldChangePitch: 1
-  pitchRange: 0.2

@@ -20,6 +20,7 @@ namespace CON.Machines
         [SerializeField] Transform moveableWindowConnect;
         [SerializeField] Animation fixWorldBuildingAnimation;
 
+        UserInterfaceManager userInterfaceManager;
         Inventory inventory;
         Builder builder;
         bool isFixed = false;
@@ -27,6 +28,7 @@ namespace CON.Machines
         void Awake()
         {
             inventory = GetComponent<Inventory>();
+            userInterfaceManager = FindObjectOfType<UserInterfaceManager>();
             builder = GameObject.FindGameObjectWithTag("Player").GetComponent<Builder>();
             builder.onBuildModeChange += OnBuildModeChange;
         }
@@ -62,14 +64,23 @@ namespace CON.Machines
 
         private IEnumerator ConstructWorldBuilding()
         {
-            FindObjectOfType<UserInterfaceManager>().ActivateUI(5);
+            userInterfaceManager.ActivateUI(5);
             isFixed = true;
             fixWorldBuildingAnimation.Play();
             GetComponent<PlayableDirector>().Play();
             moveableWindow.SetActiveCanvas(false, moveableWindowConnect);
             yield return new WaitForSeconds(fixWorldBuildingAnimation.clip.length);
-            FindObjectOfType<UserInterfaceManager>().DeactiveUI(5);
+            userInterfaceManager.DeactiveUI(5);
         }
+
+        private void SetActiveAllUIS(bool isActive)
+        {
+            for (int interfaceIndex = 0; interfaceIndex < 4; interfaceIndex++)
+            {
+                if(userInterfaceManager.IsUserInterfaceTypeActive(interfaceIndex)) userInterfaceManager.SetActiveUIStripped(interfaceIndex, isActive);
+            }
+        }
+
         private int GetElementInstructionIndex(Element element)
         {
             for (int index = 0; index < unlockRequirements.Length; index++)

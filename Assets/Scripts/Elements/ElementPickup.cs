@@ -17,8 +17,16 @@ namespace CON.Elements
         [SerializeField] float spawnedElementImageScale = 0.7f;
         [SerializeField] float spawnedElementImageAlpha = 0.7f;
         [SerializeField] AudioClip[] pickupSounds;
+        [SerializeField] float pitchRange;
 
         float timer = 0f;
+
+        AudioSource audioSource;
+
+        private void Awake()
+        {
+            audioSource = GetComponent<AudioSource>();
+        }
 
         public InventoryItem GetItemToEquip()
         {
@@ -41,7 +49,8 @@ namespace CON.Elements
             if (playerInventory.EquipItemWhere(itemToEuqip, out inventoryIndex))
             {
                 int randIndex = Random.Range(0, pickupSounds.Length);
-                GetComponent<AudioSourceManager>().PlayOnce(pickupSounds[randIndex]);
+                ChangePitch();
+                audioSource.PlayOneShot(pickupSounds[randIndex]);
                 GetComponentInChildren<MeshRenderer>().enabled = false;
                 GetComponentInChildren<MeshCollider>().enabled = false;
 
@@ -86,7 +95,10 @@ namespace CON.Elements
             }
             Destroy(element);
         }
-
+        private void ChangePitch()
+        {
+            audioSource.pitch = Random.Range(1 - pitchRange / 2, 1 + pitchRange / 2);
+        }
         // Interface implementations
 
         public void HandleInteractionClick(Transform player)

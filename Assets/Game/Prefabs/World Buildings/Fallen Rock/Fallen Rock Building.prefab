@@ -548,6 +548,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: World Building Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 6780751986707604993, guid: b6743a1c17ba9774da1a4aca3aff3abe, type: 3}
+      propertyPath: m_text
+      value: Fallen Rock
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b6743a1c17ba9774da1a4aca3aff3abe, type: 3}
 --- !u!114 &5761236553579760255 stripped
@@ -1888,6 +1892,10 @@ PrefabInstance:
     - target: {fileID: 6654585513221422481, guid: 07659a8dbd9c4194d9466ec75fc6d51b, type: 3}
       propertyPath: m_Name
       value: Indicator Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 7034268143405427851, guid: 07659a8dbd9c4194d9466ec75fc6d51b, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 07659a8dbd9c4194d9466ec75fc6d51b, type: 3}

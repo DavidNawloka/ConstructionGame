@@ -70,6 +70,10 @@ namespace CON.Core
         {
             SetActiveLooping(true, audioFilesToLoop);
         }
+        public bool IsLooping()
+        {
+            return shouldLoop;
+        }
         public void EndLoopingImmediate()
         {
             SetActiveLooping(false,null);

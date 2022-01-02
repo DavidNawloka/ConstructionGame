@@ -1,5 +1,6 @@
 
 using CON.Core;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -84,20 +85,29 @@ namespace CON.UI
         {
             SetActiveUI(typeIndex, !UITypes[typeIndex].isEnabled);
         }
+        public void SetActiveUIStripped(int userInteraceIndex, bool isActive)
+        {
+            SetActiveUserInterfaceType(UITypes[userInteraceIndex], isActive, false);
+        }
         private void SetActiveUI(int typeIndex, bool isActive)
         {
             UserInterfaceType userInterfaceType = UITypes[typeIndex];
 
             SetActiveUserInterfaceType(userInterfaceType, isActive, true);
+            HandleClosedByESC(typeIndex, isActive);
 
+            if (userInterfaceType.shouldBeShownAlone) HandleShownAloneUIType(typeIndex, isActive, userInterfaceType);
+
+        }
+
+        private void HandleClosedByESC(int typeIndex, bool isActive)
+        {
+            UserInterfaceType userInterfaceType = UITypes[typeIndex];
             if (userInterfaceType.closedByEsc)
             {
                 if (isActive) escManager.AddFunction(() => DeactiveUI(typeIndex), userInterfaceType.GetHashCode().ToString());
                 else escManager.RemoveFunction(userInterfaceType.GetHashCode().ToString());
             }
-
-            if (userInterfaceType.shouldBeShownAlone) HandleShownAloneUIType(typeIndex, isActive, userInterfaceType);
-
         }
 
         private void HandleShownAloneUIType(int typeIndex, bool isActive, UserInterfaceType userInterfaceType)
@@ -108,24 +118,33 @@ namespace CON.UI
                 foreach (UserInterfaceType UIType in UITypes)
                 {
                     if (!UIType.isEnabled || UIType == userInterfaceType) continue;
-
+                    
                     SetActiveUserInterfaceType(UIType, false, false);
-                    tempClosedUITypes.Add(UIType);
+                    
+                    HandleClosedByESC(GetUITypeIndex(UIType), false);
+                    userInterfaceType.tempClosedUI.Add(GetUITypeIndex(UIType));
                 }
             }
             else
             {
-                foreach (UserInterfaceType UIType in tempClosedUITypes)
+                foreach (int UITypeIndex in userInterfaceType.tempClosedUI)
                 {
-                    SetActiveUserInterfaceType(UIType, true, false);
+                    SetActiveUserInterfaceType(UITypes[UITypeIndex], true, false);
+                    HandleClosedByESC(UITypeIndex, true);
+                    if (UITypes[UITypeIndex].shouldBeShownAlone) onlyInputUITypeIndex = UITypeIndex;
                 }
-                tempClosedUITypes.Clear();
-                onlyInputUITypeIndex = -1;
+                userInterfaceType.tempClosedUI.Clear();
+                if(onlyInputUITypeIndex == typeIndex) onlyInputUITypeIndex = -1;
             }
+        }
+        private int GetUITypeIndex(UserInterfaceType userInterfaceType)
+        {
+            return Array.IndexOf(UITypes, userInterfaceType);
         }
 
         private void SetActiveUserInterfaceType(UserInterfaceType UIType, bool isActive, bool shouldPlaySound)
         {
+            //print(isActive + ":" + GetUITypeIndex(UIType));
             if (isActive) UIType.animator.SetTrigger("show");
             else UIType.animator.SetTrigger("hide");
 
@@ -144,6 +163,7 @@ namespace CON.UI
             public AudioClip audioClip;
             public UnityEvent OnToggle;
             [HideInInspector] public KeyCode keyToToggle;
+            public List<int> tempClosedUI = new List<int>();
         }
     }
 
