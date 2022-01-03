@@ -368,6 +368,11 @@ namespace CON.Core
             return currentKeyMapping[name];
         }
 
+        public Sprite GetKeySprite(string name)
+        {
+            return keyMappingVisual[currentKeyMapping[name]];
+        }
+
         public object CaptureState()
         {
             Save();
