@@ -39,6 +39,10 @@ namespace CON.UI
             UpdateOwnPosition();
             UpdateConnectionPosition();
         }
+        public bool IsShown()
+        {
+            return !isHidden;
+        }
         public void ToggleCanvas(Transform connectTo)
         {
             SetActiveCanvas(isHidden,connectTo);

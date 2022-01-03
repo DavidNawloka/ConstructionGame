@@ -9,6 +9,7 @@ using CON.Elements;
 using CON.Machines;
 using CON.Progression;
 using Astutos.Saving;
+using UnityEngine.Video;
 
 public class TutorialManager : MonoBehaviour, ISaveable
 {
@@ -18,6 +19,7 @@ public class TutorialManager : MonoBehaviour, ISaveable
     [SerializeField] RectTransform minimapParent;
     [SerializeField] TextMeshProUGUI sectionHead;
     [SerializeField] ObjectiveVisualisation[] objectiveVisualisations;
+    [SerializeField] Animator helperVideoAnimator;
     [SerializeField] Color objectiveCompleted;
     [SerializeField] Color objectiveUncompleted;
     [SerializeField] float timeToChangeSection = 1f;
@@ -41,6 +43,8 @@ public class TutorialManager : MonoBehaviour, ISaveable
 
     int currentTutorialSectionIndex = 0;
     bool isChangingSection = false;
+    bool isHelperVideoShown = false;
+    VideoPlayer videoPlayer;
 
     Vector3 startingPlayerPosition;
     CinemachineComponentBase componentBase;
@@ -48,7 +52,6 @@ public class TutorialManager : MonoBehaviour, ISaveable
     bool hasEquippedItem = false;
     bool hasWaterCollectorElements = false;
     bool hasWaterInstructionElements = false;
-    bool hasWaterCollectorClicked = false;
     bool hasWaterPoduced = false;
     bool hasWoodPoduced = false;
     bool hasHangingBridgeElements = false;
@@ -59,6 +62,7 @@ public class TutorialManager : MonoBehaviour, ISaveable
     Machine placedWaterCollector;
     private void Awake()
     {
+        videoPlayer = GetComponent<VideoPlayer>();
         startingPlayerPosition = player.position;
         componentBase = followCamera.GetCinemachineComponent(CinemachineCore.Stage.Body);
         initialCameraZoom = (componentBase as CinemachineFramingTransposer).m_CameraDistance;
@@ -91,11 +95,10 @@ public class TutorialManager : MonoBehaviour, ISaveable
             if (userInterfaceManager.IsUserInterfaceTypeActive(2)) ObjectiveCompleted(2, 1);
             if (WasWaterCollectorBuilt()) ObjectiveCompleted(2, 2);
         }
-        if(placedWaterCollector == null) WasWaterCollectorBuilt();
         if (!tutorialSections[3].completed)
         {
             if (hasWaterInstructionElements) ObjectiveCompleted(3, 0);
-            if (hasWaterCollectorClicked) ObjectiveCompleted(3, 1);
+            if (WasWaterCollectorClicked()) ObjectiveCompleted(3, 1);
             if (hasWaterPoduced) ObjectiveCompleted(3, 2);
         }
         if (!tutorialSections[4].completed)
@@ -145,9 +148,20 @@ public class TutorialManager : MonoBehaviour, ISaveable
             if (machine == null) continue;
             if (machine.GetPlaceableInformation().placementRequirement == waterCollector.GetPlaceableInformation().placementRequirement && machine.GetFullyPlacedStatus())
             {
-                placedWaterCollector = machine;
-                placedWaterCollector.OnMachineClicked += WaterCollectorClicked;
                 return true;
+            }
+        }
+        return false;
+    }
+    private bool WasWaterCollectorClicked()
+    {
+        foreach (Transform child in builtMachinesParent)
+        {
+            Machine machine = child.GetComponent<Machine>();
+            if (machine == null) continue;
+            if (machine.GetPlaceableInformation().placementRequirement == waterCollector.GetPlaceableInformation().placementRequirement && machine.GetFullyPlacedStatus())
+            {
+                if (machine.transform.GetComponentInChildren<MoveableWindow>().IsShown()) return true;
             }
         }
         return false;
@@ -177,11 +191,6 @@ public class TutorialManager : MonoBehaviour, ISaveable
         finishTutorial = true;
     }
 
-    private void WaterCollectorClicked()
-    {
-        hasWaterCollectorClicked = true;
-    }
-
     public void PlayerCrossedBridge()
     {
         hasPlayerCrossedBridge = true;
@@ -192,6 +201,14 @@ public class TutorialManager : MonoBehaviour, ISaveable
     }
 
     // GENERIC LOGIC USED BY ALL TUTORIAL SECTIONS
+
+    public void ToggleHelperVideo()
+    {
+        isHelperVideoShown = !isHelperVideoShown;
+
+        if (isHelperVideoShown) helperVideoAnimator.SetTrigger("show");
+        else helperVideoAnimator.SetTrigger("hide");
+    }
     private bool ObjectiveCompleted(int sectionIndex, int objectiveIndex)
     {
         tutorialSections[sectionIndex].objectives[objectiveIndex].completed = true;
@@ -210,6 +227,8 @@ public class TutorialManager : MonoBehaviour, ISaveable
     {
         isChangingSection = true;
         sectionHead.color = objectiveCompleted;
+
+        if (isHelperVideoShown) ToggleHelperVideo();
 
         yield return new WaitForSeconds(slideOutDelay);
         yield return StartCoroutine(MoveSectionParent(sectionParent));
@@ -275,6 +294,7 @@ public class TutorialManager : MonoBehaviour, ISaveable
     private void UpdateSectionVisualisation()
     {
         TutorialSection tutorialSection = tutorialSections[currentTutorialSectionIndex];
+        videoPlayer.clip = tutorialSection.helperVideo;
         foreach (ObjectiveVisualisation objectiveVisualisation in objectiveVisualisations)
         {
             objectiveVisualisation.parent.gameObject.SetActive(false);
@@ -339,6 +359,7 @@ public class TutorialManager : MonoBehaviour, ISaveable
         public bool completed;
         public Objective[] objectives;
         public GameObject[] gameObjectsToActivate;
+        public VideoClip helperVideo;
     }
     [System.Serializable]
     public class Objective
