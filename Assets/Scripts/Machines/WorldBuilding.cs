@@ -126,6 +126,7 @@ namespace CON.Machines
 
         public void HandleInteractionClick(Transform player)
         {
+            moveableWindow.transform.position = Camera.main.WorldToScreenPoint(transform.position) + new Vector3(-Screen.width * .2f, -Screen.height * .3f, 0);
             moveableWindow.ToggleCanvas(moveableWindowConnect);
         }
         public object CaptureState()

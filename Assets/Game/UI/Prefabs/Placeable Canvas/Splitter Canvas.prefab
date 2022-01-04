@@ -1730,6 +1730,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   horizontalConnection: {fileID: 3800135183675419263}
   verticalConnection: {fileID: 7359324273723206999}
+  windowWidth: 410
+  windowHeight: 330
 --- !u!114 &7184796258489208498
 MonoBehaviour:
   m_ObjectHideFlags: 0

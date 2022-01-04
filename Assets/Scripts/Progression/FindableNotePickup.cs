@@ -64,6 +64,7 @@ namespace CON.Progression
         {
             if (state == null) return;
             hasEquipped = (bool)state;
+            if(hasEquipped) pointLight.gameObject.SetActive(false);
         }
     }
 }

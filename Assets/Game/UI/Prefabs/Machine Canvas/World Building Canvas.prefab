@@ -320,6 +320,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   horizontalConnection: {fileID: 1986936871754407379}
   verticalConnection: {fileID: 5264246382302960379}
+  windowWidth: 410
+  windowHeight: 330
 --- !u!114 &4445391462925684449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -765,7 +767,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!114 &4744297779598143033
 MonoBehaviour:
@@ -941,7 +943,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_TargetDisplay: 0
 --- !u!114 &2096612397374488208
 MonoBehaviour:

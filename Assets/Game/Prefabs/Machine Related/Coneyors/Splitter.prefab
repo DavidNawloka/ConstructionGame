@@ -5571,6 +5571,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Splitter Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 2628714773946643686, guid: 78cbefe4165934b4ea6f73ca6b88e2a3, type: 3}
+      propertyPath: m_SortingOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8284630026363165881, guid: 78cbefe4165934b4ea6f73ca6b88e2a3, type: 3}
+      propertyPath: m_SortingOrder
+      value: -1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 78cbefe4165934b4ea6f73ca6b88e2a3, type: 3}
 --- !u!4 &4508259951771957874 stripped

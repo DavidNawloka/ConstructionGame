@@ -3,6 +3,7 @@ using CON.Player;
 using CON.UI;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -16,6 +17,7 @@ namespace CON.Machines
 
         bool fullyPlaced = false;
         UserInterfaceManager userInterfaceManager;
+        Builder builder;
 
         private void Awake()
         {
@@ -36,6 +38,7 @@ namespace CON.Machines
             switch (placementStatus)
             {
                 case PlacementStatus.startingPlacement:
+                    builder = player;
                     foreach (Transform child in navMeshObstaclesParent)
                     {
                         child.GetComponent<NavMeshObstacle>().enabled = true;
@@ -69,11 +72,13 @@ namespace CON.Machines
 
         public bool InRange(Transform player)
         {
-            return fullyPlaced;
+            return fullyPlaced && !builder.IsDemolishMode();
         }
 
         public void HandleInteractionClick(Transform player)
         {
+            if (EventSystem.current.IsPointerOverGameObject() || builder.IsDemolishMode()) return;
+
             userInterfaceManager.ToggleUI(3);
         }
     }

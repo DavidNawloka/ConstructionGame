@@ -154,7 +154,7 @@ namespace CON.Machines
 
             for (int amount = 0; amount < currentInstruction.outcome.amount; amount++)
             {
-                Instantiate(currentInstruction.outcome.element.pickupPrefab, elementExitPoint.position + UnityEngine.Random.insideUnitSphere*.1f, Quaternion.identity);
+                Instantiate(currentInstruction.outcome.element.pickupPrefab, elementExitPoint.position + UnityEngine.Random.insideUnitSphere*.2f, Quaternion.identity);
                 
             }
             inventory.RemoveItem(currentInstruction.requirements);
@@ -236,12 +236,12 @@ namespace CON.Machines
 
         public bool InRange(Transform player)
         {
-            return fullyPlaced;
+            return fullyPlaced && !builder.IsDemolishMode();
         }
 
         public void HandleInteractionClick(Transform player)
         {
-            if (!fullyPlaced || EventSystem.current.IsPointerOverGameObject() || builder.IsDemolishMode()) return;
+            if (EventSystem.current.IsPointerOverGameObject() || builder.IsDemolishMode()) return;
 
             OnMachineClicked();
         }

@@ -14,6 +14,7 @@ namespace CON.Progression
     public class ProgressionNode : MonoBehaviour, ISaveable
     {
         public bool unlocked = false;
+        public bool unlockedView = false;
         [SerializeField] ProgressionNode[] parentNodes;
         [SerializeField] InventoryItemVisualisation[] requirementVisualisation;
         [SerializeField] Unlockable unlockable;
@@ -24,11 +25,16 @@ namespace CON.Progression
         [SerializeField] Image unlockableImage;
         [SerializeField] TextMeshProUGUI unlockableDescription;
         [SerializeField] Button unlockButton;
-        [SerializeField] GameObject lockedView;
-        [SerializeField] Color unlockedBackgroundColor;
+        [SerializeField] Animation lockedViewAnimation;
+        [SerializeField] Color unlockedMainBackgroundColor;
+        [SerializeField] Color unlockedBorderColor;
+        [SerializeField] Image border;
+        [SerializeField] Color unlockedProduceableBackgroundColor;
+        [SerializeField] Image produceableBackground;
         [SerializeField] Image[] produceableElementImages;
 
         ProgressionManager progressionManager;
+        
 
         private void Awake()
         {
@@ -106,7 +112,9 @@ namespace CON.Progression
         {
             unlocked = true;
             progressionManager.UnlockPlaceable(unlockable);
-            GetComponent<Image>().color = unlockedBackgroundColor;
+            GetComponent<Image>().color = unlockedMainBackgroundColor;
+            border.color = unlockedBorderColor;
+            produceableBackground.color = unlockedProduceableBackgroundColor;
             unlockButton.interactable = false;
             progressionManager.OnPlaceableUnlocked.RemoveListener(CheckUnlockView);
         }
@@ -115,9 +123,10 @@ namespace CON.Progression
         {
             foreach (ProgressionNode parentNode in parentNodes)
             {
-                if (parentNode.unlocked)
+                if (parentNode.unlocked && !unlockedView)
                 {
-                    lockedView.SetActive(false);
+                    lockedViewAnimation.Play();
+                    unlockedView = true;
                 }
             }
         }
@@ -155,7 +164,7 @@ namespace CON.Progression
             unlocked = (bool)state;
             if (unlocked && unlockable.prefab != null)
             {
-                lockedView.SetActive(false);
+                lockedViewAnimation.Play();
                 OnClick();
             }
         }
