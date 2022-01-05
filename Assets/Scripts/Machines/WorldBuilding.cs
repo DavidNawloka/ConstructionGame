@@ -19,6 +19,9 @@ namespace CON.Machines
         [SerializeField] MoveableWindow moveableWindow;
         [SerializeField] Transform moveableWindowConnect;
         [SerializeField] Animation fixWorldBuildingAnimation;
+        [SerializeField] bool shouldMuteBackgroundMusic = false;
+        [SerializeField] bool shouldLoadMainMenuAtEnd = false;
+        [SerializeField] bool shouldStartWithP = false;
 
         UserInterfaceManager userInterfaceManager;
         Inventory inventory;
@@ -37,7 +40,11 @@ namespace CON.Machines
         {
             InitialiseElementTriggers();
         }
-        
+        private void Update()
+        {
+            if(shouldStartWithP && Input.GetKeyDown(KeyCode.P)) StartCoroutine(ConstructWorldBuilding());
+        }
+
         public void AddEnergyElement(ElementPickup elementToAdd) // Event for when Elements enter
         {
             if (!CheckIfElementIsNeeded(elementToAdd)) return;
@@ -64,13 +71,24 @@ namespace CON.Machines
 
         private IEnumerator ConstructWorldBuilding()
         {
+            if (shouldMuteBackgroundMusic) StartCoroutine(FindObjectOfType<BackgroundMusicManager>().MuteMusic());
             userInterfaceManager.ActivateUI(5);
             isFixed = true;
             fixWorldBuildingAnimation.Play();
             GetComponent<PlayableDirector>().Play();
             moveableWindow.SetActiveCanvas(false, moveableWindowConnect);
-            yield return new WaitForSeconds(fixWorldBuildingAnimation.clip.length);
-            userInterfaceManager.DeactiveUI(5);
+
+            if (shouldLoadMainMenuAtEnd)
+            {
+                yield return new WaitForSeconds((float)GetComponent<PlayableDirector>().duration - 2);
+                FindObjectOfType<SceneTransitioner>().LoadScene(0);
+            }
+            else
+            {
+                yield return new WaitForSeconds((float)GetComponent<PlayableDirector>().duration);
+                userInterfaceManager.DeactiveUI(5);
+            }
+            
         }
 
         private void SetActiveAllUIS(bool isActive)

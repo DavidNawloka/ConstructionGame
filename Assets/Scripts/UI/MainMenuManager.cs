@@ -15,6 +15,11 @@ namespace CON.UI
 
         SavingWrapper savingWrapper;
 
+
+        private void Awake()
+        {
+            Time.timeScale = 1;
+        }
         private void Start()
         {
             savingWrapper = FindObjectOfType<SavingWrapper>();

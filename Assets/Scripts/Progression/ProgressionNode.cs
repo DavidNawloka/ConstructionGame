@@ -95,7 +95,7 @@ namespace CON.Progression
                 }
 
                 int amountOfElementProduced = inventory.GetAmountOfElement(unlockable.elementRequirements[index].element);
-                requirementVisualisation[index].tmPro.text = amountOfElementProduced + " / " + unlockable.elementRequirements[index].amount.ToString();
+                requirementVisualisation[index].tmPro.text = GetFormattedElementProduced(amountOfElementProduced) + " / " + unlockable.elementRequirements[index].amount.ToString();
 
                 if(amountOfElementProduced >= unlockable.elementRequirements[index].amount)
                 {
@@ -106,6 +106,16 @@ namespace CON.Progression
                     requirementVisualisation[index].tmPro.color = Color.red;
                 }
             }
+        }
+
+        private string GetFormattedElementProduced(int elementProduced)
+        {
+            string stringAmount = elementProduced.ToString();
+            if(stringAmount.Length > 3)
+            {
+                stringAmount = stringAmount.Substring(0, 1) + "k";
+            }
+            return stringAmount;
         }
 
         private void OnClick()

@@ -20,8 +20,8 @@ namespace CON.Core
         Animator animator;
         BackgroundMusicManager backgroundMusicManager;
 
-        static int tipIndex;
-        static int screenshotIndex;
+        static int tipIndex ;
+        static int screenshotIndex ;
 
         private void Awake()
         {
@@ -30,8 +30,9 @@ namespace CON.Core
         }
         private void Start()
         {
-            StartCoroutine(StartScene());
+            //if (tipIndex == -1 && SceneManager.GetActiveScene().buildIndex != 1) return;
             UpdateScreenshotAndTip();
+            StartCoroutine(StartScene());
         }
         public void LoadScene(int sceneIndex)
         {
@@ -61,6 +62,11 @@ namespace CON.Core
         }
         private void UpdateScreenshotAndTip()
         {
+            //if (Debug.isDebugBuild)
+            //{
+            //    tipIndex = GetRandomIndex(tips);
+            //    screenshotIndex = GetRandomIndex(screenshots);
+            //}
             screenshotImage.sprite = screenshots[screenshotIndex];
             tipTMPro.text = tips[tipIndex];
         }

@@ -43,8 +43,17 @@ namespace CON.UI
 
                 inventorySlotsSprites[inventoryIndex].color = new Color(1,1,1,1);
                 inventorySlotsSprites[inventoryIndex].sprite = element.sprite;
-                inventorySlotsAmounts[inventoryIndex].text = updatedInventory[inventoryIndex].amount.ToString();
+                inventorySlotsAmounts[inventoryIndex].text = GetFormattedElementProduced(updatedInventory[inventoryIndex].amount);
             }
+        }
+        private string GetFormattedElementProduced(int elementProduced)
+        {
+            string stringAmount = elementProduced.ToString();
+            if (stringAmount.Length > 3)
+            {
+                stringAmount = stringAmount.Substring(0, 1) + "k";
+            }
+            return stringAmount;
         }
     }
 }

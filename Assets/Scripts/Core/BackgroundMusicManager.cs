@@ -18,6 +18,7 @@ namespace CON.Core
         [SerializeField] float timeToStop = .5f;
 
         AudioSource audioSource;
+        bool shouldPlay = true;
 
         int currentBackgroundMusicClipIndex;
         AudioClip[] currentBackgroundTracks;
@@ -41,12 +42,13 @@ namespace CON.Core
             }
 
             audioSource.Stop();
+            shouldPlay = false;
             audioSource.volume = defaultVolume;
         }
         private IEnumerator LoopMusic()
         {
             if (shouldDelayInitialStart) yield return new WaitForSecondsRealtime(startingDelay);
-            while (true)
+            while (shouldPlay)
             {
                 audioSource.PlayOneShot(currentBackgroundTracks[currentBackgroundMusicClipIndex]);
                 yield return new WaitForSecondsRealtime(currentBackgroundTracks[currentBackgroundMusicClipIndex].length);
