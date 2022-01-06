@@ -59,6 +59,8 @@ MonoBehaviour:
   - distance: {x: 1, y: 359}
     noteType: 5
   maxDistanceDifference: 50
+  windowWidth: 150
+  windowHeight: 400
   OnMovementStatusChange:
     m_PersistentCalls:
       m_Calls: []
@@ -259,8 +261,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "<space=30px>Day 37?\n<space=35px>It is just not possible, \n<space=28px>it
-    can't be me. I want to craft  \n<space=15px>sturdy material, but it's just not
-    feasable.  \n<space=-20px>All those resources needed - just for \n<space=-20px>that?
+    can't be me. I wanted to craft  \n<space=15px>sturdy material, but it's just
+    not feasable.  \n<space=-20px>All those resources needed - just for \n<space=-20px>that?
     Why do I even bother with all \n<space=-15px>that, after all, it's not like I
     need it to\n<space=-5px> stay alive. I'm starting to lose \n<space=5px>track
     of time and I also  \n<space=20px>started looking for a  \n<space=30px>way out

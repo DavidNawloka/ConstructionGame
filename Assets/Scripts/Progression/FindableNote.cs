@@ -15,6 +15,9 @@ namespace CON.Progression
         public FindableNoteIdentifier noteType;
         [SerializeField] NoteDistance[] perfectNoteDistances;
         [SerializeField] float maxDistanceDifference = 5f;
+        [Header("Window")]
+        [SerializeField] float windowWidth;
+        [SerializeField] float windowHeight;
 
         bool followMouse = false;
         bool keyPlacementFound = false;
@@ -36,8 +39,8 @@ namespace CON.Progression
         private void UpdateOwnPosition()
         {
             transform.position = new Vector3(
-                    Input.mousePosition.x + initialMousePosition.x,
-                    Input.mousePosition.y + initialMousePosition.y,
+                    Mathf.Clamp(Input.mousePosition.x + initialMousePosition.x, windowWidth / 2 + 460, Screen.currentResolution.width - windowWidth / 2),
+                    Mathf.Clamp(Input.mousePosition.y + initialMousePosition.y, windowHeight / 2, Screen.currentResolution.height - windowHeight / 2),
                     0);
         }
 

@@ -91,14 +91,6 @@ namespace CON.Machines
             
         }
 
-        private void SetActiveAllUIS(bool isActive)
-        {
-            for (int interfaceIndex = 0; interfaceIndex < 4; interfaceIndex++)
-            {
-                if(userInterfaceManager.IsUserInterfaceTypeActive(interfaceIndex)) userInterfaceManager.SetActiveUIStripped(interfaceIndex, isActive);
-            }
-        }
-
         private int GetElementInstructionIndex(Element element)
         {
             for (int index = 0; index < unlockRequirements.Length; index++)
@@ -144,7 +136,7 @@ namespace CON.Machines
 
         public void HandleInteractionClick(Transform player)
         {
-            moveableWindow.transform.position = Camera.main.WorldToScreenPoint(transform.position) + new Vector3(-Screen.width * .2f, -Screen.height * .3f, 0);
+            moveableWindow.transform.position = Camera.main.WorldToScreenPoint(transform.position);
             moveableWindow.ToggleCanvas(moveableWindowConnect);
         }
         public object CaptureState()

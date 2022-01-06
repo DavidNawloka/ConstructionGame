@@ -14,5 +14,6 @@ namespace CON.Progression
         Note6,
         Note7,
         Note8,
+        Note9
     }
 }

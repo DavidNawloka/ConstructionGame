@@ -36,8 +36,12 @@ namespace CON.Progression
                 }
             }
             
-            foundNotes.Add(instantiatedNote);
-            instantiatedNote.OnMovementStatusChange.AddListener(OnFindableNoteMovingStatusChange);
+            if(foundNotes.Count != noteAmountForKey)
+            {
+                foundNotes.Add(instantiatedNote);
+                instantiatedNote.OnMovementStatusChange.AddListener(OnFindableNoteMovingStatusChange);
+            }
+
             instantiatedNote.GetRectTransform().anchoredPosition = anchoredPosition;
         }
 

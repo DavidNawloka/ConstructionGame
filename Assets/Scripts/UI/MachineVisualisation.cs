@@ -45,10 +45,12 @@ namespace CON.UI
         private void OnEnable()
         {
             machine.OnMachineClicked += MachineClicked;
+            machine.OnInstructionChanged += UpdateInstructionDisplay;
         }
         private void OnDisable()
         {
             machine.OnMachineClicked -= MachineClicked;
+            machine.OnInstructionChanged -= UpdateInstructionDisplay;
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             if (player == null) return;
             player.GetComponent<Builder>().onBuildModeChange -= SetActiveIndicators;
@@ -66,6 +68,10 @@ namespace CON.UI
         public void UpdateCurrentInstruction(int instructionIndex)
         {
             machine.SetCurrentInstruction(instructionIndex);
+        }
+
+        private void UpdateInstructionDisplay()
+        {
             UpdateRequirementUIMultiple();
             UpdateInstructionIndicator();
         }

@@ -59,6 +59,8 @@ MonoBehaviour:
   - distance: {x: -20, y: -404}
     noteType: 2
   maxDistanceDifference: 50
+  windowWidth: 150
+  windowHeight: 400
   OnMovementStatusChange:
     m_PersistentCalls:
       m_Calls: []

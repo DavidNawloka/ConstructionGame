@@ -13,7 +13,7 @@ namespace CON.Machines
     {
         [SerializeField] PlaceableInformation placeableInformation;
         [SerializeField] Transform navMeshObstaclesParent;
-
+        [SerializeField] ParticleSystem campFireParticleSystem;
 
         bool fullyPlaced = false;
         UserInterfaceManager userInterfaceManager;
@@ -38,6 +38,7 @@ namespace CON.Machines
             switch (placementStatus)
             {
                 case PlacementStatus.startingPlacement:
+                    campFireParticleSystem.Play();
                     builder = player;
                     foreach (Transform child in navMeshObstaclesParent)
                     {
@@ -48,6 +49,7 @@ namespace CON.Machines
                     Destroy(gameObject);
                     break;
                 case PlacementStatus.endingPlacement:
+                    GetComponent<AudioSource>().Play();
                     fullyPlaced = true;
                     break;
             }

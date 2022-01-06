@@ -23,6 +23,7 @@ namespace CON.Machines
 
 
         [HideInInspector] public event Action OnMachineClicked;
+        [HideInInspector] public event Action OnInstructionChanged;
 
         Inventory inventory;
         bool isPaused = false;
@@ -113,11 +114,13 @@ namespace CON.Machines
             if (possibleInstructions[instructionIndex] != currentInstruction) inventory.ResetInventory(); //TODO: Look at options instead of removing all elements in machine
             currentInstruction = possibleInstructions[instructionIndex];
             UpdateElementTriggers();
+            OnInstructionChanged();
         }
         public void SetCurrentInstruction(Instruction instruction)
         {
             currentInstruction = instruction;
             UpdateElementTriggers();
+            OnInstructionChanged();
         }
         public float GetProductionFraction()
         {
@@ -208,7 +211,7 @@ namespace CON.Machines
         }
         public void ChangeVersion()
         {
-
+            SetCurrentInstruction((GetCurrentInstructionIndex() + 1) % possibleInstructions.Length);
         }
         public PlaceableInformation GetPlaceableInformation()
         {

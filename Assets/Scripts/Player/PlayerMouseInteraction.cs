@@ -164,7 +164,7 @@ namespace CON.Player
         }
 
         [System.Serializable]
-        class CursorMapping
+        public class CursorMapping
         {
             public CursorType cursorType;
             public Texture2D sprite;

@@ -28,7 +28,10 @@ namespace CON.Core
         [SerializeField] float toggleTime = .25f;
         [SerializeField] KeyMapping[] defaultKeyMappings;
         [SerializeField] KeyVisual[] possibleKeys;
+        [Header("Main Menu")]
         [SerializeField] bool isMainMenu = false;
+        [SerializeField] Player.PlayerMouseInteraction.CursorMapping defaultCursorMapping;
+
 
         [HideInInspector] public event Action OnInputButtonsChanged;
 
@@ -59,11 +62,19 @@ namespace CON.Core
             Load();
             if(OnInputButtonsChanged != null)OnInputButtonsChanged();
             Application.quitting += Save;
+            if(isMainMenu) Cursor.SetCursor(defaultCursorMapping.sprite, defaultCursorMapping.hotspot, CursorMode.Auto);
         }
 
 
         public void ExitGame()
         {
+            StartCoroutine(ExitGameDelayed());
+        }
+
+        private IEnumerator ExitGameDelayed()
+        {
+            Save();
+            yield return FindObjectOfType<SceneTransitioner>().EndScene();
             Application.Quit();
         }
         public void Save()
