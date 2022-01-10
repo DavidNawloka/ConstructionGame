@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Sand_Collector
   m_EditorClassIdentifier: 
   prefab: {fileID: 8095774179287151682, guid: 304d2fdd939737b42b19b11edc61fffe, type: 3}
-  sprite: {fileID: 21300000, guid: a7d266fdb42b8594a8663f41303ba248, type: 3}
+  sprite: {fileID: 21300000, guid: bb51b77cee0bf0d4996b53dcf21f2977, type: 3}
   name: Sand Collector
-  description: Allows the automation of sand collecting
+  description: Automates the gathering of sand
   elementRequirements:
   - element: {fileID: 11400000, guid: 59545934f0702574892cb83064fd7007, type: 2}
     amount: 20

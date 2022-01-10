@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Wood_Gatherer
   m_EditorClassIdentifier: 
   prefab: {fileID: 927031865721193231, guid: d7820a8157b577945b006a633d59d393, type: 3}
-  sprite: {fileID: 21300000, guid: 00d0e07746d09e341bccad0f495abe21, type: 3}
+  sprite: {fileID: 21300000, guid: 34cbefb7079ed5b4c9d100d8aabee35f, type: 3}
   name: Wood Gatherer
-  description: Allows the automation of wood gathering
+  description: Automates cutting down trees for wood
   elementRequirements:
   - element: {fileID: 11400000, guid: c2f82b61e121f29408d0cfa36fd30d2e, type: 2}
     amount: 15

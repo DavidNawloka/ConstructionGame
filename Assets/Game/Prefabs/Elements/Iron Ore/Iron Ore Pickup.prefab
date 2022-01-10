@@ -69,6 +69,10 @@ PrefabInstance:
       value: Iron Ore Pickup
       objectReference: {fileID: 0}
     - target: {fileID: 3748639824923191293, guid: 9d2c687c172b30c43904151266229d3a, type: 3}
+      propertyPath: elementPickupType
+      value: 
+      objectReference: {fileID: 11400000, guid: aa830a0922b0a9542b3953ccd6712b7e, type: 2}
+    - target: {fileID: 3748639824923191293, guid: 9d2c687c172b30c43904151266229d3a, type: 3}
       propertyPath: itemToEuqip.element
       value: 
       objectReference: {fileID: 11400000, guid: aa830a0922b0a9542b3953ccd6712b7e, type: 2}

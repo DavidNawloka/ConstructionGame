@@ -60,6 +60,8 @@ namespace CON.UI
 
             if (isActive)
             {
+
+                transform.position = new Vector3(Screen.width / 2, Screen.height / 2, 0) + new Vector3(Random.Range(Screen.width * -.2f, Screen.width*.2f), Random.Range(Screen.height * -.2f, Screen.height * .2f));
                 UpdateConnectionPosition();
                 escManager.AddFunction(() => SetActiveCanvas(false, null), gameObject.GetHashCode().ToString());
                 canvasGroup.alpha = 1;

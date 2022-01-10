@@ -31,7 +31,6 @@ namespace CON.UI
         }
         public void MachineClicked()
         {
-            transform.position = Camera.main.WorldToScreenPoint(splitterConveyor.transform.position) + new Vector3(Screen.width * .2f, Screen.height * .2f, 0);
             moveableWindow.ToggleCanvas(splitterConveyor.transform);
         }
         public void SwitchHookToggle(bool isRightToLeft)

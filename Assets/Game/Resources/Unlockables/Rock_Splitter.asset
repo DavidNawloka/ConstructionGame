@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Rock_Splitter
   m_EditorClassIdentifier: 
   prefab: {fileID: 6661906681428096232, guid: e6db151c8c3d01e4983db74a31398014, type: 3}
-  sprite: {fileID: 21300000, guid: 0994fd74e1819224d88e0391036fc651, type: 3}
+  sprite: {fileID: 21300000, guid: ace70b6464b7fb04a888f0a5eec73af5, type: 3}
   name: Rock Splitter
-  description: Allows the automation of rock gathering
+  description: Automates the mining of rocks
   elementRequirements:
   - element: {fileID: 11400000, guid: 90af84c016779b64abdbae59aa56cd21, type: 2}
     amount: 15

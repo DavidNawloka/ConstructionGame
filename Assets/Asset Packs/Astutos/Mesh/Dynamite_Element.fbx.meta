@@ -3,7 +3,22 @@ guid: 427f53507e369504bb26b549b504c54e
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Black Light
+    second: {fileID: 2100000, guid: 9c255b52ac6c6654ca302b28962a5a35, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Dynamite
+    second: {fileID: 2100000, guid: 537992ec4be59a74aacfec150e00c40a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wood1
+    second: {fileID: 2100000, guid: 104e84c150343ab4b822a4997be748b3, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

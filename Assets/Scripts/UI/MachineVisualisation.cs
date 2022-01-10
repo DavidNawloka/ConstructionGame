@@ -106,7 +106,6 @@ namespace CON.UI
 
         public void MachineClicked() // Event from Machine Class function
         {
-            transform.position = Camera.main.WorldToScreenPoint(machine.transform.position) + new Vector3(Screen.width * .3f, Screen.height * .2f, 0);
             moveableWindow.ToggleCanvas(machine.transform);
         }
 

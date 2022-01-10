@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Compressor
   m_EditorClassIdentifier: 
   prefab: {fileID: 399632920827051588, guid: c7ee451bd1a8c5f499435823273368e3, type: 3}
-  sprite: {fileID: 21300000, guid: 78dac7009b017584ea395eb75dacd54b, type: 3}
+  sprite: {fileID: 21300000, guid: 7e531c0f2e6f2c14483bacdaf51d922b, type: 3}
   name: Compressor
   description: Compresses elements into denser versions of them
   elementRequirements:

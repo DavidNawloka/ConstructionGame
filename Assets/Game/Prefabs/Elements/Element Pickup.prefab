@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3748639824923191293}
   - component: {fileID: -7639887753407776485}
   - component: {fileID: -1246829685757900755}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Element Pickup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 848116341845c7e48927e0bbc2b15546, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  elementPickupType: {fileID: 0}
   itemToEuqip:
     element: {fileID: 0}
     amount: 1
@@ -55,6 +56,9 @@ MonoBehaviour:
   pickupSounds:
   - {fileID: 8300000, guid: babb8e7209fdc714e92ae8a0a11227df, type: 3}
   pitchRange: 0.2
+  respawnable: 0
+  respawnTime: 100
+  respawnTimeVariationFactor: 0.5
 --- !u!54 &-7639887753407776485
 Rigidbody:
   m_ObjectHideFlags: 0

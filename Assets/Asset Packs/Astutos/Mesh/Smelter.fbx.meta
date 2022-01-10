@@ -3,7 +3,32 @@ guid: d5b9b763051b90144bca71abb3a0e150
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Black
+    second: {fileID: 2100000, guid: 53800a1616f568646872527cb6ad2283, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Fire
+    second: {fileID: 2100000, guid: 65b9aef4e83108f4b95ca02ac1f4ac66, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Sturdy_Material
+    second: {fileID: 2100000, guid: 3f37fc85a87634942a9b968bd6357ea1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Sturdy_Material.2
+    second: {fileID: 2100000, guid: ce695758646de444fae96bea8aacd356, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Sturdy_Material.3
+    second: {fileID: 2100000, guid: a56c12f22bbdf75448c10ab079730275, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

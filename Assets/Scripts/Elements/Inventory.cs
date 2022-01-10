@@ -97,7 +97,15 @@ namespace CON.Elements
         {
             for (int inventoryIndex = 0; inventoryIndex < inventory.Length; inventoryIndex++)
             {
-                if (inventory[inventoryIndex].element == inventoryItemToEquip.element || inventory[inventoryIndex].element == null)
+                if (inventory[inventoryIndex].element == inventoryItemToEquip.element)
+                {
+                    inventoryPosIndex = inventoryIndex;
+                    return true;
+                }
+            }
+            for (int inventoryIndex = 0; inventoryIndex < inventory.Length; inventoryIndex++)
+            {
+                if (inventory[inventoryIndex].element == null)
                 {
                     inventoryPosIndex = inventoryIndex;
                     return true;

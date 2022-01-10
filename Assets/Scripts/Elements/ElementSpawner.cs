@@ -61,6 +61,7 @@ namespace CON.Elements
             instance.tag = "Pickup";
             instance.transform.parent = transform;
             instance.GetComponent<ElementPickup>().UpdateAmoutToEquip(UnityEngine.Random.Range(minPickupAmount, maxPickupAmount + 1));
+            instance.GetComponent<ElementPickup>().respawnable = true;
 #endif
         }
 

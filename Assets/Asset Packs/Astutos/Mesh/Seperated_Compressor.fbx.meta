@@ -3,7 +3,47 @@ guid: eefafc744c71f854998a574a68ebf87d
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Black
+    second: {fileID: 2100000, guid: 53800a1616f568646872527cb6ad2283, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.003
+    second: {fileID: 2100000, guid: a4289645cc61909438262c2492fe751a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.004
+    second: {fileID: 2100000, guid: fbb0b03ba18f312449531c967069e0db, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Metal
+    second: {fileID: 2100000, guid: 78e5799c68c0f8640af4d4e83e98d5d1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Stone
+    second: {fileID: 2100000, guid: 53a938dd05957e744a967488f37b5aa3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Stone.1
+    second: {fileID: 2100000, guid: ff06b16e932b49b489cc8c7451828f0c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Stone.2
+    second: {fileID: 2100000, guid: a36b15fd0d5193b4a91eed0bd0e419ac, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Sturdy_Material.2
+    second: {fileID: 2100000, guid: ce695758646de444fae96bea8aacd356, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

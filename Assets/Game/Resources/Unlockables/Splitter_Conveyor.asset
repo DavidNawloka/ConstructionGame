@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Splitter_Conveyor
   m_EditorClassIdentifier: 
   prefab: {fileID: 1613690524034605397, guid: 55925bf9d387089499b28dc2d5d8c612, type: 3}
-  sprite: {fileID: 21300000, guid: 2562e38eb124a2d4a9e0fa70b3e0d3e1, type: 3}
+  sprite: {fileID: 21300000, guid: 927b379eac094cf47910d25e5aa2ef78, type: 3}
   name: Splitter
-  description: Splits a stream of elements into two
+  description: Splits a stream of elements on conveyors into two
   elementRequirements:
   - element: {fileID: 11400000, guid: 296a20792c61e7e4eb31c9133973c3b5, type: 2}
     amount: 15

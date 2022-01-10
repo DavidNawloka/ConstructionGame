@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Crystal_Miner
   m_EditorClassIdentifier: 
   prefab: {fileID: 2825724676428736791, guid: ecb77413fc6c1d14e882269504b00e70, type: 3}
-  sprite: {fileID: 21300000, guid: 45bc42adbeb5e91468f701452b6bd3dc, type: 3}
+  sprite: {fileID: 21300000, guid: 3d7a4846b293dc841a85633c71bf5f2b, type: 3}
   name: Crystal Miner
-  description: Allows the automation of crystal mining
+  description: Automates the mining of crystals
   elementRequirements:
   - element: {fileID: 11400000, guid: ce0a705810326c5428f93e3650c09cec, type: 2}
     amount: 7

@@ -230,11 +230,11 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -7352205767734681133, guid: 5c17b269dc4ae544499914b4161d4deb, type: 3}
-  - {fileID: 4218315251724804968, guid: 5c17b269dc4ae544499914b4161d4deb, type: 3}
-  - {fileID: -4973734387028869240, guid: 5c17b269dc4ae544499914b4161d4deb, type: 3}
-  - {fileID: -1580535799172915004, guid: 5c17b269dc4ae544499914b4161d4deb, type: 3}
-  - {fileID: -8353058802397988234, guid: 5c17b269dc4ae544499914b4161d4deb, type: 3}
+  - {fileID: 2100000, guid: 586e202dae76042448026d9ec405ea32, type: 2}
+  - {fileID: 2100000, guid: 104e84c150343ab4b822a4997be748b3, type: 2}
+  - {fileID: 2100000, guid: 78e5799c68c0f8640af4d4e83e98d5d1, type: 2}
+  - {fileID: 2100000, guid: 53800a1616f568646872527cb6ad2283, type: 2}
+  - {fileID: 2100000, guid: 10723dc81f426fa42a51ca8e9666c4c0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -381,6 +381,9 @@ MonoBehaviour:
   moveableWindow: {fileID: 8987320302909109871}
   moveableWindowConnect: {fileID: 1996264234670933242}
   fixWorldBuildingAnimation: {fileID: 1996264234220686356}
+  shouldMuteBackgroundMusic: 0
+  shouldLoadMainMenuAtEnd: 0
+  shouldStartWithP: 0
 --- !u!114 &3068832986000863421
 MonoBehaviour:
   m_ObjectHideFlags: 0

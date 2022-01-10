@@ -66,8 +66,12 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1484755242767927716, guid: 9d2c687c172b30c43904151266229d3a, type: 3}
       propertyPath: m_Name
-      value: Sand Element Pickup
+      value: Sand Pickup
       objectReference: {fileID: 0}
+    - target: {fileID: 3748639824923191293, guid: 9d2c687c172b30c43904151266229d3a, type: 3}
+      propertyPath: elementPickupType
+      value: 
+      objectReference: {fileID: 11400000, guid: a5ce88407542bab4b861a21db95ade0e, type: 2}
     - target: {fileID: 3748639824923191293, guid: 9d2c687c172b30c43904151266229d3a, type: 3}
       propertyPath: itemToEuqip.element
       value: 

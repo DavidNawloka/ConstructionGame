@@ -29,7 +29,6 @@ namespace CON.UI
 
         private void UpdateKeySprite()
         {
-
             keySprite.sprite = settingsManager.GetKeySprite(keyMappingName);
         }
 

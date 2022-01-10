@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Player_Camp
   m_EditorClassIdentifier: 
   prefab: {fileID: 4711383423666340968, guid: 80b1002165c029541b1f304034239df3, type: 3}
-  sprite: {fileID: 21300000, guid: 15f0860139cee594eb935053eb91fae9, type: 3}
+  sprite: {fileID: 21300000, guid: 4563719a860192648ba4757ffb9c9fd5, type: 3}
   name: Camp
-  description: Allows for progression and storing of found notes
+  description: Provides access to progression and collected notes
   elementRequirements: []
   type: 2

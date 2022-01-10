@@ -49,6 +49,7 @@ namespace CON.Core
 
         private void Awake()
         {
+            Time.timeScale = 1;
             jsonSaving = FindObjectOfType<SavingSystemJson>();
             closeButtonManager = FindObjectOfType<CloseButtonManager>();
 
@@ -133,7 +134,7 @@ namespace CON.Core
             ChangeBackgroundVolume(savedSettings.backgroundVolumeChange);
             backgroundMusicAudio.audioSlider.value = savedSettings.backgroundVolumeChange;
 
-            ChangeSpecialAudioVolume(savedSettings.cutsceneVolumeChange);
+            ChangeCutsceneAudio(savedSettings.cutsceneVolumeChange);
             cutsceneAudio.audioSlider.value = savedSettings.cutsceneVolumeChange;
 
             graphicsQualityDropdown.value = savedSettings.qualityIndex;
@@ -176,7 +177,7 @@ namespace CON.Core
             ChangeBackgroundVolume(0);
             backgroundMusicAudio.audioSlider.value = 0;
 
-            ChangeSpecialAudioVolume(0);
+            ChangeCutsceneAudio(0);
             cutsceneAudio.audioSlider.value = 0;
         }
 
@@ -196,7 +197,7 @@ namespace CON.Core
         {
             ChangeVolume(backgroundMusicAudio, volume);
         }
-        public void ChangeSpecialAudioVolume(float volume)
+        public void ChangeCutsceneAudio(float volume)
         {
             ChangeVolume(cutsceneAudio, volume);
         }
@@ -237,7 +238,6 @@ namespace CON.Core
             graphicsQualityDropdown.value = 2;
             graphicsQualityDropdown.RefreshShownValue();
 
-            print(defaultResolutionIndex);
             resolutionDropdown.value = defaultResolutionIndex;
             resolutionDropdown.RefreshShownValue();
 

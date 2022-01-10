@@ -11,6 +11,7 @@ namespace CON.Elements
 
     public class ElementPickup : MonoBehaviour,IRaycastable
     {
+        [SerializeField] Element elementPickupType;
         [SerializeField] InventoryItem itemToEuqip;
         [SerializeField] float maxDistance = 2f;
         [SerializeField] float maxElementMove = 2f;
@@ -18,14 +19,37 @@ namespace CON.Elements
         [SerializeField] float spawnedElementImageAlpha = 0.7f;
         [SerializeField] AudioClip[] pickupSounds;
         [SerializeField] float pitchRange;
+        public bool respawnable;
 
         float timer = 0f;
 
+        [HideInInspector] public bool isVisible = true;
+
         AudioSource audioSource;
+        MeshRenderer meshRenderer;
+        MeshCollider meshCollider;
+        Rigidbody rigidBody;
+
 
         private void Awake()
         {
             audioSource = GetComponent<AudioSource>();
+
+            meshRenderer = GetComponentInChildren<MeshRenderer>();
+            meshCollider = GetComponentInChildren<MeshCollider>();
+            rigidBody = GetComponent<Rigidbody>();
+        }
+        private void Start()
+        {
+            if(!isVisible && ShouldRespawn())
+            {
+                isVisible = true;
+                UpdateVisibility();
+            }
+        }
+        public Element GetElementPickupType()
+        {
+            return elementPickupType;
         }
 
         public InventoryItem GetItemToEquip()
@@ -49,16 +73,30 @@ namespace CON.Elements
             if (playerInventory.EquipItemWhere(itemToEuqip, out inventoryIndex))
             {
                 int randIndex = Random.Range(0, pickupSounds.Length);
-                ChangePitch();
-                audioSource.PlayOneShot(pickupSounds[randIndex]);
-                GetComponentInChildren<MeshRenderer>().enabled = false;
-                GetComponentInChildren<MeshCollider>().enabled = false;
+                PlayEquipSound(randIndex);
+
+                isVisible = false;
+                UpdateVisibility();
 
                 yield return StartCoroutine(InitialiseElementMovement(inventoryIndex));
                 yield return new WaitForSeconds(pickupSounds[randIndex].length - timer);
                 playerInventory.EquipItem(itemToEuqip);
-                Destroy(gameObject);
             }
+        }
+
+
+        private void UpdateVisibility()
+        {
+            if (isVisible) meshRenderer.renderingLayerMask = 2;
+            else meshRenderer.renderingLayerMask = 0;
+
+            meshCollider.enabled = isVisible;
+            rigidBody.isKinematic = !isVisible;
+        }
+
+        private bool ShouldRespawn()
+        {
+            return !meshRenderer.isVisible;
         }
 
         private IEnumerator InitialiseElementMovement(int slotIndex)
@@ -94,6 +132,15 @@ namespace CON.Elements
                 yield return null;
             }
             Destroy(element);
+        }
+
+
+        
+
+        private void PlayEquipSound(int randIndex)
+        {
+            ChangePitch();
+            audioSource.PlayOneShot(pickupSounds[randIndex]);
         }
         private void ChangePitch()
         {

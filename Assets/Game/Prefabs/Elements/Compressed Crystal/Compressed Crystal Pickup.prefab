@@ -12,6 +12,10 @@ PrefabInstance:
       value: Compressed Crystal Pickup
       objectReference: {fileID: 0}
     - target: {fileID: 3748639824923191293, guid: 9d2c687c172b30c43904151266229d3a, type: 3}
+      propertyPath: elementPickupType
+      value: 
+      objectReference: {fileID: 11400000, guid: 5d9ca0baebc0b5040b1ace9cebd67708, type: 2}
+    - target: {fileID: 3748639824923191293, guid: 9d2c687c172b30c43904151266229d3a, type: 3}
       propertyPath: itemToEuqip.element
       value: 
       objectReference: {fileID: 11400000, guid: 5d9ca0baebc0b5040b1ace9cebd67708, type: 2}

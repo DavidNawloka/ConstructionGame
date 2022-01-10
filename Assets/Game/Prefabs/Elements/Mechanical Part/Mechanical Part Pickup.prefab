@@ -69,6 +69,10 @@ PrefabInstance:
       value: Mechanical Part Pickup
       objectReference: {fileID: 0}
     - target: {fileID: 3748639824923191293, guid: 9d2c687c172b30c43904151266229d3a, type: 3}
+      propertyPath: elementPickupType
+      value: 
+      objectReference: {fileID: 11400000, guid: 48ffc0a461edf6c42b48e2b710958c18, type: 2}
+    - target: {fileID: 3748639824923191293, guid: 9d2c687c172b30c43904151266229d3a, type: 3}
       propertyPath: itemToEuqip.element
       value: 
       objectReference: {fileID: 11400000, guid: 48ffc0a461edf6c42b48e2b710958c18, type: 2}

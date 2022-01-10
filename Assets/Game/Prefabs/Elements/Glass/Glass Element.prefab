@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 176155714274857560}
   - component: {fileID: 413680715462974015}
   - component: {fileID: -4381635571549770002}
-  m_Layer: 0
-  m_Name: Glass
+  m_Layer: 9
+  m_Name: Glass Element
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -49,7 +49,7 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3275994874558356431}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_MotionVectors: 1

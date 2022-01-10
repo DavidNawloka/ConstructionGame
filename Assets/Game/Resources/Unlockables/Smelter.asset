@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Smelter
   m_EditorClassIdentifier: 
   prefab: {fileID: 399632920827051588, guid: ec739a22f4b58bf40911b13a7ea4f0fe, type: 3}
-  sprite: {fileID: 21300000, guid: dd27f170015028d4aba3a8eb2565fb42, type: 3}
+  sprite: {fileID: 21300000, guid: e58b6164dff164f42b7f9244fb4b051a, type: 3}
   name: Smelter
-  description: The element given will be smelted into something more useful
+  description: Smelts elements into different versions of them
   elementRequirements:
   - element: {fileID: 11400000, guid: 48ffc0a461edf6c42b48e2b710958c18, type: 2}
     amount: 15

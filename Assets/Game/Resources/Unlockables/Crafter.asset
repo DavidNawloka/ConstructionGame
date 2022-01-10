@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Crafter
   m_EditorClassIdentifier: 
   prefab: {fileID: 1203245733232507348, guid: 0c30793bdf28329408dc608a0782a8ce, type: 3}
-  sprite: {fileID: 21300000, guid: e503963d22fa78b498ed831dfc837263, type: 3}
+  sprite: {fileID: 21300000, guid: b34696b3b827dd148b38cc594bc72b31, type: 3}
   name: Crafter
-  description: Requires 3 elements to produce a new element
+  description: Produces a new element when supplied with 3 others
   elementRequirements:
   - element: {fileID: 11400000, guid: c2f82b61e121f29408d0cfa36fd30d2e, type: 2}
     amount: 25

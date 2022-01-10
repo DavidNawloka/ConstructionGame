@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Iron_Ore_Miner
   m_EditorClassIdentifier: 
   prefab: {fileID: 399632920827051588, guid: 36ce3007136b7e24fb29069f17f5b802, type: 3}
-  sprite: {fileID: 21300000, guid: a098508c09fe06d48b26ccb51f115eb4, type: 3}
+  sprite: {fileID: 21300000, guid: 409c4fc0e6a9aff49b4f03a9399246ed, type: 3}
   name: Iron Ore Miner
-  description: Allows the automation of iron ore mining
+  description: Automates the mining of iron ore
   elementRequirements:
   - element: {fileID: 11400000, guid: ce0a705810326c5428f93e3650c09cec, type: 2}
     amount: 70

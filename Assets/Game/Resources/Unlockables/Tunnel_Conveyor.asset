@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Tunnel_Conveyor
   m_EditorClassIdentifier: 
   prefab: {fileID: 8540175721113228109, guid: da5ce1522570b3d44a9db9dbf1bba4dd, type: 3}
-  sprite: {fileID: 21300000, guid: ec3d44b7a2b9c6b44b673f78f537183d, type: 3}
+  sprite: {fileID: 21300000, guid: e0454c88894be704eb395eeffc8e8ca7, type: 3}
   name: Tunnel
-  description: Allows for underground transportation of elements
+  description: Transports elements under the surface
   elementRequirements:
   - element: {fileID: 11400000, guid: 296a20792c61e7e4eb31c9133973c3b5, type: 2}
     amount: 50

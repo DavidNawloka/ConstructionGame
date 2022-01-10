@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 206332488658228198}
   - component: {fileID: 2682453263039096620}
   - component: {fileID: 1678503270}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Crystal Element
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -49,7 +49,7 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4483616518808520441}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_MotionVectors: 1
@@ -60,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -5189715152625664583, guid: 3fea4861240c438489697c81f8ef7e55, type: 3}
+  - {fileID: 2100000, guid: ab96cff6fcca4fe438bfbc54271e83fb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

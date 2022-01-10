@@ -16,7 +16,7 @@ namespace CON.Player
         [SerializeField] CursorMapping[] cursorMappings;
 
         PlayerMovement playerMovement;
-
+        CursorType currentCursorType;
 
         bool isZoomDisabled = false;
         bool isInputDisabled = false;
@@ -123,6 +123,10 @@ namespace CON.Player
 
         private void SetCursor(CursorType cursorType)
         {
+            if (currentCursorType == cursorType) return;
+
+            currentCursorType = cursorType;
+
             CursorMapping cursorMapping = GetCursorMapping(cursorType);
             Cursor.SetCursor(cursorMapping.sprite, cursorMapping.hotspot, CursorMode.Auto);
         }

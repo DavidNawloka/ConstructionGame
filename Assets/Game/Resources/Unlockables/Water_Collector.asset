@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Water_Collector
   m_EditorClassIdentifier: 
   prefab: {fileID: 4053394887740499496, guid: 4f51d495af72aec49839a18a741c86d3, type: 3}
-  sprite: {fileID: 21300000, guid: abaa26b8c2dd6c845bff75f9d3086019, type: 3}
+  sprite: {fileID: 21300000, guid: 7e4a3f8479c1bb84ca2cdf3a03d4a16b, type: 3}
   name: Water Collector
-  description: Allows the automation of water collecting
+  description: Automates the gathering of water
   elementRequirements:
   - element: {fileID: 11400000, guid: c2f82b61e121f29408d0cfa36fd30d2e, type: 2}
     amount: 15

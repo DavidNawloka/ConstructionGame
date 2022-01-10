@@ -21,8 +21,8 @@ TagManager:
   - Player
   - Placeable
   - Unplaceable
-  - 
-  - 
+  - Interactable
+  - Uninteractable
   - 
   - 
   - 
