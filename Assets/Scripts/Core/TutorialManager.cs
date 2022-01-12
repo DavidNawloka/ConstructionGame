@@ -146,7 +146,7 @@ public class TutorialManager : MonoBehaviour, ISaveable
         {
             Machine machine = child.GetComponent<Machine>();
             if (machine == null) continue;
-            if (machine.GetPlaceableInformation().placementRequirement == waterCollector.GetPlaceableInformation().placementRequirement && machine.GetFullyPlacedStatus())
+            if (machine.GetPlaceableInformation().placementRequirement == waterCollector.GetPlaceableInformation().placementRequirement && machine.IsFullyPlaced())
             {
                 return true;
             }
@@ -159,7 +159,7 @@ public class TutorialManager : MonoBehaviour, ISaveable
         {
             Machine machine = child.GetComponent<Machine>();
             if (machine == null) continue;
-            if (machine.GetPlaceableInformation().placementRequirement == waterCollector.GetPlaceableInformation().placementRequirement && machine.GetFullyPlacedStatus())
+            if (machine.GetPlaceableInformation().placementRequirement == waterCollector.GetPlaceableInformation().placementRequirement && machine.IsFullyPlaced())
             {
                 if (machine.transform.GetComponentInChildren<MoveableWindow>().IsShown()) return true;
             }
@@ -172,7 +172,7 @@ public class TutorialManager : MonoBehaviour, ISaveable
         {
             Machine machine = child.GetComponent<Machine>();
             if (machine == null) continue;
-            if (machine.GetPlaceableInformation().placementRequirement == woodGatherer.GetPlaceableInformation().placementRequirement && machine.GetFullyPlacedStatus()) return true;
+            if (machine.GetPlaceableInformation().placementRequirement == woodGatherer.GetPlaceableInformation().placementRequirement && machine.IsFullyPlaced()) return true;
         }
         return false;
     }

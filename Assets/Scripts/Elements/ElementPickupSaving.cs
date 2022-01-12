@@ -8,6 +8,9 @@ namespace CON.Elements
     public class ElementPickupSaving : MonoBehaviour, ISaveable
     {
         [SerializeField] Transform elementPickupParent;
+
+        ElementPickupObjectPooling elementPickupObjectPooling;
+
         public object CaptureState()
         {
             ElementPickup[] elementPickups = FindObjectsOfType<ElementPickup>();
@@ -25,6 +28,8 @@ namespace CON.Elements
 
         public void RestoreState(object state)
         {
+            elementPickupObjectPooling = FindObjectOfType<ElementPickupObjectPooling>();
+
             ElementPickup[] elementPickups = FindObjectsOfType<ElementPickup>();
             for (int index = 0; index < elementPickups.Length; index++)
             {
@@ -36,11 +41,15 @@ namespace CON.Elements
 
             for (int index = 0; index < savedElementPickups.Length; index++)
             {
-                SavedElementPickup currentElementPickup = savedElementPickups[index];
-                GameObject instantiatedPickup = Instantiate(currentElementPickup.elementToEquip.DeSerialize().element.pickupPrefab, currentElementPickup.position.ToVector(), Quaternion.Euler(currentElementPickup.rotation.ToVector()), elementPickupParent);
-                instantiatedPickup.GetComponent<ElementPickup>().UpdateAmoutToEquip(currentElementPickup.elementToEquip.amount);
-                instantiatedPickup.GetComponent<ElementPickup>().respawnable = currentElementPickup.isRespawnable;
-                instantiatedPickup.GetComponent<ElementPickup>().isVisible = currentElementPickup.isVisible;
+                SavedElementPickup savedElementPickup = savedElementPickups[index];
+                ElementPickup instantiatedElementPickup = Instantiate(savedElementPickup.elementToEquip.DeSerialize().element.pickupPrefab, savedElementPickup.position.ToVector(), Quaternion.Euler(savedElementPickup.rotation.ToVector()), elementPickupParent).GetComponent<ElementPickup>();
+                instantiatedElementPickup.UpdateAmoutToEquip(savedElementPickup.elementToEquip.amount);
+                instantiatedElementPickup.respawnable = savedElementPickup.isRespawnable;
+                instantiatedElementPickup.isVisible = savedElementPickup.isVisible;
+                if(!savedElementPickup.isRespawnable && !savedElementPickup.isVisible) 
+                {
+                    elementPickupObjectPooling.AddPickupToDictionary(instantiatedElementPickup);
+                }
             }
         }
 

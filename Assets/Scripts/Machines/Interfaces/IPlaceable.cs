@@ -9,6 +9,7 @@ namespace CON.Machines
         public PlaceableInformation GetPlaceableInformation();
         public void PlacementStatusChange(Builder player, PlacementStatus placementStatus);
         public void ChangeVersion();
+        public bool IsFullyPlaced();
         public object GetInformationToSave();
         public void LoadSavedInformation(object savedInformation);
     }
@@ -16,6 +17,7 @@ namespace CON.Machines
     [System.Serializable]
     public class PlaceableInformation
     {
+        public bool isDraggable = false;
         public Vector2Int[] takenGridPositions;
         public InventoryItem[] buildingRequirements;
         public Element placementRequirement;

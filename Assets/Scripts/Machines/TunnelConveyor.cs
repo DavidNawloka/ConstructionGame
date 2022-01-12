@@ -99,6 +99,11 @@ namespace CON.Machines
                     break;
             }
         }
+
+        public bool IsFullyPlaced()
+        {
+            return isFullyPlaced;
+        }
         public void ChangeVersion()
         {
             tunnelAdditionalBlocks++;

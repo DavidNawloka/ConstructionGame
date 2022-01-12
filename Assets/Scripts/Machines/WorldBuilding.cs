@@ -24,6 +24,7 @@ namespace CON.Machines
         [SerializeField] bool shouldStartWithP = false;
 
         UserInterfaceManager userInterfaceManager;
+        ElementPickupObjectPooling elementPickupObjectPooling;
         Inventory inventory;
         Builder builder;
         bool isFixed = false;
@@ -32,6 +33,7 @@ namespace CON.Machines
         {
             inventory = GetComponent<Inventory>();
             userInterfaceManager = FindObjectOfType<UserInterfaceManager>();
+            elementPickupObjectPooling = FindObjectOfType<ElementPickupObjectPooling>();
             builder = GameObject.FindGameObjectWithTag("Player").GetComponent<Builder>();
             builder.onBuildModeChange += OnBuildModeChange;
         }
@@ -48,7 +50,7 @@ namespace CON.Machines
         public void AddEnergyElement(ElementPickup elementToAdd) // Event for when Elements enter
         {
             if (!CheckIfElementIsNeeded(elementToAdd)) return;
-            Destroy(elementToAdd.gameObject);
+            elementPickupObjectPooling.DestroyPickup(elementToAdd);
 
             inventory.EquipItemAt(elementToAdd.GetItemToEquip(), GetElementInstructionIndex(elementToAdd.GetItemToEquip().element));
 

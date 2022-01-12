@@ -16,6 +16,7 @@ namespace CON.Machines
         [SerializeField] PlaceableInformation placeableInformation;
         [SerializeField] Transform[] pathOfElement;
         [SerializeField] float forceToApplyForward;
+        [SerializeField] GameObject leftRightArrow;
         [SerializeField] GameObject[] directionArrows;
         [SerializeField] Transform[] hooks;
         [SerializeField] Animation hookAnimation; // TODO: Speed up animation
@@ -54,13 +55,15 @@ namespace CON.Machines
         {
             if (!isRightToLeft)
             {
-                foreach(Transform hook in hooks)
+                leftRightArrow.transform.localRotation = Quaternion.Euler(90, 0, 90);
+                foreach (Transform hook in hooks)
                 {
                     hook.parent.localPosition = new Vector3(hook.parent.localPosition.x, hook.parent.localPosition.y, 6.5f);
                 }
             }
             else
             {
+                leftRightArrow.transform.localRotation = Quaternion.Euler(90, 0, 270);
                 foreach(Transform hook in hooks)
                 {
                     hook.parent.localPosition = new Vector3(hook.parent.localPosition.x, hook.parent.localPosition.y, 8);
@@ -78,6 +81,7 @@ namespace CON.Machines
             {
                 arrow.SetActive(isActive);
             }
+            leftRightArrow.SetActive(isActive);
         }
 
         public void OnElementRightEnter(ElementPickup elementPickup)
@@ -174,6 +178,10 @@ namespace CON.Machines
                     Destroy(gameObject);
                     break;
             }
+        }
+        public bool IsFullyPlaced()
+        {
+            return isFullyPlaced;
         }
         public void ChangeVersion()
         {

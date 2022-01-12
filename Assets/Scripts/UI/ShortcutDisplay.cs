@@ -42,9 +42,6 @@ namespace CON.UI
         {
             if (isShown) canvasGroup.alpha = 1;
             else canvasGroup.alpha = 0;
-
-            canvasGroup.interactable = isShown;
-            canvasGroup.blocksRaycasts = isShown;
         }
     }
 }

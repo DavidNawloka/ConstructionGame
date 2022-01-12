@@ -32,6 +32,7 @@ namespace CON.Machines
         Builder builder;
         Instruction currentInstruction;
         ProgressionManager progressionManager;
+        ElementPickupObjectPooling elementPickupObjectPooling;
 
         float productionTimer = 0f;
 
@@ -39,6 +40,7 @@ namespace CON.Machines
         {
             inventory = GetComponent<Inventory>();
             progressionManager = FindObjectOfType<ProgressionManager>();
+            elementPickupObjectPooling = FindObjectOfType<ElementPickupObjectPooling>();
             currentInstruction = possibleInstructions[0];
         }
         private void Start()
@@ -80,15 +82,9 @@ namespace CON.Machines
         public void AddEnergyElement(ElementPickup elementToAdd) // Event for when Elements enter
         {
             if (!CheckIfElementIsNeeded(elementToAdd) || !fullyPlaced) return;
-            Destroy(elementToAdd.gameObject);
+            elementPickupObjectPooling.DestroyPickup(elementToAdd);
 
             inventory.EquipItemAt(elementToAdd.GetItemToEquip(), GetElementInstructionIndex(elementToAdd.GetItemToEquip().element));
-        }
-
-
-        public bool GetFullyPlacedStatus()
-        {
-            return fullyPlaced;
         }
         public Instruction[] GetPossibleInstructions()
         {
@@ -157,8 +153,7 @@ namespace CON.Machines
 
             for (int amount = 0; amount < currentInstruction.outcome.amount; amount++)
             {
-                Instantiate(currentInstruction.outcome.element.pickupPrefab, elementExitPoint.position + UnityEngine.Random.insideUnitSphere*.2f, Quaternion.identity);
-                
+                elementPickupObjectPooling.InstantiatePickup(currentInstruction.outcome.element.pickupPrefab.GetComponent<ElementPickup>(), elementExitPoint.position + UnityEngine.Random.insideUnitSphere*.2f, Vector3.zero);   
             }
             inventory.RemoveItem(currentInstruction.requirements);
 
@@ -208,6 +203,10 @@ namespace CON.Machines
                     Destroy(gameObject);
                     break;
             }
+        }
+        public bool IsFullyPlaced()
+        {
+            return fullyPlaced;
         }
         public void ChangeVersion()
         {

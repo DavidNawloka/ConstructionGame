@@ -38,6 +38,7 @@ namespace CON.Elements
             meshRenderer = GetComponentInChildren<MeshRenderer>();
             meshCollider = GetComponentInChildren<MeshCollider>();
             rigidBody = GetComponent<Rigidbody>();
+            UpdateVisibility();
         }
         private void Start()
         {
@@ -84,12 +85,14 @@ namespace CON.Elements
             }
         }
 
-
+        public void SetVisibilityActive(bool isVisible)
+        {
+            this.isVisible = isVisible;
+            UpdateVisibility();
+        }
         private void UpdateVisibility()
         {
-            if (isVisible) meshRenderer.renderingLayerMask = 2;
-            else meshRenderer.renderingLayerMask = 0;
-
+            meshRenderer.enabled = isVisible;
             meshCollider.enabled = isVisible;
             rigidBody.isKinematic = !isVisible;
         }

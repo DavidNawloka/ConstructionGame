@@ -22,6 +22,7 @@ namespace CON.UI
         {
             rectTransform = GetComponent<RectTransform>();
             initialMousePosition = rectTransform.anchoredPosition3D;
+            minY = transform.parent.GetComponent<RectTransform>().rect.height/2;
         }
 
         void Update()

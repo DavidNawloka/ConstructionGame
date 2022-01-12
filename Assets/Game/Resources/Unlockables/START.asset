@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: START
   m_EditorClassIdentifier: 
   prefab: {fileID: 0}
-  sprite: {fileID: 0}
+  texture: {fileID: 0}
   name: Start
   description: Not needed
   elementRequirements: []

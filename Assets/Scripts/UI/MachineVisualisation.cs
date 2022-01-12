@@ -194,7 +194,7 @@ namespace CON.UI
 
             instructionDropdown.value = machine.GetCurrentInstructionIndex();
 
-            if (!machine.GetFullyPlacedStatus()) SetActiveIndicators(true);
+            if (!machine.IsFullyPlaced()) SetActiveIndicators(true);
 
             GameObject.FindGameObjectWithTag("Player").GetComponent<Builder>().onBuildModeChange += SetActiveIndicators;
         }

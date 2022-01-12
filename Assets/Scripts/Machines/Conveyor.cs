@@ -18,6 +18,7 @@ namespace CON.Machines
 
         Builder player;
         AudioSourceManager audioLoop;
+        bool isFullyPlaced = false;
 
         private void Awake()
         {
@@ -73,6 +74,7 @@ namespace CON.Machines
                 case PlacementStatus.endingPlacement:
                     GetComponent<BoxCollider>().enabled = true;
                     audioLoop.StartLooping(conveyorSounds);
+                    isFullyPlaced = true;
                     break;
                 case PlacementStatus.startingDemolishment:
                     GetComponent<BoxCollider>().enabled = false;
@@ -85,6 +87,11 @@ namespace CON.Machines
         public void ChangeVersion()
         {
             
+        }
+
+        public bool IsFullyPlaced()
+        {
+            return isFullyPlaced;
         }
         public PlaceableInformation GetPlaceableInformation()
         {

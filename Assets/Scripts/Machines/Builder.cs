@@ -202,7 +202,7 @@ namespace CON.Machines
                    
                     IPlaceable placedMachine = raycastHit.collider.GetComponentInParent<IPlaceable>();
 
-                    if (placedMachine == null) return;
+                    if (placedMachine == null || !placedMachine.IsFullyPlaced()) return;
 
                     PlaceableInformation placeableInformation = placedMachine.GetPlaceableInformation();
 
@@ -232,6 +232,7 @@ namespace CON.Machines
                 RotateRight(true);
             }
         }
+
         private void PlacementMode()
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -251,7 +252,11 @@ namespace CON.Machines
                 }
                 else ChangeColorOfPlaceable(Color.green, currentPlaceableInformation);
 
-                if (Input.GetMouseButton(0) || Input.GetMouseButtonDown(0))
+                if(currentPlaceableInformation.isDraggable && Input.GetMouseButton(0))
+                {
+                    Placement(x, y);
+                }
+                else if (Input.GetMouseButtonDown(0))
                 {
                     Placement(x, y);
                 }

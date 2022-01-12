@@ -145,7 +145,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6366741075993714625}
   - component: {fileID: 428853020241775288}
-  - component: {fileID: -7524722170755935350}
   - component: {fileID: 8032874728521976043}
   - component: {fileID: -3924537663537503225}
   - component: {fileID: 2995950190254442198}
@@ -189,6 +188,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   placeableInformation:
+    isDraggable: 1
     takenGridPositions:
     - {x: 0, y: 0}
     buildingRequirements:
@@ -222,22 +222,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: a1d8dcae592f25d448fd5fa0a521bcf9, type: 3}
   - {fileID: 8300000, guid: 3f1d566f8949695489727b12970abdc2, type: 3}
   - {fileID: 8300000, guid: f87a06d7d3823c54b91f803df156f4a6, type: 3}
---- !u!208 &-7524722170755935350
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6366741075993714630}
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 0.665, y: 0.5, z: 0.605}
-  m_MoveThreshold: 0.1
-  m_Carve: 1
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 0, z: 0}
-  m_TimeToStationary: 0.5
 --- !u!65 &8032874728521976043
 BoxCollider:
   m_ObjectHideFlags: 0
