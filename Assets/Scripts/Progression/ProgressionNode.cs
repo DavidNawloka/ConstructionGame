@@ -8,6 +8,7 @@ using UnityEditor;
 using System;
 using Astutos.Saving;
 using CON.Machines;
+using CON.UI;
 
 namespace CON.Progression
 {
@@ -26,12 +27,14 @@ namespace CON.Progression
         [SerializeField] TextMeshProUGUI unlockableDescription;
         [SerializeField] Button unlockButton;
         [SerializeField] Animation lockedViewAnimation;
+        [SerializeField] InstructionVisualisation[] instructionVisualisations;
         [SerializeField] Color unlockedMainBackgroundColor;
         [SerializeField] Color unlockedBorderColor;
         [SerializeField] Image border;
-        [SerializeField] Color unlockedProduceableBackgroundColor;
-        [SerializeField] Image produceableBackground;
-        [SerializeField] Image[] produceableElementImages;
+        [SerializeField] Color unlockedInstructionVisualisationColor;
+        [SerializeField] Image instructionVisualisationBackground;
+        [SerializeField] GameObject helpWindow;
+        [SerializeField] GameObject instructionWindow;
 
         ProgressionManager progressionManager;
         
@@ -50,11 +53,30 @@ namespace CON.Progression
         }
         public void UpdateUnlockableVisualisation()
         {
+            if (unlockable.prefab == null) return;
             unlockableName.text = unlockable.name;
             unlockableImage.sprite = unlockable.sprite;
             unlockableDescription.text = unlockable.description;
             UpdateRequirements();
-            UpdatedProduceableElements();
+            
+            Machine machine = unlockable.prefab.GetComponent<Machine>();
+            if (machine != null) UpdateInstructionVisualisations(machine);
+            else helpWindow.gameObject.SetActive(true);
+        }
+
+        private void UpdateInstructionVisualisations(Machine machine)
+        {
+            instructionWindow.gameObject.SetActive(true);
+            if (machine == null) return;
+            for (int instructionIndex = 0; instructionIndex < instructionVisualisations.Length; instructionIndex++)
+            {
+                if (instructionIndex >= machine.GetPossibleInstructions().Length)
+                {
+                    instructionVisualisations[instructionIndex].gameObject.SetActive(false);
+                    continue;
+                }
+                instructionVisualisations[instructionIndex].UpdateInstruction(machine.GetPossibleInstructions()[instructionIndex]);
+            }
         }
 
         private void UpdateRequirements()
@@ -71,19 +93,6 @@ namespace CON.Progression
             }
         }
 
-        private void UpdatedProduceableElements()
-        {
-            if (unlockable.prefab == null) return;
-            Machine machine = unlockable.prefab.GetComponent<Machine>();
-
-            if (machine == null) return;
-
-            for (int index = 0; index < machine.GetPossibleInstructions().Length; index++)
-            {
-                produceableElementImages[index].gameObject.SetActive(true);
-                produceableElementImages[index].sprite = machine.GetPossibleInstructions()[index].outcome.element.sprite;
-            }
-        }
         private void CheckIfEnoughElementsProduced(Inventory inventory)
         {
             if(!unlocked) unlockButton.interactable = inventory.HasItem(unlockable.elementRequirements);
@@ -124,7 +133,7 @@ namespace CON.Progression
             progressionManager.UnlockPlaceable(unlockable);
             GetComponent<Image>().color = unlockedMainBackgroundColor;
             border.color = unlockedBorderColor;
-            produceableBackground.color = unlockedProduceableBackgroundColor;
+            instructionVisualisationBackground.color = unlockedInstructionVisualisationColor;
             unlockButton.interactable = false;
             progressionManager.OnPlaceableUnlocked.RemoveListener(CheckUnlockView);
         }
