@@ -14,6 +14,7 @@ namespace CON.Machines
         [SerializeField] Transform elementExitPoint;
         [SerializeField] float elementExitForce = 2;
         [SerializeField] Transform[] elementExitConveyors;
+        [SerializeField] BoxCollider elementExitCollider;
         [SerializeField] Transform elementEntryConveyor;
         [SerializeField] int maxTunnelBlocks = 3;
         [SerializeField] GameObject directionArrow;
@@ -65,6 +66,7 @@ namespace CON.Machines
             {
                 exitConveyor.localPosition = new Vector3(initialLocalElementExitLocation.x - 1.5f * tunnelAdditionalBlocks, initialLocalElementExitLocation.y, initialLocalElementExitLocation.z);
             }
+            elementExitCollider.center = elementExitConveyors[0].localPosition;
             placeableInformation.takenGridPositions[1] = Vector2Int.RoundToInt(((Vector2)placeableInformation.takenGridPositions[1]).normalized * (tunnelAdditionalBlocks+2));
             Vector3 arrowLocation = (elementEntryConveyor.position + elementExitConveyors[0].position) / 2;
             directionArrow.transform.position = new Vector3(arrowLocation.x,directionArrow.transform.position.y,arrowLocation.z);

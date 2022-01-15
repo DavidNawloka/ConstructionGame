@@ -10,7 +10,6 @@ namespace CON.Machines
     public class Conveyor : MonoBehaviour, IPlaceable
     {
         [SerializeField] PlaceableInformation placeableInformation;
-        [SerializeField] Transform[] pathOfElement;
         [SerializeField] float forceToApplyForward;
         [SerializeField] float forceToApplySide;
         [SerializeField] GameObject directionArrow;
@@ -41,8 +40,7 @@ namespace CON.Machines
             if (elementPickup == null) return;
 
             Rigidbody rigidbody = collision.transform.GetComponentInParent<Rigidbody>();
-
-            rigidbody.velocity = (pathOfElement[1].position -pathOfElement[0].position).normalized * forceToApplyForward;
+            rigidbody.velocity = -transform.right * forceToApplyForward;
             rigidbody.AddForce(GetForceToKeepOnConveyor(rigidbody.transform)* forceToApplySide, ForceMode.Impulse);
         }
 

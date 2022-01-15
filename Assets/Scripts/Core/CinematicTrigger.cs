@@ -11,12 +11,22 @@ namespace CON.Core
     public class CinematicTrigger : MonoBehaviour, ISaveable
     {
         [SerializeField] UserInterfaceManager userInterfaceManager;
+        [SerializeField] bool triggeredWithF9 = false;
 
         PlayableDirector playableDirector;
         bool hasPlayed = false;
         private void Awake()
         {
             playableDirector = GetComponent<PlayableDirector>();
+        }
+        private void Update()
+        {
+            if (!triggeredWithF9) return;
+            if (Input.GetKeyDown(KeyCode.F9))
+            {
+                hasPlayed = false;
+                StartCinematic();
+            }
         }
         public void StartCinematic()
         {

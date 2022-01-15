@@ -38,11 +38,12 @@ namespace CON.Elements
             meshRenderer = GetComponentInChildren<MeshRenderer>();
             meshCollider = GetComponentInChildren<MeshCollider>();
             rigidBody = GetComponent<Rigidbody>();
-            UpdateVisibility();
+            
         }
         private void Start()
         {
-            if(!isVisible && ShouldRespawn())
+            UpdateVisibility(); 
+            if (!isVisible && respawnable)
             {
                 isVisible = true;
                 UpdateVisibility();
@@ -63,10 +64,17 @@ namespace CON.Elements
         }
         private void OnTriggerEnter(Collider other)
         {
-            if (other.transform.tag == "Water") Destroy(gameObject);
+            if (other.transform.tag == "Water") HandleWaterCollision();
             if (other.transform.tag != "Player") return;
             StartCoroutine(EquipElement(other.transform));
         }
+
+        private void HandleWaterCollision()
+        {
+            if (respawnable) return;
+            FindObjectOfType<ElementPickupObjectPooling>().DestroyPickup(this);
+        }
+
         private IEnumerator EquipElement(Transform player)
         {
             int inventoryIndex;
@@ -95,11 +103,6 @@ namespace CON.Elements
             meshRenderer.enabled = isVisible;
             meshCollider.enabled = isVisible;
             rigidBody.isKinematic = !isVisible;
-        }
-
-        private bool ShouldRespawn()
-        {
-            return !meshRenderer.isVisible;
         }
 
         private IEnumerator InitialiseElementMovement(int slotIndex)

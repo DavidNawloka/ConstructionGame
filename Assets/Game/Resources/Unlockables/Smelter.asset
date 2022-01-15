@@ -24,3 +24,4 @@ MonoBehaviour:
   - element: {fileID: 11400000, guid: 5d9ca0baebc0b5040b1ace9cebd67708, type: 2}
     amount: 12
   type: 2
+  hasMultipleVersions: 1

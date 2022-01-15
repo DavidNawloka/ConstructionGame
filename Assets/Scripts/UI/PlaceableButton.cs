@@ -20,6 +20,7 @@ namespace CON.UI
         [SerializeField] GameObject placeablePrefab;
         [SerializeField] Image placeableImage;
         [SerializeField] Image elementPlacementIndicator;
+        [SerializeField] GameObject multipleVersionsIndicator;
 
         Transform player;
         Button button;
@@ -45,6 +46,7 @@ namespace CON.UI
             else elementPlacementIndicator.color = placeableInformation.placementRequirement.colorRepresentation;
 
             UpdateRequirementsVisualisation(player.GetComponent<Inventory>());
+            if (newPlaceable.hasMultipleVersions) multipleVersionsIndicator.SetActive(true);
 
             button.onClick.AddListener(OnClick);
             player.GetComponent<Inventory>().OnInventoryChange.AddListener(UpdateRequirementsVisualisation);

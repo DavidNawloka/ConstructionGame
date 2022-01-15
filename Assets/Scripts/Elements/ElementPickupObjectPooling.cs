@@ -33,12 +33,12 @@ namespace CON.Elements
         {
             if(instantiatedPickups[elementPickup.GetItemToEquip().element].Count == 0)
             {
-                print("Instantiated new Pickup: " + elementPickup.gameObject.name);
+                //print("Instantiated new Pickup: " + elementPickup.gameObject.name);
                 Instantiate(elementPickup, position, Quaternion.Euler(rotation));
             }
             else
             {
-                print("Reused old Pickup: " + elementPickup.gameObject.name);
+                //print("Reused old Pickup: " + elementPickup.gameObject.name);
                 ElementPickup reusedPickup = instantiatedPickups[elementPickup.GetItemToEquip().element].Dequeue();
                 reusedPickup.transform.position = position;
                 reusedPickup.transform.rotation = Quaternion.Euler(rotation);
@@ -49,7 +49,7 @@ namespace CON.Elements
         {
             //print("Destroyed Pickup: " + elementPickup.gameObject.name);
             elementPickup.SetVisibilityActive(false);
-            elementPickup.transform.position = Vector3.zero;
+            elementPickup.transform.position = new Vector3(0,100,0);
             AddPickupToDictionary(elementPickup);
         }
         public void AddPickupToDictionary(ElementPickup elementPickup)

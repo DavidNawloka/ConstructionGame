@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.89657533, b: 0.4292453, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -336,6 +336,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   placeableInformation:
+    isDraggable: 0
     takenGridPositions:
     - {x: 0, y: 0}
     - {x: -2, y: 0}
@@ -362,6 +363,7 @@ MonoBehaviour:
   - {fileID: 8061005107963142383}
   - {fileID: 222897348699492163}
   - {fileID: 2344349614389767816}
+  elementExitCollider: {fileID: 8326071474998052201}
   elementEntryConveyor: {fileID: 3325563868274089357}
   maxTunnelBlocks: 3
   directionArrow: {fileID: 3893540391469004405}

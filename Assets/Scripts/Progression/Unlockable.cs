@@ -15,6 +15,7 @@ namespace CON.Progression
         public string description;
         public InventoryItem[] elementRequirements;
         public PlaceableType type;
+        public bool hasMultipleVersions;    
 
     }
 

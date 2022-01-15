@@ -14,12 +14,11 @@ namespace CON.Machines
     {
         public bool isRightToLeft = true;
         [SerializeField] PlaceableInformation placeableInformation;
-        [SerializeField] Transform[] pathOfElement;
         [SerializeField] float forceToApplyForward;
         [SerializeField] GameObject leftRightArrow;
         [SerializeField] GameObject[] directionArrows;
         [SerializeField] Transform[] hooks;
-        [SerializeField] Animation hookAnimation; // TODO: Speed up animation
+        [SerializeField] Animation hookAnimation; 
         [SerializeField] AudioClip[] conveyorSounds;
 
         [HideInInspector] public event Action OnSplitterClicked;
@@ -73,7 +72,7 @@ namespace CON.Machines
         public void UpdateElementRatio(int afterHowManyElements)
         {
             elementRatio = afterHowManyElements + 1;
-            elementCounter = 1;
+            elementCounter = 0;
         }
         private void OnBuildModeChange(bool isActive)
         {
@@ -97,11 +96,24 @@ namespace CON.Machines
             Rigidbody rigidbody = elementPickup.GetComponent<Rigidbody>();
             StartCoroutine(MoveElement(rigidbody));
         }
+        public void OnElementLeftCount(ElementPickup elementPickup)
+        {
+            if (isRightToLeft || !isFullyPlaced || hookAnimation.isPlaying) return;
+            Rigidbody rigidbody = elementPickup.GetComponent<Rigidbody>();
+            if (!rigidbody.isKinematic) elementCounter++;
+        }
+        public void OnElementRightCount(ElementPickup elementPickup)
+        {
+            if (!isRightToLeft || !isFullyPlaced || hookAnimation.isPlaying) return;
+            Rigidbody rigidbody = elementPickup.GetComponent<Rigidbody>();
+            if (!rigidbody.isKinematic) elementCounter++;
+        }
         private IEnumerator MoveElement(Rigidbody rigidbody)
         {
-            if (elementCounter == elementRatio)
+            if (rigidbody.isKinematic) yield break;
+            if (elementCounter >= elementRatio)
             {
-                elementCounter = 1;
+                elementCounter = 0;
                 rigidbody.isKinematic = true;
                 rigidbody.transform.parent = hooks[0];
                 rigidbody.transform.localPosition = Vector3.zero;
@@ -109,14 +121,13 @@ namespace CON.Machines
                 if(isRightToLeft) hookAnimation.Play("Seperator_Conveyor_Right");
                 else hookAnimation.Play("Seperator_Conveyor_Left");
 
-                yield return new WaitForSeconds(.5f);
+                yield return new WaitForSeconds(hookAnimation.GetClip("Seperator_Conveyor_Right").length/2);
 
                 rigidbody.isKinematic = false;
                 rigidbody.transform.parent = null;
 
                 
             }
-            else if (!rigidbody.isKinematic) elementCounter++;
         }
         
         private void OnCollisionStay(Collision collision)
@@ -128,7 +139,7 @@ namespace CON.Machines
 
             if (!rigidbody.isKinematic)
             {
-                rigidbody.velocity = (pathOfElement[1].position - pathOfElement[0].position).normalized * forceToApplyForward;
+                rigidbody.velocity = -transform.right * forceToApplyForward;
             }
         }
 
