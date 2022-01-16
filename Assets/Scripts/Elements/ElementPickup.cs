@@ -27,7 +27,7 @@ namespace CON.Elements
 
         AudioSource audioSource;
         MeshRenderer meshRenderer;
-        MeshCollider meshCollider;
+        Collider meshCollider;
         Rigidbody rigidBody;
 
 
@@ -36,7 +36,7 @@ namespace CON.Elements
             audioSource = GetComponent<AudioSource>();
 
             meshRenderer = GetComponentInChildren<MeshRenderer>();
-            meshCollider = GetComponentInChildren<MeshCollider>();
+            meshCollider = GetComponentInChildren<Collider>();
             rigidBody = GetComponent<Rigidbody>();
             
         }

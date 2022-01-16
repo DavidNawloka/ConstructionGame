@@ -283,7 +283,11 @@ namespace CON.Machines
             int toRotate = (int)currentMachine.transform.localEulerAngles.y / 90;
             isRotating = false;
             currentPlaceableInformation.buildingGridOrigin = new Vector2Int(x, y);
-            currentPlaceableInformation.uniqueIdentifier = currentPlaceable.GetHashCode().ToString();
+
+            int identifier = currentPlaceable.GetHashCode();
+            while (builtObjects.ContainsKey(identifier.ToString())) identifier++;
+            currentPlaceableInformation.uniqueIdentifier = identifier.ToString();
+
             builtObjects.Add(currentPlaceableInformation.uniqueIdentifier, new SavedPlaceable(GetPlaceableObjectsID(currentMachinePrefab), currentMachine.transform.position, currentMachine.transform.eulerAngles, new Vector2Int(x,y),currentPlaceableInformation.takenGridPositions, currentPlaceable));
             
             StartCoroutine(MovePlaceable(currentPlaceable,currentMachine,true,placementSounds));
