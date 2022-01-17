@@ -33,6 +33,7 @@ namespace CON.Machines
         Instruction currentInstruction;
         ProgressionManager progressionManager;
         ElementPickupObjectPooling elementPickupObjectPooling;
+        Animation[] allAnimationComponents;
 
         float productionTimer = 0f;
 
@@ -41,6 +42,7 @@ namespace CON.Machines
             inventory = GetComponent<Inventory>();
             progressionManager = FindObjectOfType<ProgressionManager>();
             elementPickupObjectPooling = FindObjectOfType<ElementPickupObjectPooling>();
+            allAnimationComponents = GetComponentsInChildren<Animation>();
             currentInstruction = possibleInstructions[0];
         }
         private void Start()
@@ -162,7 +164,8 @@ namespace CON.Machines
 
         private void ToggleAnimations(bool isActive)
         {
-            foreach(Animation animation in GetComponentsInChildren<Animation>())
+            if (isActive == allAnimationComponents[0].isPlaying) return;
+            foreach(Animation animation in allAnimationComponents)
             {
                 AudioSource audioSource = animation.transform.GetComponent<AudioSource>();
                 animation.playAutomatically = false;
