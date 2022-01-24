@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: e159d845df8d49e44aa57c1c1f09b3b0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 07b81f39948efe244a1ea15be84b2e3b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -611,12 +611,15 @@ MonoBehaviour:
   - Making mistakes is part of the journey.
   - Try to keep things simple.
   screenshots:
-  - {fileID: 21300000, guid: d76595c815d06524bb4823cc52b8612f, type: 3}
-  - {fileID: 21300000, guid: e159d845df8d49e44aa57c1c1f09b3b0, type: 3}
-  - {fileID: 21300000, guid: a09986ae5940d53439700dcb315a5e96, type: 3}
-  - {fileID: 21300000, guid: f57a01cd09f3fb34cbdc2eb579e10fcf, type: 3}
-  - {fileID: 21300000, guid: bde7a5c79e37a6841aa953fe52205058, type: 3}
-  - {fileID: 21300000, guid: b75951f2933c83f4b970f6f191190052, type: 3}
+  - {fileID: 21300000, guid: 07b81f39948efe244a1ea15be84b2e3b, type: 3}
+  - {fileID: 21300000, guid: 3752e8c63d1e7b445a5ca279934dfd93, type: 3}
+  - {fileID: 21300000, guid: e75ec210762e26741b4a634dfaa77374, type: 3}
+  - {fileID: 21300000, guid: b85f679b80e79ad4097ed7fa9d5eda84, type: 3}
+  - {fileID: 21300000, guid: 0efd513a480255e4faa7fb21968eb2f2, type: 3}
+  - {fileID: 21300000, guid: a3bd92bc632313b4fb90fe6688362ead, type: 3}
+  - {fileID: 21300000, guid: a1038615d910eb24a978fedecc27609b, type: 3}
+  - {fileID: 21300000, guid: 70e1aa407fe53c2428e846c225272911, type: 3}
+  - {fileID: 21300000, guid: 440addfcb43a49b48a243065d26bf655, type: 3}
   animationTime: 0.5
   startingTime: 0.5
   screenshotImage: {fileID: 527312771}

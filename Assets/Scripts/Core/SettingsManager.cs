@@ -6,6 +6,7 @@ using UnityEngine.Audio;
 using TMPro;
 using UnityEngine.UI;
 using System;
+using CON.UI;
 
 namespace CON.Core
 {
@@ -28,6 +29,9 @@ namespace CON.Core
         [SerializeField] float toggleTime = .25f;
         [SerializeField] KeyMapping[] defaultKeyMappings;
         [SerializeField] KeyVisual[] possibleKeys;
+        [Header("Desert")]
+        [SerializeField] CanvasGroup confirmLeaveOverlay;
+        [SerializeField] TextMeshProUGUI lastSaveTimeTMPro;
         [Header("Main Menu")]
         [SerializeField] bool isMainMenu = false;
         [SerializeField] Player.PlayerMouseInteraction.CursorMapping defaultCursorMapping;
@@ -36,6 +40,7 @@ namespace CON.Core
         [HideInInspector] public event Action OnInputButtonsChanged;
 
         SavingSystemJson jsonSaving;
+        SavingWrapper savingWrapper;
         CloseButtonManager closeButtonManager;
 
         Resolution[] resolutions;
@@ -45,7 +50,10 @@ namespace CON.Core
 
         Dictionary<KeyCode, Sprite> keyMappingVisual = new Dictionary<KeyCode, Sprite>();
 
+        bool shouldListenToInput = true;
+
         const string settingsFileName = "settings";
+        int timeSinceLastSave = 0;
 
         private void Awake()
         {
@@ -64,6 +72,7 @@ namespace CON.Core
             if(OnInputButtonsChanged != null)OnInputButtonsChanged();
             Application.quitting += Save;
             if(isMainMenu) Cursor.SetCursor(defaultCursorMapping.sprite, defaultCursorMapping.hotspot, CursorMode.Auto);
+            savingWrapper = FindObjectOfType<SavingWrapper>();
         }
 
 
@@ -159,6 +168,35 @@ namespace CON.Core
                 index++;
             }
             BuildKeyMappingUI();
+        }
+
+        // -----------   Desert Leave  -------------
+
+        public void StartExitingToMainMenu()
+        {
+            closeButtonManager.AddFunction(StayInDesert, "closeOverlay");
+            string[] allSaveFolders = savingWrapper.GetAllSaveFolders();
+            if(allSaveFolders.Length == 0)
+            {
+                lastSaveTimeTMPro.text = "You have not saved yet";
+            }
+            else
+            {
+                lastSaveTimeTMPro.text = "Your last save was " + savingWrapper.GetTimeString((int)Time.unscaledTime - timeSinceLastSave) + " ago";
+
+            }
+            StartCoroutine(SetActiveCanvasGroup(confirmLeaveOverlay, true));
+            
+        }
+
+        public void FinalExitToMainMenu()
+        {
+            FindObjectOfType<PauseManager>().LoadScene(0);
+        }
+        public void StayInDesert()
+        {
+            closeButtonManager.RemoveFunction("closeOverlay");
+            StartCoroutine(SetActiveCanvasGroup(confirmLeaveOverlay, false));
         }
 
         // -----------   AUDIO -------------
@@ -270,7 +308,13 @@ namespace CON.Core
 
         public void StartListeningToInput(string buttonName)
         {
+            shouldListenToInput = true;
             StartCoroutine(ListenForInput(buttonName));
+        }
+
+        public void StopListeningToInput()
+        {
+            shouldListenToInput = false;
         }
 
         private IEnumerator ListenForInput(string buttonName)
@@ -279,9 +323,7 @@ namespace CON.Core
             yield return StartCoroutine(SetActiveCanvasGroup(listenForInputOverlay, true));
             Array allKeyCodes = Enum.GetValues(typeof(KeyCode));
 
-            bool shouldListen = true;
-
-            while (shouldListen)
+            while (shouldListenToInput)
             {
                 foreach (KeyCode keycode in allKeyCodes)
                 {
@@ -289,7 +331,7 @@ namespace CON.Core
                     {
                         if (UpdateKeyMapping(buttonName, keycode))
                         {
-                            shouldListen = false;
+                            shouldListenToInput = false;
                             Save();
                             break;
                         }
@@ -334,11 +376,21 @@ namespace CON.Core
 
         public bool UpdateKeyMapping(string name, KeyCode newKey)
         {
-            if (!keyMappingVisual.ContainsKey(newKey) || currentKeyMapping.ContainsValue(newKey))
+            if (!keyMappingVisual.ContainsKey(newKey)) return false;
+
+            if (currentKeyMapping.ContainsValue(newKey) && currentKeyMapping[name] != newKey)
             {
-                return false;
+                string sameKeyName = null;
+                foreach(KeyValuePair<string,KeyCode> keyValuePair in currentKeyMapping)
+                {
+                    if (keyValuePair.Value == newKey) sameKeyName = keyValuePair.Key;
+                }
+                currentKeyMapping[sameKeyName] = currentKeyMapping[name];
+                currentKeyMapping[name] = newKey;
             }
-            currentKeyMapping[name] = newKey;
+            else currentKeyMapping[name] = newKey;
+
+
             BuildKeyMappingUI();
             if(OnInputButtonsChanged != null) OnInputButtonsChanged();
             return true;
@@ -387,6 +439,7 @@ namespace CON.Core
         public object CaptureState()
         {
             Save();
+            timeSinceLastSave = (int)Time.unscaledTime;
             return null;
         }
 

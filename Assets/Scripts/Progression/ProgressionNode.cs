@@ -28,11 +28,7 @@ namespace CON.Progression
         [SerializeField] Button unlockButton;
         [SerializeField] Animation lockedViewAnimation;
         [SerializeField] InstructionVisualisation[] instructionVisualisations;
-        [SerializeField] Color unlockedMainBackgroundColor;
-        [SerializeField] Color unlockedBorderColor;
-        [SerializeField] Image border;
-        [SerializeField] Color unlockedInstructionVisualisationColor;
-        [SerializeField] Image instructionVisualisationBackground;
+        [SerializeField] UnlockedColorChange[] unlockedColorChanges;
         [SerializeField] GameObject helpWindow;
         [SerializeField] GameObject instructionWindow;
 
@@ -104,7 +100,7 @@ namespace CON.Progression
                 }
 
                 int amountOfElementProduced = inventory.GetAmountOfElement(unlockable.elementRequirements[index].element);
-                requirementVisualisation[index].tmPro.text = GetFormattedElementProduced(amountOfElementProduced) + " / " + unlockable.elementRequirements[index].amount.ToString();
+                requirementVisualisation[index].tmPro.text = GetFormattedElementProduced(amountOfElementProduced) + "/" + unlockable.elementRequirements[index].amount.ToString();
 
                 if(amountOfElementProduced >= unlockable.elementRequirements[index].amount)
                 {
@@ -131,9 +127,10 @@ namespace CON.Progression
         {
             unlocked = true;
             progressionManager.UnlockPlaceable(unlockable);
-            GetComponent<Image>().color = unlockedMainBackgroundColor;
-            border.color = unlockedBorderColor;
-            instructionVisualisationBackground.color = unlockedInstructionVisualisationColor;
+            foreach(UnlockedColorChange unlockedColorChange in unlockedColorChanges)
+            {
+                unlockedColorChange.image.color = unlockedColorChange.color;
+            }
             unlockButton.interactable = false;
             progressionManager.OnPlaceableUnlocked.RemoveListener(CheckUnlockView);
         }
@@ -186,6 +183,13 @@ namespace CON.Progression
                 lockedViewAnimation.Play();
                 OnClick();
             }
+        }
+
+        [System.Serializable]
+        public class UnlockedColorChange
+        {
+            public Image image;
+            public Color color;
         }
 
     }

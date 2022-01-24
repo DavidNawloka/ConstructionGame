@@ -902,11 +902,19 @@ MonoBehaviour:
   - {fileID: 5009158983665892266}
   - {fileID: 2606099512050754204}
   - {fileID: 631166678294174182}
-  unlockedMainBackgroundColor: {r: 0.9882353, g: 1, b: 0, a: 1}
-  unlockedBorderColor: {r: 0.77254903, g: 0.72156864, b: 0, a: 1}
-  border: {fileID: 2335847898600854365}
-  unlockedInstructionVisualisationColor: {r: 1, g: 1, b: 1, a: 1}
-  instructionVisualisationBackground: {fileID: 1895798822408594601}
+  unlockedColorChanges:
+  - image: {fileID: -4873957845787742678}
+    color: {r: 0.9882353, g: 1, b: 0, a: 1}
+  - image: {fileID: 2335847898600854365}
+    color: {r: 0.77254903, g: 0.72156864, b: 0, a: 1}
+  - image: {fileID: 1895798822408594601}
+    color: {r: 0.6313726, g: 0.77254903, b: 0, a: 1}
+  - image: {fileID: 1209309675888581860}
+    color: {r: 0.6313726, g: 0.77254903, b: 0, a: 1}
+  - image: {fileID: 3636734061566304607}
+    color: {r: 0.6313726, g: 0.77254903, b: 0, a: 1}
+  - image: {fileID: 3170075306561014234}
+    color: {r: 0.6313726, g: 0.77254903, b: 0, a: 1}
   helpWindow: {fileID: 1774914811202762964}
   instructionWindow: {fileID: 8465009942323491032}
 --- !u!222 &7839847727469971107
@@ -1587,7 +1595,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.8113208, g: 0.59755635, b: 0.35590956, a: 1}
+  m_Color: {r: 0.56078434, g: 0.43137255, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1685,7 +1693,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.8113208, g: 0.59755635, b: 0.35590956, a: 1}
+  m_Color: {r: 0.56078434, g: 0.43137255, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2692,6 +2700,10 @@ PrefabInstance:
     - target: {fileID: 2257167290532337905, guid: 42d1748fe2c763f418beaf2441970d08, type: 3}
       propertyPath: m_Name
       value: Produced Element Requirement
+      objectReference: {fileID: 0}
+    - target: {fileID: 3629533710869973017, guid: 42d1748fe2c763f418beaf2441970d08, type: 3}
+      propertyPath: m_text
+      value: 100/200
       objectReference: {fileID: 0}
     - target: {fileID: 3629533712517008367, guid: 42d1748fe2c763f418beaf2441970d08, type: 3}
       propertyPath: m_Sprite

@@ -65,7 +65,7 @@ namespace CON.UI
 
                 JsonSavedStatisticData savedData = savingWrapper.LoadStatistics(saveFileDirectories[saveFileIndex]);
 
-                saveFile.SetSaveFileVisualisation(savingWrapper.LoadScreenshot(saveFileDirectories[saveFileIndex]), savedData.timePlayedInSeconds, savedData.machinesBuilt, savedData.conveyorsBuilt,saveFileDirectories[saveFileIndex]);
+                saveFile.SetSaveFileVisualisation(savingWrapper.LoadScreenshot(saveFileDirectories[saveFileIndex]), savingWrapper.GetTimeString(savedData.timePlayedInSeconds), savedData.machinesBuilt, savedData.conveyorsBuilt,saveFileDirectories[saveFileIndex]);
             }
         }
     }
