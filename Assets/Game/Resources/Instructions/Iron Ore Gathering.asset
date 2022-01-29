@@ -18,4 +18,4 @@ MonoBehaviour:
   outcome:
     element: {fileID: 11400000, guid: aa830a0922b0a9542b3953ccd6712b7e, type: 2}
     amount: 3
-  productionInterval: 2
+  productionInterval: 4
